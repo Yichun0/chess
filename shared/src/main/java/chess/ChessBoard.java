@@ -7,7 +7,7 @@ package chess;
  * signature of the existing methods.
  */
 public class ChessBoard {
-
+    int i = 0;
     public ChessBoard() {
         
     }
