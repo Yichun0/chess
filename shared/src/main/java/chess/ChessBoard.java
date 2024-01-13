@@ -8,8 +8,8 @@ package chess;
  */
 public class ChessBoard {
     int i = 0;
+    private ChessPiece[][] borad = new ChessPiece[8][8];
     public ChessBoard() {
-        
     }
 
     /**
@@ -30,7 +30,7 @@ public class ChessBoard {
      * position
      */
     public ChessPiece getPiece(ChessPosition position) {
-        throw new RuntimeException("Not implemented");
+        return borad[position.getRow()][position.getColumn()];
     }
 
     /**
