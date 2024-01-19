@@ -6,8 +6,8 @@ import chess.ChessPosition;
 import chess.ChessBoard;
 
 public class RookMovementRule {
-    private HashSet<ChessPosition> RookMoves = new HashSet<>();
-    public Collection<ChessPosition> RookMovement(ChessBoard board, ChessPosition startPosition) {
+    private HashSet<ChessMove> RookMoves = new HashSet<>();
+    public Collection<ChessMove> RookMovement(ChessBoard board, ChessPosition startPosition) {
             up(board, startPosition);
             down(board, startPosition);
             left(board,startPosition);
@@ -17,17 +17,17 @@ public class RookMovementRule {
     private void up(ChessBoard board, ChessPosition startPosition){
         int row = startPosition.getRow() + 1 ;
         int column = startPosition.getColumn();
-        ChessPosition nextPosition = new ChessPosition(row,column);
-        // will this also get updated by the while loop?
-        while(row <=8 ){
+        while(row <= 8 ){
             ChessPiece currentPiece = board.getPiece(startPosition);
-            ChessPiece newPiece = board.getPiece(nextPosition);
-            if (board.getPiece(nextPosition) == null){
-                RookMoves.add(nextPosition);
+            ChessPosition newPosition = new ChessPosition(row,column);
+            ChessPiece newPiece = board.getPiece(newPosition);
+            if (board.getPiece(newPosition) == null){
+                RookMoves.add(new ChessMove(startPosition, newPosition,null));
                 row = row + 1;
-                nextPosition = new ChessPosition(row, column);
             } else if (currentPiece.getTeamColor() != newPiece.getTeamColor()){
-                newPiece = currentPiece;
+                ChessPosition nextPosition =  new ChessPosition(row + 1, column);
+                RookMoves.add(new ChessMove(startPosition, nextPosition,null));
+                break;
                 // do I need to add this move to my RookMoves?
             } else {
                 break;
@@ -37,17 +37,18 @@ public class RookMovementRule {
     private void down(ChessBoard board, ChessPosition startPosition){
         int row = startPosition.getRow() - 1 ;
         int column = startPosition.getColumn();
-        ChessPosition nextPosition = new ChessPosition(row,column);
         // will this also get updated by the while loop?
-        while(row >= 1){
+        while(row <= 8 ){
             ChessPiece currentPiece = board.getPiece(startPosition);
-            ChessPiece newPiece = board.getPiece(nextPosition);
-            if (board.getPiece(nextPosition) == null){
-                RookMoves.add(nextPosition);
+            ChessPosition newPosition = new ChessPosition(row,column);
+            ChessPiece newPiece = board.getPiece(newPosition);
+            if (board.getPiece(newPosition) == null){
+                RookMoves.add(new ChessMove(startPosition, newPosition,null));
                 row = row - 1;
-                nextPosition = new ChessPosition(row, column);
             } else if (currentPiece.getTeamColor() != newPiece.getTeamColor()){
-                newPiece = currentPiece;
+                ChessPosition nextPosition =  new ChessPosition(row - 1, column);
+                RookMoves.add(new ChessMove(startPosition, nextPosition,null));
+                break;
                 // do I need to add this move to my RookMoves?
             } else {
                 break;
@@ -57,17 +58,17 @@ public class RookMovementRule {
     private void left(ChessBoard board, ChessPosition startPosition){
         int row = startPosition.getRow() ;
         int column = startPosition.getColumn() - 1;
-        ChessPosition nextPosition = new ChessPosition(row,column);
-        // will this also get updated by the while loop?
-        while(column >= 1 ){
+        while(column >= 1){
             ChessPiece currentPiece = board.getPiece(startPosition);
-            ChessPiece newPiece = board.getPiece(nextPosition);
-            if (board.getPiece(nextPosition) == null){
-                RookMoves.add(nextPosition);
+            ChessPosition newPosition = new ChessPosition(row,column);
+            ChessPiece newPiece = board.getPiece(newPosition);
+            if (board.getPiece(newPosition) == null){
+                RookMoves.add(new ChessMove(startPosition, newPosition,null));
                 column = column - 1;
-                nextPosition = new ChessPosition(row, column);
             } else if (currentPiece.getTeamColor() != newPiece.getTeamColor()){
-                newPiece = currentPiece;
+                ChessPosition nextPosition =  new ChessPosition(column - 1, column);
+                RookMoves.add(new ChessMove(startPosition, nextPosition,null));
+                break;
                 // do I need to add this move to my RookMoves?
             } else {
                 break;
@@ -77,17 +78,17 @@ public class RookMovementRule {
     private void right(ChessBoard board, ChessPosition startPosition){
         int row = startPosition.getRow();
         int column = startPosition.getColumn() + 1;
-        ChessPosition nextPosition = new ChessPosition(row,column);
-        // will this also get updated by the while loop?
-        while(column <=8 ){
+        while(column <= 8){
             ChessPiece currentPiece = board.getPiece(startPosition);
-            ChessPiece newPiece = board.getPiece(nextPosition);
-            if (board.getPiece(nextPosition) == null){
-                RookMoves.add(nextPosition);
+            ChessPosition newPosition = new ChessPosition(row,column);
+            ChessPiece newPiece = board.getPiece(newPosition);
+            if (board.getPiece(newPosition) == null){
+                RookMoves.add(new ChessMove(startPosition, newPosition,null));
                 column = column + 1;
-                nextPosition = new ChessPosition(row, column);
             } else if (currentPiece.getTeamColor() != newPiece.getTeamColor()){
-                newPiece = currentPiece;
+                ChessPosition nextPosition =  new ChessPosition(column + 1, column);
+                RookMoves.add(new ChessMove(startPosition, nextPosition,null));
+                break;
                 // do I need to add this move to my RookMoves?
             } else {
                 break;
