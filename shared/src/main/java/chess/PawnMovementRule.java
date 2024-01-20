@@ -43,7 +43,7 @@ public class PawnMovementRule {
                 new ChessMove(startPosition, upPosition, ChessPiece.PieceType.BISHOP);
                 new ChessMove(startPosition, upPosition, ChessPiece.PieceType.ROOK);
                 new ChessMove(startPosition, upPosition, ChessPiece.PieceType.KNIGHT);
-            } else if (downPosition == null) {
+            } else if (board.getPiece(downPosition) == null) {
                 new ChessMove(startPosition, downPosition, ChessPiece.PieceType.QUEEN);
                 new ChessMove(startPosition, downPosition, ChessPiece.PieceType.BISHOP);
                 new ChessMove(startPosition, downPosition, ChessPiece.PieceType.ROOK);
