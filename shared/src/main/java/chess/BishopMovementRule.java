@@ -6,7 +6,7 @@ import java.util.HashSet;
 public class BishopMovementRule {
     private HashSet<ChessMove> BishopMoves = new HashSet<>();
 
-    public Collection<ChessMove> RookMovement(ChessBoard board, ChessPosition startPosition) {
+    public HashSet<ChessMove> BishopMovement(ChessBoard board, ChessPosition startPosition) {
         upRight(board, startPosition);
         upLeft(board, startPosition);
         downLeft(board, startPosition);
