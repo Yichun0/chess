@@ -11,26 +11,26 @@ public class KingMovementRule {
         int column = startPosition.getColumn();
         int[] rowPossibleMoves = {-1, -1, -1, +1, +1, +1, 0, 0};
         int[] colPossibleMoves = {-1, +1, 0, -1, +1, 0, -1, +1};
-        while (row >= 1 && row <= 8 && column <= 8 && column >= 1) {
-            for (int i = 0; i < colPossibleMoves.length; i++) {
-                ChessPosition newPosition = new ChessPosition(rowPossibleMoves[i], colPossibleMoves[i]);
+        for (int i = 0; i < colPossibleMoves.length; i++) {
+            int newRow = row + rowPossibleMoves[i];
+            int newCol = column + colPossibleMoves[i];
+            ChessPosition newPosition = new ChessPosition(newRow, newCol);
+            if (newRow <= 8 && newRow >= 1 && newCol <= 8 && newCol >= 1) {
                 ChessPiece currentPiece = board.getPiece(startPosition);
-                ChessPiece nextPiece =  board.getPiece(newPosition);
-                if (currentPiece.getTeamColor().equals(nextPiece.getTeamColor())){
-                    break;
-                }else{KingMoves.add(new ChessMove(startPosition, newPosition, null));
+                ChessPiece nextPiece = board.getPiece(newPosition);
+                if (nextPiece == null) {
+                    KingMoves.add(new ChessMove(startPosition, newPosition, null));
+                } else if (currentPiece.getTeamColor().equals(nextPiece.getTeamColor())) {
+                    continue;
+                } else {
+                    KingMoves.add(new ChessMove(startPosition, newPosition, null));
                 }
+            } else {
+                break;
             }
+
         }
         return KingMoves;
-    }
-    private boolean NoExistingPiece(ChessBoard board, ChessPosition position) {
-        ChessPiece Piece = board.getPiece(position);
-        if (Piece == null) {
-            return true;
-        } else {
-            return false;
-        }
     }
 }
 

@@ -9,59 +9,104 @@ public class PawnMovementRule {
         int col = startPosition.getColumn();
         int upRow = startPosition.getRow() + 1;
         int downRow = startPosition.getRow() - 1;
-        ChessPosition downLeft = new ChessPosition(row - 1, col - 1);
-        ChessPosition downRight = new ChessPosition(row - 1, col + 1);
-        ChessPosition upLeft = new ChessPosition(row + 1, col - 1);
-        ChessPosition upRight = new ChessPosition(row + 1, col + 1);
-        // moves for the first line Pawns
-        if (row == 2 || row == 6) {
-            ChessPosition firstRowUp = new ChessPosition(row + 2, col);
-            PawnMoves.add(new ChessMove(startPosition, firstRowUp, null));
-            ChessPosition firstRowDown = new ChessPosition(row - 2, col);
-            PawnMoves.add(new ChessMove(startPosition, firstRowDown,null));
-        }
-        // moves when there's an enemy diagonally
-        if (EnemyMoves(board, startPosition, downLeft)) {
-            PawnMoves.add(new ChessMove(startPosition, downLeft, null));
-        }
-        if (EnemyMoves(board, startPosition, downRight)) {
-            PawnMoves.add(new ChessMove(startPosition, downRight,null));
-        }
-        if (EnemyMoves(board, startPosition, upLeft)) {
-            PawnMoves.add(new ChessMove(startPosition, upLeft, null));
-        }
-        if (EnemyMoves(board, startPosition, upRight)) {
-            PawnMoves.add(new ChessMove(startPosition, upRight, null));
-        }
-        // check whether it's at the end of the board
-        else if (upRow == 8 || downRow == 1) {
-            ChessPosition upPosition = new ChessPosition(upRow, col);
-            ChessPosition downPosition = new ChessPosition(downRow, col);
-            if (board.getPiece(upPosition) == null) {
+        ChessPiece currentPiece = board.getPiece(startPosition);
+        ChessPosition upPosition = new ChessPosition(upRow, col);
+        ChessPosition downPosition = new ChessPosition(downRow, col);;
+        if (currentPiece.getTeamColor() == ChessGame.TeamColor.WHITE) {
+            ChessPosition upLeft = new ChessPosition(row + 1, col - 1);
+            ChessPosition upRight = new ChessPosition(row + 1, col + 1);
+            // white piece moves up
+            if (row == 2) {
+                ChessPosition firstRowUp = new ChessPosition(row + 2, col);
+                if (board.getPiece(upPosition) == null) {
+                    PawnMoves.add(new ChessMove(startPosition, upPosition, null));
+                }
+                if (board.getPiece(firstRowUp) == null) {
+                    PawnMoves.add(new ChessMove(startPosition, firstRowUp, null));
+                }
+            } else if (upRow == 8) {
                 // add the moves to the collection
-                new ChessMove(startPosition, upPosition, ChessPiece.PieceType.QUEEN);
-                new ChessMove(startPosition, upPosition, ChessPiece.PieceType.BISHOP);
-                new ChessMove(startPosition, upPosition, ChessPiece.PieceType.ROOK);
-                new ChessMove(startPosition, upPosition, ChessPiece.PieceType.KNIGHT);
-            } else if (board.getPiece(downPosition) == null) {
-                new ChessMove(startPosition, downPosition, ChessPiece.PieceType.QUEEN);
-                new ChessMove(startPosition, downPosition, ChessPiece.PieceType.BISHOP);
-                new ChessMove(startPosition, downPosition, ChessPiece.PieceType.ROOK);
-                new ChessMove(startPosition, downPosition, ChessPiece.PieceType.KNIGHT);
+                PawnMoves.add(new ChessMove(startPosition, upPosition, ChessPiece.PieceType.QUEEN));
+                PawnMoves.add(new ChessMove(startPosition, upPosition, ChessPiece.PieceType.BISHOP));
+                PawnMoves.add(new ChessMove(startPosition, upPosition, ChessPiece.PieceType.ROOK));
+                PawnMoves.add(new ChessMove(startPosition, upPosition, ChessPiece.PieceType.KNIGHT));
+                if (EnemyMoves(board, startPosition, upLeft)) {
+                    PawnMoves.add(new ChessMove(startPosition, upLeft, null));
+                }
+                if (EnemyMoves(board, startPosition, upRight)) {
+                    PawnMoves.add(new ChessMove(startPosition, upRight, null));
+                }
+            }
+
+            if (upRow != 8) {
+                if (board.getPiece(upPosition) == null) {
+                    PawnMoves.add(new ChessMove(startPosition, upPosition, null));
+                }
+                if (EnemyMoves(board, startPosition, upLeft)) {
+                    PawnMoves.add(new ChessMove(startPosition, upLeft, null));
+                }
+                if (EnemyMoves(board, startPosition, upRight)) {
+                    PawnMoves.add(new ChessMove(startPosition, upRight, null));
+                }
             }
         }
-            return PawnMoves;
+            // moves for the first line Pawns
+            else if (currentPiece.getTeamColor() == ChessGame.TeamColor.BLACK) {
+                ChessPosition downLeft = new ChessPosition(row - 1, col - 1);
+                ChessPosition downRight = new ChessPosition(row - 1, col + 1);
+                // move down
+                if (row == 7) {
+                    ChessPosition firstRowDown = new ChessPosition(row - 2, col);
+                    if (board.getPiece(downPosition) == null) {
+                        PawnMoves.add(new ChessMove(startPosition, downPosition, null));
+                    }
+                    if (board.getPiece(downPosition) == null &&board.getPiece(firstRowDown) == null) {
+                        PawnMoves.add(new ChessMove(startPosition, firstRowDown, null));
+                    }
+                } else if (downRow == 1) {
+                    // add the moves to the collection
+                    if (EnemyMoves(board, startPosition, downLeft)) {
+                        PawnMoves.add(new ChessMove(startPosition, downLeft, ChessPiece.PieceType.QUEEN));
+                        PawnMoves.add(new ChessMove(startPosition, downLeft, ChessPiece.PieceType.BISHOP));
+                        PawnMoves.add(new ChessMove(startPosition, downLeft, ChessPiece.PieceType.ROOK));
+                        PawnMoves.add(new ChessMove(startPosition, downLeft, ChessPiece.PieceType.KNIGHT));
+                    }
+                    if (EnemyMoves(board, startPosition, downRight)) {
+                        PawnMoves.add(new ChessMove(startPosition, downRight, ChessPiece.PieceType.QUEEN));
+                        PawnMoves.add(new ChessMove(startPosition, downRight, ChessPiece.PieceType.BISHOP));
+                        PawnMoves.add(new ChessMove(startPosition, downRight, ChessPiece.PieceType.ROOK));
+                        PawnMoves.add(new ChessMove(startPosition, downRight, ChessPiece.PieceType.KNIGHT));
+                    }
+                    PawnMoves.add(new ChessMove(startPosition, downPosition, ChessPiece.PieceType.QUEEN));
+                    PawnMoves.add(new ChessMove(startPosition, downPosition, ChessPiece.PieceType.BISHOP));
+                    PawnMoves.add(new ChessMove(startPosition, downPosition, ChessPiece.PieceType.ROOK));
+                    PawnMoves.add(new ChessMove(startPosition, downPosition, ChessPiece.PieceType.KNIGHT));
+
+                }
+                if (downRow != 1) {
+                    if (board.getPiece(downPosition) == null) {
+                        PawnMoves.add(new ChessMove(startPosition, downPosition, null));
+                    }
+                    if (EnemyMoves(board, startPosition, downLeft)) {
+                        PawnMoves.add(new ChessMove(startPosition, downLeft, null));
+                    }
+                    if (EnemyMoves(board, startPosition, downRight)) {
+                        PawnMoves.add(new ChessMove(startPosition, downRight, null));
+                    }
+                }
+                // check whether it's at the end of the board
+            }
+
+        return PawnMoves;
     }
-    private Boolean EnemyMoves(ChessBoard board, ChessPosition current, ChessPosition next) {
-        ChessPiece nextpiece = board.getPiece(next);
-        ChessPiece currentPiece = board.getPiece(current);
-        if (nextpiece == null){
-            return false;
-        } else if (nextpiece.getTeamColor() != currentPiece.getTeamColor()){
-            return true;
-        } else{
-            return false;
+        private Boolean EnemyMoves (ChessBoard board, ChessPosition current, ChessPosition next){
+            ChessPiece nextpiece = board.getPiece(next);
+            ChessPiece currentPiece = board.getPiece(current);
+            if (nextpiece == null) {
+                return false;
+            } else return nextpiece.getTeamColor() != currentPiece.getTeamColor();
         }
-    }
+
 }
+
 

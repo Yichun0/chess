@@ -25,7 +25,7 @@ public class RookMovementRule {
                 RookMoves.add(new ChessMove(startPosition, newPosition, null));
                 row = row + 1;
             } else if (currentPiece.getTeamColor() != newPiece.getTeamColor()) {
-                ChessPosition nextPosition = new ChessPosition(row + 1, column);
+                ChessPosition nextPosition = new ChessPosition(row, column);
                 RookMoves.add(new ChessMove(startPosition, nextPosition, null));
                 break;
                 // do I need to add this move to my RookMoves?
@@ -39,7 +39,7 @@ public class RookMovementRule {
         int row = startPosition.getRow() - 1;
         int column = startPosition.getColumn();
         // will this also get updated by the while loop?
-        while (row <= 8) {
+        while (row >= 1) {
             ChessPiece currentPiece = board.getPiece(startPosition);
             ChessPosition newPosition = new ChessPosition(row, column);
             ChessPiece newPiece = board.getPiece(newPosition);
@@ -47,7 +47,7 @@ public class RookMovementRule {
                 RookMoves.add(new ChessMove(startPosition, newPosition, null));
                 row = row - 1;
             } else if (currentPiece.getTeamColor() != newPiece.getTeamColor()) {
-                ChessPosition nextPosition = new ChessPosition(row - 1, column);
+                ChessPosition nextPosition = new ChessPosition(row, column);
                 RookMoves.add(new ChessMove(startPosition, nextPosition, null));
                 break;
                 // do I need to add this move to my RookMoves?
@@ -68,7 +68,7 @@ public class RookMovementRule {
                 RookMoves.add(new ChessMove(startPosition, newPosition, null));
                 column = column - 1;
             } else if (currentPiece.getTeamColor() != newPiece.getTeamColor()) {
-                ChessPosition nextPosition = new ChessPosition(column - 1, column);
+                ChessPosition nextPosition = new ChessPosition(row, column);
                 RookMoves.add(new ChessMove(startPosition, nextPosition, null));
                 break;
                 // do I need to add this move to my RookMoves?
@@ -89,7 +89,7 @@ public class RookMovementRule {
                 RookMoves.add(new ChessMove(startPosition, newPosition, null));
                 column = column + 1;
             } else if (currentPiece.getTeamColor() != newPiece.getTeamColor()) {
-                ChessPosition nextPosition = new ChessPosition(column + 1, column);
+                ChessPosition nextPosition = new ChessPosition(row, column);
                 RookMoves.add(new ChessMove(startPosition, nextPosition, null));
                 break;
                 // do I need to add this move to my RookMoves?

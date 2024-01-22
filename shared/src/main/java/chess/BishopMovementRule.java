@@ -21,13 +21,12 @@ public class BishopMovementRule {
             ChessPiece currentPiece = board.getPiece(startPosition);
             ChessPosition newPosition = new ChessPosition(row, column);
             ChessPiece newPiece = board.getPiece(newPosition);
-            if (board.getPiece(newPosition) == null) {
+            if (newPiece == null) {
                 BishopMoves.add(new ChessMove(startPosition, newPosition, null));
-                startPosition = newPosition;
                 row += 1;
                 column += 1;
             } else if (currentPiece.getTeamColor() != newPiece.getTeamColor()) {
-                ChessPosition nextPosition = new ChessPosition(row + 1, column + 1);
+                ChessPosition nextPosition = new ChessPosition(row, column);
                 BishopMoves.add(new ChessMove(startPosition, nextPosition, null));
                 break;
             } else {
@@ -46,11 +45,10 @@ public class BishopMovementRule {
             ChessPiece newPiece = board.getPiece(newPosition);
             if (board.getPiece(newPosition) == null) {
                 BishopMoves.add(new ChessMove(startPosition, newPosition, null));
-                startPosition = newPosition;
                 row -= 1;
                 column += 1;
             } else if (currentPiece.getTeamColor() != newPiece.getTeamColor()) {
-                ChessPosition nextPosition = new ChessPosition(row - 1, column + 1);
+                ChessPosition nextPosition = new ChessPosition(row, column);
                 BishopMoves.add(new ChessMove(startPosition, nextPosition, null));
                 break;
                 // do I need to add this move to my RookMoves?
@@ -70,11 +68,10 @@ public class BishopMovementRule {
             ChessPiece newPiece = board.getPiece(newPosition);
             if (board.getPiece(newPosition) == null) {
                 BishopMoves.add(new ChessMove(startPosition, newPosition, null));
-                startPosition = newPosition;
                 row -= 1;
                 column -= 1;
             } else if (currentPiece.getTeamColor() != newPiece.getTeamColor()) {
-                ChessPosition nextPosition = new ChessPosition(row - 1, column - 1);
+                ChessPosition nextPosition = new ChessPosition(row, column);
                 BishopMoves.add(new ChessMove(startPosition, nextPosition, null));
                 break;
                 // do I need to add this move to my RookMoves?
@@ -94,11 +91,10 @@ public class BishopMovementRule {
             ChessPiece newPiece = board.getPiece(newPosition);
             if (board.getPiece(newPosition) == null) {
                 BishopMoves.add(new ChessMove(startPosition, newPosition, null));
-                startPosition = newPosition;
                 row += 1;
                 column -= 1;
             } else if (currentPiece.getTeamColor() != newPiece.getTeamColor()) {
-                ChessPosition nextPosition = new ChessPosition(row + 1, column - 1);
+                ChessPosition nextPosition = new ChessPosition(row, column);
                 BishopMoves.add(new ChessMove(startPosition, nextPosition, null));
                 break;
                 // do I need to add this move to my RookMoves?
