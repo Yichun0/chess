@@ -97,7 +97,7 @@ public class ChessGame {
                 }
             }
         }
-        return null;
+        return currentPosition;
     }
 
     /**
