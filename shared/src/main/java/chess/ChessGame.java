@@ -90,13 +90,14 @@ public class ChessGame {
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
                 ChessPosition currentPosition = new ChessPosition(row, col);
-                if (board.getPiece(currentPosition).equals(ChessPiece.PieceType.KING)) {
+                if (board.getPiece(currentPosition) != null && board.getPiece(currentPosition).getPieceType() == ChessPiece.PieceType.KING) {
                     if (board.getPiece(currentPosition).getTeamColor() == teamColor) {
                         return currentPosition;
                     }
                 }
             }
         }
+        return null;
     }
 
     /**
