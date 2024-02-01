@@ -49,6 +49,8 @@ public class ChessGame {
      */
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
         throw new RuntimeException("Not implemented");
+        // take all the moves from ChessMoves and check whether the move will make your king in check
+        // check whether it's your turn or not
     }
 
     /**
@@ -90,14 +92,15 @@ public class ChessGame {
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
                 ChessPosition currentPosition = new ChessPosition(row, col);
-                if (board.getPiece(currentPosition) != null && board.getPiece(currentPosition).getPieceType() == ChessPiece.PieceType.KING) {
-                    if (board.getPiece(currentPosition).getTeamColor() == teamColor) {
+                ChessPiece currentPiece = board.getPiece(currentPosition);
+                if (currentPiece != null && board.getPiece(currentPosition).getPieceType() == ChessPiece.PieceType.KING) {
+                    if (currentPiece.getTeamColor() == teamColor) {
                         return currentPosition;
                     }
                 }
             }
         }
-        return currentPosition;
+        return null;
     }
 
     /**
@@ -107,7 +110,13 @@ public class ChessGame {
      * @return True if the specified team is in checkmate
      */
     public boolean isInCheckmate(TeamColor teamColor) {
-        throw new RuntimeException("Not implemented");
+        ChessPiece king = new ChessPiece(teamColor, ChessPiece.PieceType.KING);
+        if (!isInCheck(teamColor)) {
+            return false;
+        }
+        // check to see whether other piece will get the king out of danger
+        else if ()
+        return true;
     }
 
     /**

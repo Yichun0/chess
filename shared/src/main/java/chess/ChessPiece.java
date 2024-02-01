@@ -12,7 +12,7 @@ import java.util.Objects;
  */
 public class ChessPiece {
     private ChessPiece.PieceType type;
-    private ChessGame.TeamColor pieceColor;
+    public ChessGame.TeamColor pieceColor;
 
     public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
         this.type = type;
