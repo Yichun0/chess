@@ -71,18 +71,10 @@ public class ChessGame {
      */
     public boolean isInCheck(TeamColor teamColor) {
         ChessPosition kingPosition = getKingPosition(teamColor);
-        for (int row = 0; row < 8; row++) {
-            for (int col = 0; col < 8; col++) {
-                ChessPosition currentPosition = new ChessPosition(row, col);
-                ChessPiece currentPiece = board.getPiece(currentPosition);
-                if (currentPiece.getTeamColor() != teamColor) {
-                    Collection<ChessMove> pieceMoves = currentPiece.pieceMoves(board, currentPosition);
-                    for (ChessMove move:pieceMoves){
-                        if (move.getEndPosition() == kingPosition){
-                            return false;
-                        }
-                    }
-                }
+        Collection<ChessMove> pieceMoves = allOtherPieceMoves(teamColor);
+            for (ChessMove move:pieceMoves){
+                if (move.getEndPosition() == kingPosition){
+                    return false;
             }
         }
 
@@ -101,21 +93,51 @@ public class ChessGame {
             }
         }
         return null;
-    }
 
+    }
+    private Collection<ChessMove> allOtherPieceMoves(TeamColor teamcolor) {
+        Collection <ChessMove> allOtherPieceMoves = new HashSet<>();
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                ChessPosition currentPosition = new ChessPosition(row, col);
+                ChessPiece currentPiece = board.getPiece(currentPosition);
+                if (currentPiece.getTeamColor() != teamcolor) {
+                    Collection<ChessMove> pieceMoves = currentPiece.pieceMoves(board, currentPosition);
+                    allOtherPieceMoves.addAll(pieceMoves);
+                }
+            }
+        }
+        return allOtherPieceMoves;
+    }
     /**
      * Determines if the given team is in checkmate
      *
-     * @param teamColor which team to check for checkmate
+     * @param teamcolor which team to check for checkmate
      * @return True if the specified team is in checkmate
      */
-    public boolean isInCheckmate(TeamColor teamColor) {
-        ChessPiece king = new ChessPiece(teamColor, ChessPiece.PieceType.KING);
-        if (!isInCheck(teamColor)) {
+    public boolean isInCheckmate(TeamColor teamcolor) {
+        ChessPiece king = new ChessPiece(teamcolor, ChessPiece.PieceType.KING);
+        if (!isInCheck(teamcolor)) {
             return false;
         }
         // check to see whether other piece will get the king out of danger
-        else if ()
+        if (teamcolor == TeamColor.BLACK){
+            TeamColor otherTeam = TeamColor.WHITE;
+            Collection<ChessMove> otherPieceMoves = allOtherPieceMoves(TeamColor.WHITE);
+            for (ChessMove moves : otherPieceMoves){
+                if (!isInCheck(teamcolor)){
+                    return false;
+                }
+            }
+        } else if (teamcolor == TeamColor.WHITE){
+            TeamColor otherTeam = TeamColor.BLACK;
+            Collection<ChessMove> otherPieceMoves = allOtherPieceMoves(TeamColor.BLACK);
+            for (ChessMove moves : otherPieceMoves){
+                if (!isInCheck(teamcolor)){
+                    return false;
+                }
+            }
+        }
         return true;
     }
 
