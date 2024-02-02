@@ -1,5 +1,6 @@
 package chess;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -48,11 +49,27 @@ public class ChessGame {
      * startPosition
      */
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
-        throw new RuntimeException("Not implemented");
-        // take all the moves from ChessMoves and check whether the move will make your king in check
-        // check whether it's your turn or not
-    }
+        HashSet<ChessMove> validMoves = new HashSet<>();
+        ChessPiece currentPeice = board.getPiece(startPosition);
+        Collection<ChessMove> possibleMoves = currentPeice.pieceMoves(board,startPosition);
+        for (ChessMove move:possibleMoves){
 
+
+        }
+    }
+    private ChessBoard copiedBoard(ChessBoard board) {
+        ChessBoard copyBoard = new ChessBoard();
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                ChessPosition currentPosition = new ChessPosition(row,col);
+                ChessPiece cururentPiece = board.getPiece(currentPosition);
+                if (cururentPiece != null){
+                    copyBoard.addPiece(currentPosition,cururentPiece);
+                }
+            }
+        }
+        return copyBoard;
+    }
     /**
      * Makes a move in a chess game
      *
@@ -74,11 +91,11 @@ public class ChessGame {
         Collection<ChessMove> pieceMoves = allOtherPieceMoves(teamColor);
             for (ChessMove move:pieceMoves){
                 if (move.getEndPosition() == kingPosition){
-                    return false;
+                    return true;
             }
         }
 
-        return true;
+        return false;
     }
     private ChessPosition getKingPosition(TeamColor teamColor){
         for (int row = 0; row < 8; row++) {
@@ -96,12 +113,13 @@ public class ChessGame {
 
     }
     private Collection<ChessMove> allOtherPieceMoves(TeamColor teamcolor) {
+        // a collection with all the moves other than king on the other team
         Collection <ChessMove> allOtherPieceMoves = new HashSet<>();
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
                 ChessPosition currentPosition = new ChessPosition(row, col);
                 ChessPiece currentPiece = board.getPiece(currentPosition);
-                if (currentPiece.getTeamColor() != teamcolor) {
+                if (currentPiece.getTeamColor() != teamcolor && currentPiece.getPieceType() != ChessPiece.PieceType.KING) {
                     Collection<ChessMove> pieceMoves = currentPiece.pieceMoves(board, currentPosition);
                     allOtherPieceMoves.addAll(pieceMoves);
                 }
@@ -120,6 +138,17 @@ public class ChessGame {
         if (!isInCheck(teamcolor)) {
             return false;
         }
+        // block the piece
+        // all the move --> check king in check
+        // copy board --> array copyOf() --> valid == empty
+        // move the king
+        // kill the piece
+
+
+
+
+
+
         // check to see whether other piece will get the king out of danger
         if (teamcolor == TeamColor.BLACK){
             TeamColor otherTeam = TeamColor.WHITE;
@@ -149,6 +178,9 @@ public class ChessGame {
      * @return True if the specified team is in stalemate, otherwise false
      */
     public boolean isInStalemate(TeamColor teamColor) {
+        // every piece can't move and return true
+        // not in check
+        // no valid move for all pieces on the board
         return false;
     }
 
