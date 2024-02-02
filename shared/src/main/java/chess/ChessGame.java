@@ -13,6 +13,7 @@ import java.util.HashSet;
 public class ChessGame {
     ChessGame.TeamColor team;
     private ChessBoard board = new ChessBoard();
+    private ChessPiece[][] borad = new ChessPiece[8][8];
     public ChessGame() {
 
     }
@@ -51,11 +52,25 @@ public class ChessGame {
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
         HashSet<ChessMove> validMoves = new HashSet<>();
         ChessPiece currentPeice = board.getPiece(startPosition);
+        if (currentPeice == null){
+            return null;
+        }
         Collection<ChessMove> possibleMoves = currentPeice.pieceMoves(board,startPosition);
         for (ChessMove move:possibleMoves){
-
-
+            ChessPosition start = move.getStartPosition();
+            ChessPosition end = move.getEndPosition();
+            ChessBoard copyBoard = copiedBoard(board);
+            copyBoard.removePiece(start,currentPeice);
+            copyBoard.addPiece(end,currentPeice);
+            this.board = copyBoard;
+            if (!isInCheck(currentPeice.getTeamColor())){
+                if (currentPeice.pieceColor == team){
+                    validMoves.add(move);
+                }
+            }
+            this.board = board;
         }
+        return validMoves;
     }
     private ChessBoard copiedBoard(ChessBoard board) {
         ChessBoard copyBoard = new ChessBoard();
@@ -77,7 +92,16 @@ public class ChessGame {
      * @throws InvalidMoveException if move is invalid
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
-        throw new RuntimeException("Not implemented");
+        ChessPosition start = move.getStartPosition();
+        ChessPiece currentPiece = board.getPiece(start);
+        Collection<ChessMove> validMoves =  validMoves(start);
+        if (!validMoves.contains(move)){
+            throw new InvalidMoveException("Illegal Moves");
+        }
+        else{
+            // make the move on the board
+
+        }
     }
 
     /**
@@ -135,10 +159,8 @@ public class ChessGame {
      */
     public boolean isInCheckmate(TeamColor teamcolor) {
         ChessPiece king = new ChessPiece(teamcolor, ChessPiece.PieceType.KING);
-        if (!isInCheck(teamcolor)) {
-            return false;
-        }
         // block the piece
+        // if all valid moves
         // all the move --> check king in check
         // copy board --> array copyOf() --> valid == empty
         // move the king

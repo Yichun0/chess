@@ -24,9 +24,11 @@ public class ChessBoard {
         int col = position.getColumn();
         borad[row-1][col-1] = piece;
         // how to add to two d array?
-
-
-
+    }
+    public void removePiece(ChessPosition position, ChessPiece piece) {
+        int row = position.getRow();
+        int col = position.getColumn();
+        borad[row - 1][col - 1] = null;
     }
 
     /**
