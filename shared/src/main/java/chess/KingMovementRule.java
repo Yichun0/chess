@@ -26,7 +26,7 @@ public class KingMovementRule {
                     KingMoves.add(new ChessMove(startPosition, newPosition, null));
                 }
             } else {
-                break;
+                continue;
             }
 
         }

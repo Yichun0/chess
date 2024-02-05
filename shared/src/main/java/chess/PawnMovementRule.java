@@ -42,10 +42,10 @@ public class PawnMovementRule {
                 if (board.getPiece(upPosition) == null) {
                     PawnMoves.add(new ChessMove(startPosition, upPosition, null));
                 }
-                if (EnemyMoves(board, startPosition, upLeft)) {
+                if (col - 1 >= 1 && EnemyMoves(board, startPosition, upLeft)) {
                     PawnMoves.add(new ChessMove(startPosition, upLeft, null));
                 }
-                if (EnemyMoves(board, startPosition, upRight)) {
+                if (col + 1 <=8 && EnemyMoves(board, startPosition, upRight)) {
                     PawnMoves.add(new ChessMove(startPosition, upRight, null));
                 }
             }
@@ -87,10 +87,10 @@ public class PawnMovementRule {
                     if (board.getPiece(downPosition) == null) {
                         PawnMoves.add(new ChessMove(startPosition, downPosition, null));
                     }
-                    if (EnemyMoves(board, startPosition, downLeft)) {
+                    if (col -1 >= 1 && EnemyMoves(board, startPosition, downLeft)) {
                         PawnMoves.add(new ChessMove(startPosition, downLeft, null));
                     }
-                    if (EnemyMoves(board, startPosition, downRight)) {
+                    if (col + 1 <= 8 && EnemyMoves(board, startPosition, downRight)) {
                         PawnMoves.add(new ChessMove(startPosition, downRight, null));
                     }
                 }
