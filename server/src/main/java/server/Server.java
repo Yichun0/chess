@@ -1,5 +1,6 @@
 package server;
 
+import server.Handlers.ClearHandler;
 import spark.*;
 
 public class Server {
@@ -11,6 +12,8 @@ public class Server {
         Spark.port(8080);
 
         Spark.staticFiles.location("web");
+        ClearHandler clearHandler = new ClearHandler();
+        Spark.post("/db", clearHandler::handle);
 
         // Register your endpoints and handle exceptions here.
 
