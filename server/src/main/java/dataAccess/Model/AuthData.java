@@ -1,10 +1,10 @@
 package dataAccess.Model;
 
-public class AuthToken {
+public class AuthData {
     // constructor
     String username;
     String authToken;
-    public AuthToken(String username, String authToken){
+    public AuthData(String username, String authToken){
         this.username = username;
         this.authToken = authToken;
     }

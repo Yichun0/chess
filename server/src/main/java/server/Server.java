@@ -3,9 +3,12 @@ package server;
 import spark.*;
 
 public class Server {
+    public static void main(String[] args) {
+        new Server().run();
+    }
 
-    public int run(int desiredPort) {
-        Spark.port(desiredPort);
+    public int run() {
+        Spark.port(8080);
 
         Spark.staticFiles.location("web");
 
