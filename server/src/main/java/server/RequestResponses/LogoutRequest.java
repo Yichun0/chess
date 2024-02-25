@@ -1,6 +1,10 @@
 package server.RequestResponses;
 
 public class LogoutRequest {
+    private String authToken;
+    public LogoutRequest(String authToken){
+        this.authToken = authToken;
+    }
     public String getAuthToken() {
         return authToken;
     }
@@ -9,8 +13,4 @@ public class LogoutRequest {
         this.authToken = authToken;
     }
 
-    private String authToken;
-    public LogoutRequest(String authToken){
-        this.authToken = authToken;
-    }
 }

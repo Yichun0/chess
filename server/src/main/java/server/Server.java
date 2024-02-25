@@ -22,7 +22,7 @@ public class Server {
         Spark.post("/session", loginHandler);
 
         LogoutHandler logoutHandler = new LogoutHandler();
-        Spark.delete("/session", loginHandler);
+        Spark.delete("/session", logoutHandler);
 
         ListGameHandler listGameHandler = new ListGameHandler();
         Spark.get("/game", listGameHandler);

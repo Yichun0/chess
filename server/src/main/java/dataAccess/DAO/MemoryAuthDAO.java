@@ -19,19 +19,19 @@ public class MemoryAuthDAO implements AuthDAO {
     public void createAuthToken(AuthData authObjets) throws DataAccessException{
         AuthTokens.put(authObjets.getAuthToken(), authObjets);
     }
-    public void deleteAuthtoken(AuthData authObjects) throws DataAccessException{
-        if (AuthTokens.containsKey(authObjects.getAuthToken())){
-            String Username = authObjects.getUsername();
-            AuthTokens.remove(authObjects.getAuthToken(),Username);
-        }
-    }
 
-    public boolean readAuthToken(AuthData authObjects) throws DataAccessException{
+    @Override
+    public boolean findAuthToken(AuthData authObjects) throws DataAccessException {
         if (AuthTokens.containsKey(authObjects.getAuthToken())){
             return true;
-       }
+        }
         return false;
     }
+
+    public void deleteAuthtoken(AuthData authObjects) throws DataAccessException{
+            AuthTokens.remove(authObjects.getAuthToken(),authObjects);
+        }
+
 
     public static void setAuthTokens(Map<String, AuthData> authTokens) {
         MemoryAuthDAO.AuthTokens = authTokens;
