@@ -22,10 +22,7 @@ public class MemoryAuthDAO implements AuthDAO {
 
     @Override
     public boolean findAuthToken(AuthData authObjects) throws DataAccessException {
-        if (AuthTokens.containsKey(authObjects.getAuthToken())){
-            return true;
-        }
-        return false;
+        return AuthTokens.containsKey(authObjects.getAuthToken());
     }
 
     public void deleteAuthtoken(AuthData authObjects) throws DataAccessException{

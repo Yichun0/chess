@@ -7,16 +7,13 @@ import dataAccess.Model.AuthData;
 import server.RequestResponses.LogoutRequest;
 
 public class LogoutServices {
-    public void logoutServices(LogoutRequest logoutRequest) throws DataAccessException {
+    public void logoutServices(AuthData authData) throws DataAccessException {
         AuthDAO authDAO = new MemoryAuthDAO();
-        String authToken = logoutRequest.getAuthToken();
-        AuthData authData = new AuthData(null,authToken);
-        if(!authDAO.findAuthToken(authData)|| authToken == null){
+        if(!authDAO.findAuthToken(authData)){
             throw new DataAccessException("Error: unauthorized");
         }
-        else if (authDAO.findAuthToken(authData)){
+        else{
             authDAO.deleteAuthtoken(authData);
         }
-        throw new DataAccessException("Error: description");
     }
 }
