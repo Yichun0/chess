@@ -1,4 +1,7 @@
 package dataAccess.DAO;
 
-public class GameDAO {
+import dataAccess.DataAccessException;
+
+public interface GameDAO {
+    void clearGameDAO() throws DataAccessException;
 }

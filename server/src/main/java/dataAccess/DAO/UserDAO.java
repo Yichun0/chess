@@ -1,4 +1,12 @@
 package dataAccess.DAO;
 
-public class UserDAO {
+import dataAccess.DataAccessException;
+import dataAccess.Model.UserData;
+
+public interface UserDAO {
+    void createUser(UserData userData) throws DataAccessException;
+    boolean findUser(UserData userData) throws DataAccessException;
+    void clearUserDAO() throws DataAccessException;
+    void createPassword(UserData userData) throws DataAccessException;
+    boolean findPassword(UserData userData) throws DataAccessException;
 }

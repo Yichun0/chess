@@ -1,4 +1,4 @@
 package server.RequestResponses;
 
-public class LoginRespond {
+public record LoginRespond(String username, String authToken) {
 }

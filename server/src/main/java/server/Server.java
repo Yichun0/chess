@@ -1,21 +1,37 @@
 package server;
 
-import server.Handlers.ClearHandler;
+import server.Handlers.*;
 import spark.*;
 
 public class Server {
     public static void main(String[] args) {
-        new Server().run();
+        new Server().run(8080);
     }
 
-    public int run() {
-        Spark.port(8080);
+    public int run(int port) {
+        Spark.port(port);
 
         Spark.staticFiles.location("web");
         ClearHandler clearHandler = new ClearHandler();
-        Spark.post("/db", clearHandler::handle);
+        Spark.delete("/db", clearHandler);
 
-        // Register your endpoints and handle exceptions here.
+        RegisterHandler registerHandler = new RegisterHandler();
+        Spark.post("/user", registerHandler);
+
+        LoginHandler loginHandler = new LoginHandler();
+        Spark.post("/session", loginHandler);
+
+        LogoutHandler logoutHandler = new LogoutHandler();
+        Spark.delete("/session", loginHandler);
+
+        ListGameHandler listGameHandler = new ListGameHandler();
+        Spark.get("/game", listGameHandler);
+
+        CreateGameHandler createGameHandler = new CreateGameHandler();
+        Spark.post("/game",createGameHandler);
+
+        JoinGameHandler joinGameHandler = new JoinGameHandler();
+        Spark.put("/game", joinGameHandler);
 
         Spark.awaitInitialization();
         return Spark.port();

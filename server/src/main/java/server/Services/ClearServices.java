@@ -1,12 +1,17 @@
 package server.Services;
 
-import dataAccess.DAO.UserDAO;
-import dataAccess.Model.AuthData;
-import dataAccess.Model.GameData;
-import dataAccess.Model.UserData;
+import dataAccess.DAO.*;
+import dataAccess.DataAccessException;
+import server.RequestResponses.ClearResponse;
 
 public class ClearServices {
 
-
-
+   public void clearData() throws DataAccessException{
+        AuthDAO authDAO = new MemoryAuthDAO();
+        UserDAO userDAO = new MemoryUserDAO();
+        GameDAO gameDAO = new MemoryGameDAO();
+        userDAO.clearUserDAO();
+        gameDAO.clearGameDAO();
+        authDAO.clearAuthToken();
+   }
 }
