@@ -7,8 +7,8 @@ import dataAccess.DAO.UserDAO;
 import dataAccess.DataAccessException;
 import Model.AuthData;
 import Model.UserData;
-import server.RequestResponses.RegisterRequest;
-import server.RequestResponses.RegisterResult;
+import server.Requests.RegisterRequest;
+import server.Response.RegisterResult;
 
 import java.util.UUID;
 

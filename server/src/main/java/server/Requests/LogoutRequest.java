@@ -1,4 +1,4 @@
-package server.RequestResponses;
+package server.Requests;
 
 public class LogoutRequest {
     private String authToken;

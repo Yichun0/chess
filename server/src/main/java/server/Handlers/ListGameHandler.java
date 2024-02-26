@@ -2,8 +2,8 @@ package server.Handlers;
 
 import com.google.gson.Gson;
 import dataAccess.DataAccessException;
-import server.RequestResponses.ErrorResponse;
-import server.RequestResponses.ListGamesRespond;
+import server.Response.ErrorResponse;
+import server.Response.ListGamesRespond;
 import Service.ListGamesServices;
 import spark.Request;
 import spark.Response;

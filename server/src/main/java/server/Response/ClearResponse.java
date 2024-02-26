@@ -1,4 +1,4 @@
-package server.RequestResponses;
+package server.Response;
 
 public class ClearResponse {
     private String message;

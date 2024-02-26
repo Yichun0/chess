@@ -7,12 +7,12 @@ import dataAccess.DAO.MemoryGameDAO;
 import dataAccess.DataAccessException;
 import Model.AuthData;
 import Model.GameData;
-import server.RequestResponses.JoinGameRequest;
+import server.Requests.JoinGameRequest;
 
 import static java.util.Objects.isNull;
 
 public class JoinGameServices {
-    public void JoinGame(JoinGameRequest joinRequest, String authToken) throws DataAccessException {
+    public void joinGame(JoinGameRequest joinRequest, String authToken) throws DataAccessException {
         GameDAO gameDAO = new MemoryGameDAO();
         AuthDAO authDAO =  new MemoryAuthDAO();
         String playerColor = joinRequest.getPlayerColor();

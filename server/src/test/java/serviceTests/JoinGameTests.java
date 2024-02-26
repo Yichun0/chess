@@ -8,8 +8,8 @@ import dataAccess.DataAccessException;
 import Model.AuthData;
 import Model.GameData;
 import org.junit.jupiter.api.Test;
-import server.RequestResponses.ErrorResponse;
-import server.RequestResponses.JoinGameRequest;
+import server.Response.ErrorResponse;
+import server.Requests.JoinGameRequest;
 import Service.JoinGameServices;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

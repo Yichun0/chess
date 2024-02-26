@@ -1,9 +1,11 @@
-package chess;
+package MovementRules;
+
+import chess.*;
 
 import java.util.HashSet;
 
 public class PawnMovementRule {
-    public HashSet<ChessMove> PawnClass(ChessBoard board, ChessPosition startPosition) {
+    public HashSet<ChessMove> pawnClass(ChessBoard board, ChessPosition startPosition) {
         HashSet<ChessMove> PawnMoves = new HashSet<>();
         int row = startPosition.getRow();
         int col = startPosition.getColumn();
@@ -30,10 +32,10 @@ public class PawnMovementRule {
                 PawnMoves.add(new ChessMove(startPosition, upPosition, ChessPiece.PieceType.BISHOP));
                 PawnMoves.add(new ChessMove(startPosition, upPosition, ChessPiece.PieceType.ROOK));
                 PawnMoves.add(new ChessMove(startPosition, upPosition, ChessPiece.PieceType.KNIGHT));
-                if (EnemyMoves(board, startPosition, upLeft)) {
+                if (enemyMoves(board, startPosition, upLeft)) {
                     PawnMoves.add(new ChessMove(startPosition, upLeft, null));
                 }
-                if (EnemyMoves(board, startPosition, upRight)) {
+                if (enemyMoves(board, startPosition, upRight)) {
                     PawnMoves.add(new ChessMove(startPosition, upRight, null));
                 }
             }
@@ -42,10 +44,10 @@ public class PawnMovementRule {
                 if (board.getPiece(upPosition) == null) {
                     PawnMoves.add(new ChessMove(startPosition, upPosition, null));
                 }
-                if (col - 1 >= 1 && EnemyMoves(board, startPosition, upLeft)) {
+                if (col - 1 >= 1 && enemyMoves(board, startPosition, upLeft)) {
                     PawnMoves.add(new ChessMove(startPosition, upLeft, null));
                 }
-                if (col + 1 <=8 && EnemyMoves(board, startPosition, upRight)) {
+                if (col + 1 <=8 && enemyMoves(board, startPosition, upRight)) {
                     PawnMoves.add(new ChessMove(startPosition, upRight, null));
                 }
             }
@@ -65,13 +67,13 @@ public class PawnMovementRule {
                     }
                 } else if (downRow == 1) {
                     // add the moves to the collection
-                    if (EnemyMoves(board, startPosition, downLeft)) {
+                    if (enemyMoves(board, startPosition, downLeft)) {
                         PawnMoves.add(new ChessMove(startPosition, downLeft, ChessPiece.PieceType.QUEEN));
                         PawnMoves.add(new ChessMove(startPosition, downLeft, ChessPiece.PieceType.BISHOP));
                         PawnMoves.add(new ChessMove(startPosition, downLeft, ChessPiece.PieceType.ROOK));
                         PawnMoves.add(new ChessMove(startPosition, downLeft, ChessPiece.PieceType.KNIGHT));
                     }
-                    if (EnemyMoves(board, startPosition, downRight)) {
+                    if (enemyMoves(board, startPosition, downRight)) {
                         PawnMoves.add(new ChessMove(startPosition, downRight, ChessPiece.PieceType.QUEEN));
                         PawnMoves.add(new ChessMove(startPosition, downRight, ChessPiece.PieceType.BISHOP));
                         PawnMoves.add(new ChessMove(startPosition, downRight, ChessPiece.PieceType.ROOK));
@@ -87,10 +89,10 @@ public class PawnMovementRule {
                     if (board.getPiece(downPosition) == null) {
                         PawnMoves.add(new ChessMove(startPosition, downPosition, null));
                     }
-                    if (col -1 >= 1 && EnemyMoves(board, startPosition, downLeft)) {
+                    if (col -1 >= 1 && enemyMoves(board, startPosition, downLeft)) {
                         PawnMoves.add(new ChessMove(startPosition, downLeft, null));
                     }
-                    if (col + 1 <= 8 && EnemyMoves(board, startPosition, downRight)) {
+                    if (col + 1 <= 8 && enemyMoves(board, startPosition, downRight)) {
                         PawnMoves.add(new ChessMove(startPosition, downRight, null));
                     }
                 }
@@ -99,7 +101,7 @@ public class PawnMovementRule {
 
         return PawnMoves;
     }
-        private Boolean EnemyMoves (ChessBoard board, ChessPosition current, ChessPosition next){
+        private Boolean enemyMoves (ChessBoard board, ChessPosition current, ChessPosition next){
             ChessPiece nextpiece = board.getPiece(next);
             ChessPiece currentPiece = board.getPiece(current);
             if (nextpiece == null) {

@@ -1,9 +1,14 @@
-package chess;
+package MovementRules;
+
+import chess.ChessBoard;
+import chess.ChessMove;
+import chess.ChessPiece;
+import chess.ChessPosition;
 
 import java.util.HashSet;
 
 public class KnightMovementRule {
-    public HashSet<ChessMove> KnightClass(ChessBoard board, ChessPosition startPosition) {
+    public HashSet<ChessMove> knightClass(ChessBoard board, ChessPosition startPosition) {
         HashSet<ChessMove> KnightMoves = new HashSet<>();
         int[] rowPossibleMoves = {-1, -1, +1, +1, -2, -2, +2, +2};
         int[] colPossibleMoves = {+2, -2, +2, -2, +1, -1, +1, -1};

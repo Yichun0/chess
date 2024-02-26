@@ -7,8 +7,10 @@ import dataAccess.DAO.UserDAO;
 import dataAccess.DataAccessException;
 import Model.UserData;
 import org.junit.jupiter.api.Test;
-import server.RequestResponses.*;
+import server.Requests.*;
 import Service.LoginServices;
+import server.Response.ErrorResponse;
+import server.Response.LoginRespond;
 
 import static org.junit.jupiter.api.Assertions.*;
 

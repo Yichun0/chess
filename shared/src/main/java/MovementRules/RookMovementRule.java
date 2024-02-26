@@ -1,17 +1,22 @@
-package chess;
+package MovementRules;
+
+import chess.ChessBoard;
+import chess.ChessMove;
+import chess.ChessPiece;
+import chess.ChessPosition;
 
 import java.util.Collection;
 import java.util.HashSet;
 
 public class RookMovementRule {
-    private HashSet<ChessMove> RookMoves = new HashSet<>();
+    private HashSet<ChessMove> rookMoves = new HashSet<>();
 
-    public HashSet<ChessMove> RookMovement(ChessBoard board, ChessPosition startPosition) {
+    public HashSet<ChessMove> rookMovement(ChessBoard board, ChessPosition startPosition) {
         up(board, startPosition);
         down(board, startPosition);
         left(board, startPosition);
         right(board, startPosition);
-        return RookMoves;
+        return rookMoves;
     }
 
     private void up(ChessBoard board, ChessPosition startPosition) {
@@ -22,11 +27,11 @@ public class RookMovementRule {
             ChessPosition newPosition = new ChessPosition(row, column);
             ChessPiece newPiece = board.getPiece(newPosition);
             if (board.getPiece(newPosition) == null) {
-                RookMoves.add(new ChessMove(startPosition, newPosition, null));
+                rookMoves.add(new ChessMove(startPosition, newPosition, null));
                 row = row + 1;
             } else if (currentPiece.getTeamColor() != newPiece.getTeamColor()) {
                 ChessPosition nextPosition = new ChessPosition(row, column);
-                RookMoves.add(new ChessMove(startPosition, nextPosition, null));
+                rookMoves.add(new ChessMove(startPosition, nextPosition, null));
                 break;
                 // do I need to add this move to my RookMoves?
             } else {
@@ -44,11 +49,11 @@ public class RookMovementRule {
             ChessPosition newPosition = new ChessPosition(row, column);
             ChessPiece newPiece = board.getPiece(newPosition);
             if (board.getPiece(newPosition) == null) {
-                RookMoves.add(new ChessMove(startPosition, newPosition, null));
+                rookMoves.add(new ChessMove(startPosition, newPosition, null));
                 row = row - 1;
             } else if (currentPiece.getTeamColor() != newPiece.getTeamColor()) {
                 ChessPosition nextPosition = new ChessPosition(row, column);
-                RookMoves.add(new ChessMove(startPosition, nextPosition, null));
+                rookMoves.add(new ChessMove(startPosition, nextPosition, null));
                 break;
                 // do I need to add this move to my RookMoves?
             } else {
@@ -65,11 +70,11 @@ public class RookMovementRule {
             ChessPosition newPosition = new ChessPosition(row, column);
             ChessPiece newPiece = board.getPiece(newPosition);
             if (board.getPiece(newPosition) == null) {
-                RookMoves.add(new ChessMove(startPosition, newPosition, null));
+                rookMoves.add(new ChessMove(startPosition, newPosition, null));
                 column = column - 1;
             } else if (currentPiece.getTeamColor() != newPiece.getTeamColor()) {
                 ChessPosition nextPosition = new ChessPosition(row, column);
-                RookMoves.add(new ChessMove(startPosition, nextPosition, null));
+                rookMoves.add(new ChessMove(startPosition, nextPosition, null));
                 break;
                 // do I need to add this move to my RookMoves?
             } else {
@@ -86,11 +91,11 @@ public class RookMovementRule {
             ChessPosition newPosition = new ChessPosition(row, column);
             ChessPiece newPiece = board.getPiece(newPosition);
             if (board.getPiece(newPosition) == null) {
-                RookMoves.add(new ChessMove(startPosition, newPosition, null));
+                rookMoves.add(new ChessMove(startPosition, newPosition, null));
                 column = column + 1;
             } else if (currentPiece.getTeamColor() != newPiece.getTeamColor()) {
                 ChessPosition nextPosition = new ChessPosition(row, column);
-                RookMoves.add(new ChessMove(startPosition, nextPosition, null));
+                rookMoves.add(new ChessMove(startPosition, nextPosition, null));
                 break;
                 // do I need to add this move to my RookMoves?
             } else {

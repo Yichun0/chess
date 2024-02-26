@@ -1,5 +1,8 @@
 package chess;
 
+import MovementRules.KnightMovementRule;
+import MovementRules.*;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
@@ -82,24 +85,24 @@ public class ChessPiece {
 
         }
         if (this.type.equals(PieceType.QUEEN)) {
-            QueenMovementRule queenmoves = new QueenMovementRule();
-            allMoves = queenmoves.QueenChess(board, myPosition);
+            QueenMovementRule queenMoves = new QueenMovementRule();
+            allMoves = queenMoves.queenChess(board, myPosition);
         }
         if (this.type.equals(PieceType.BISHOP)) {
-            BishopMovementRule bishopmoves = new BishopMovementRule();
-            allMoves = bishopmoves.BishopMovement(board, myPosition);
+            BishopMovementRule bishopMoves = new BishopMovementRule();
+            allMoves = bishopMoves.bishopMovement(board, myPosition);
         }
         if (this.type.equals(PieceType.ROOK)) {
-            RookMovementRule rookmoves = new RookMovementRule();
-            allMoves = rookmoves.RookMovement(board, myPosition);
+            RookMovementRule rookMoves = new RookMovementRule();
+            allMoves = rookMoves.rookMovement(board, myPosition);
         }
         if (this.type.equals(PieceType.PAWN)) {
-            PawnMovementRule pawnmoves = new PawnMovementRule();
-            allMoves = pawnmoves.PawnClass(board, myPosition);
+            PawnMovementRule pawnMoves = new PawnMovementRule();
+            allMoves = pawnMoves.pawnClass(board, myPosition);
         }
         if (this.type.equals(PieceType.KNIGHT)) {
-            KnightMovementRule knightmoves = new KnightMovementRule();
-            allMoves = knightmoves.KnightClass(board, myPosition);
+            KnightMovementRule knightMoves = new KnightMovementRule();
+            allMoves = knightMoves.knightClass(board, myPosition);
         }
         return allMoves;
     }

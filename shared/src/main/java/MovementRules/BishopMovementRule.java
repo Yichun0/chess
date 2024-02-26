@@ -1,17 +1,22 @@
-package chess;
+package MovementRules;
+
+import chess.ChessBoard;
+import chess.ChessMove;
+import chess.ChessPiece;
+import chess.ChessPosition;
 
 import java.util.Collection;
 import java.util.HashSet;
 
 public class BishopMovementRule {
-    private HashSet<ChessMove> BishopMoves = new HashSet<>();
+    private HashSet<ChessMove> bishopMoves = new HashSet<>();
 
-    public HashSet<ChessMove> BishopMovement(ChessBoard board, ChessPosition startPosition) {
+    public HashSet<ChessMove> bishopMovement(ChessBoard board, ChessPosition startPosition) {
         upRight(board, startPosition);
         upLeft(board, startPosition);
         downLeft(board, startPosition);
         downRight(board, startPosition);
-        return BishopMoves;
+        return bishopMoves;
     }
 
     private void upRight(ChessBoard board, ChessPosition startPosition) {
@@ -22,12 +27,12 @@ public class BishopMovementRule {
             ChessPosition newPosition = new ChessPosition(row, column);
             ChessPiece newPiece = board.getPiece(newPosition);
             if (newPiece == null) {
-                BishopMoves.add(new ChessMove(startPosition, newPosition, null));
+                bishopMoves.add(new ChessMove(startPosition, newPosition, null));
                 row += 1;
                 column += 1;
             } else if (currentPiece.getTeamColor() != newPiece.getTeamColor()) {
                 ChessPosition nextPosition = new ChessPosition(row, column);
-                BishopMoves.add(new ChessMove(startPosition, nextPosition, null));
+                bishopMoves.add(new ChessMove(startPosition, nextPosition, null));
                 break;
             } else {
                 break;
@@ -44,12 +49,12 @@ public class BishopMovementRule {
             ChessPosition newPosition = new ChessPosition(row, column);
             ChessPiece newPiece = board.getPiece(newPosition);
             if (board.getPiece(newPosition) == null) {
-                BishopMoves.add(new ChessMove(startPosition, newPosition, null));
+                bishopMoves.add(new ChessMove(startPosition, newPosition, null));
                 row -= 1;
                 column += 1;
             } else if (currentPiece.getTeamColor() != newPiece.getTeamColor()) {
                 ChessPosition nextPosition = new ChessPosition(row, column);
-                BishopMoves.add(new ChessMove(startPosition, nextPosition, null));
+                bishopMoves.add(new ChessMove(startPosition, nextPosition, null));
                 break;
                 // do I need to add this move to my RookMoves?
             } else {
@@ -67,12 +72,12 @@ public class BishopMovementRule {
             ChessPosition newPosition = new ChessPosition(row, column);
             ChessPiece newPiece = board.getPiece(newPosition);
             if (board.getPiece(newPosition) == null) {
-                BishopMoves.add(new ChessMove(startPosition, newPosition, null));
+                bishopMoves.add(new ChessMove(startPosition, newPosition, null));
                 row -= 1;
                 column -= 1;
             } else if (currentPiece.getTeamColor() != newPiece.getTeamColor()) {
                 ChessPosition nextPosition = new ChessPosition(row, column);
-                BishopMoves.add(new ChessMove(startPosition, nextPosition, null));
+                bishopMoves.add(new ChessMove(startPosition, nextPosition, null));
                 break;
                 // do I need to add this move to my RookMoves?
             } else {
@@ -90,12 +95,12 @@ public class BishopMovementRule {
             ChessPosition newPosition = new ChessPosition(row, column);
             ChessPiece newPiece = board.getPiece(newPosition);
             if (board.getPiece(newPosition) == null) {
-                BishopMoves.add(new ChessMove(startPosition, newPosition, null));
+                bishopMoves.add(new ChessMove(startPosition, newPosition, null));
                 row += 1;
                 column -= 1;
             } else if (currentPiece.getTeamColor() != newPiece.getTeamColor()) {
                 ChessPosition nextPosition = new ChessPosition(row, column);
-                BishopMoves.add(new ChessMove(startPosition, nextPosition, null));
+                bishopMoves.add(new ChessMove(startPosition, nextPosition, null));
                 break;
                 // do I need to add this move to my RookMoves?
             } else {

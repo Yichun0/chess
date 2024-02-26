@@ -8,7 +8,7 @@ import dataAccess.DataAccessException;
 import Model.AuthData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import server.RequestResponses.LogoutRequest;
+import server.Requests.LogoutRequest;
 import Service.LogoutServices;
 
 import static org.junit.jupiter.api.Assertions.*;

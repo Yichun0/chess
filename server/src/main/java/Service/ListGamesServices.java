@@ -7,7 +7,7 @@ import dataAccess.DAO.MemoryGameDAO;
 import dataAccess.DataAccessException;
 import Model.AuthData;
 import Model.GameData;
-import server.RequestResponses.ListGamesRespond;
+import server.Response.ListGamesRespond;
 
 import java.util.Collection;
 

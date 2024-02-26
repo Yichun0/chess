@@ -2,9 +2,9 @@ package server.Handlers;
 
 import com.google.gson.Gson;
 import dataAccess.DataAccessException;
-import server.RequestResponses.ErrorResponse;
-import server.RequestResponses.RegisterRequest;
-import server.RequestResponses.RegisterResult;
+import server.Response.ErrorResponse;
+import server.Requests.RegisterRequest;
+import server.Response.RegisterResult;
 import Service.RegisterServices;
 import spark.Request;
 import spark.Response;

@@ -6,9 +6,9 @@ import dataAccess.DAO.MemoryUserDAO;
 import dataAccess.DAO.UserDAO;
 import dataAccess.DataAccessException;
 import org.junit.jupiter.api.Test;
-import server.RequestResponses.ErrorResponse;
-import server.RequestResponses.RegisterRequest;
-import server.RequestResponses.RegisterResult;
+import server.Response.ErrorResponse;
+import server.Requests.RegisterRequest;
+import server.Response.RegisterResult;
 import Service.RegisterServices;
 
 import static org.junit.jupiter.api.Assertions.*;

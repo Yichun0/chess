@@ -1,4 +1,9 @@
-package chess;
+package MovementRules;
+
+import chess.ChessBoard;
+import chess.ChessMove;
+import chess.ChessPiece;
+import chess.ChessPosition;
 
 import java.util.HashSet;
 import java.util.Set;

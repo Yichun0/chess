@@ -7,8 +7,8 @@ import dataAccess.DAO.UserDAO;
 import dataAccess.DataAccessException;
 import Model.AuthData;
 import Model.UserData;
-import server.RequestResponses.LoginRequest;
-import server.RequestResponses.LoginRespond;
+import server.Requests.LoginRequest;
+import server.Response.LoginRespond;
 
 import java.util.UUID;
 
