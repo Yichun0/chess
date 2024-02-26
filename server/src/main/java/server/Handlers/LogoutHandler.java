@@ -30,7 +30,9 @@ public class LogoutHandler implements Route {
         catch (DataAccessException e){
             Gson gson = new Gson();
             response.status(401);
-            return gson.toJson(new ErrorResponse(e.getMessage()));
+            ErrorResponse errorResponse = new  ErrorResponse(e.getMessage());
+            response.body(gson.toJson(errorResponse));
+            return gson.toJson(errorResponse);
         }
     }
 }
