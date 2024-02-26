@@ -9,21 +9,28 @@ import java.util.HashSet;
 import java.util.Map;
 
 public class MemoryGameDAO implements GameDAO{
-    public static Map<String, GameData> gameDatas = new HashMap<>();
+    public static Map<Integer, GameData> gameDatas = new HashMap<>();
     public void clearGameDAO() throws DataAccessException {
         gameDatas.clear();
     }
 
     @Override
     public void createGame(GameData gameData) throws DataAccessException {
-       gameDatas.put(gameData.getGameName(), gameData);
+       gameDatas.put(gameData.getGameID(), gameData);
     }
 
-    public boolean findGame(String gameName) throws DataAccessException{
-        GameData game = new GameData(0,null, null, gameName, null);
-        return gameDatas.containsKey(game.getGameName());
+    public boolean findGame(String gameName, int gameID) throws DataAccessException{
+        GameData game = new GameData(gameID,null, null, gameName, null);
+        return gameDatas.containsKey(gameID);
     }
 
+    public GameData getGame(int gameID) throws DataAccessException{
+        GameData game = gameDatas.get(gameID);
+        if (game == null){
+            throw new DataAccessException("Error: bad request");
+        }
+        return game;
+    }
     public Collection<GameData> listGame(){
         return gameDatas.values();
     }

@@ -18,6 +18,7 @@ public class MemoryAuthDAO implements AuthDAO {
 
     public void createAuthToken(AuthData authObjets) throws DataAccessException{
         AuthTokens.put(authObjets.getAuthToken(), authObjets);
+
     }
 
     @Override
@@ -31,9 +32,10 @@ public class MemoryAuthDAO implements AuthDAO {
         }
             AuthTokens.remove(authObjects.getAuthToken());
         }
-
-
-    public static void setAuthTokens(Map<String, AuthData> authTokens) {
-        MemoryAuthDAO.AuthTokens = authTokens;
-    }
+    public String getUsername(AuthData authData) throws DataAccessException{
+        if (!findAuthToken(authData)){
+            throw new DataAccessException("Error: unauthorized");
+        }
+            return AuthTokens.get(authData.getAuthToken()).getUsername();
+        }
 }

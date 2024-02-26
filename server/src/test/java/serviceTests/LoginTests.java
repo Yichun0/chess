@@ -1,4 +1,42 @@
 package serviceTests;
 
+import dataAccess.DAO.AuthDAO;
+import dataAccess.DAO.MemoryAuthDAO;
+import dataAccess.DAO.MemoryUserDAO;
+import dataAccess.DAO.UserDAO;
+import dataAccess.DataAccessException;
+import dataAccess.Model.UserData;
+import org.junit.jupiter.api.Test;
+import server.RequestResponses.*;
+import server.Services.LoginServices;
+import server.Services.RegisterServices;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 public class LoginTests {
+    @Test
+    public void positiveTest() throws DataAccessException {
+        UserDAO userDAO = new MemoryUserDAO();
+        userDAO.createUser(new UserData("username", "password", "email"));
+        LoginServices loginService = new LoginServices();
+        LoginRequest request = new LoginRequest("username", "password");
+        LoginRespond result = loginService.loginUser(request);
+        assertEquals("username", result.username());
+        assertNotNull(result.authToken());
+    }
+
+    @Test
+    public void negativeTest() throws DataAccessException {
+        UserDAO userDAO = new MemoryUserDAO();
+        AuthDAO authDAO = new MemoryAuthDAO();
+        LoginServices services = new LoginServices();
+        try {
+            userDAO.createUser(new UserData("username", "password", "email"));
+            LoginRequest request = new LoginRequest("username", null );
+            LoginRespond result = services.loginUser(request);
+            assertNotNull(result.authToken());
+        } catch (DataAccessException exception) {
+            assertEquals(new ErrorResponse("Error: unauthorized"), new ErrorResponse(exception.getMessage()),"Error: unauthorized");
+        }
+    }
 }
