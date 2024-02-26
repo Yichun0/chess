@@ -1,21 +1,13 @@
 package server.Handlers;
 
 import com.google.gson.Gson;
-import dataAccess.DAO.AuthDAO;
-import dataAccess.DAO.MemoryAuthDAO;
 import dataAccess.DataAccessException;
-import dataAccess.Model.AuthData;
+import Model.AuthData;
 import server.RequestResponses.ErrorResponse;
-import server.RequestResponses.LoginRequest;
-import server.RequestResponses.LogoutRequest;
-import server.Services.ClearServices;
-import server.Services.LoginServices;
-import server.Services.LogoutServices;
+import Service.LogoutServices;
 import spark.Request;
 import spark.Response;
 import spark.Route;
-
-import java.util.UUID;
 
 public class LogoutHandler implements Route {
     @Override

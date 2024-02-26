@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import server.RequestResponses.ErrorResponse;
 import server.RequestResponses.RegisterRequest;
 import server.RequestResponses.RegisterResult;
-import server.Services.RegisterServices;
+import Service.RegisterServices;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertNull;

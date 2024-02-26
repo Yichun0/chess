@@ -5,18 +5,12 @@ import dataAccess.DAO.MemoryAuthDAO;
 import dataAccess.DAO.MemoryUserDAO;
 import dataAccess.DAO.UserDAO;
 import dataAccess.DataAccessException;
-import dataAccess.Model.AuthData;
-import dataAccess.Model.UserData;
+import Model.AuthData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import server.RequestResponses.ErrorResponse;
-import server.RequestResponses.LoginRequest;
-import server.RequestResponses.LoginRespond;
 import server.RequestResponses.LogoutRequest;
-import server.Services.LoginServices;
-import server.Services.LogoutServices;
+import Service.LogoutServices;
 
-import static java.util.Objects.isNull;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class LogoutTests {

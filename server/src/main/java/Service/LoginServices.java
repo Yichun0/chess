@@ -1,15 +1,14 @@
-package server.Services;
+package Service;
 
 import dataAccess.DAO.AuthDAO;
 import dataAccess.DAO.MemoryAuthDAO;
 import dataAccess.DAO.MemoryUserDAO;
 import dataAccess.DAO.UserDAO;
 import dataAccess.DataAccessException;
-import dataAccess.Model.AuthData;
-import dataAccess.Model.UserData;
+import Model.AuthData;
+import Model.UserData;
 import server.RequestResponses.LoginRequest;
 import server.RequestResponses.LoginRespond;
-import server.RequestResponses.RegisterRequest;
 
 import java.util.UUID;
 
@@ -26,7 +25,7 @@ public class LoginServices {
             String authToken = UUID.randomUUID().toString();
             AuthData authData = new AuthData(username, authToken);
             authDAO.createAuthToken(authData);
-            return new LoginRespond(username, authToken);
+            return new LoginRespond(username,authToken);
         }
         throw new DataAccessException("Error: description");
     }

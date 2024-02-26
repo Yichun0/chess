@@ -1,12 +1,12 @@
-package server.Services;
+package Service;
 
 import dataAccess.DAO.AuthDAO;
 import dataAccess.DAO.MemoryAuthDAO;
 import dataAccess.DAO.MemoryUserDAO;
 import dataAccess.DAO.UserDAO;
 import dataAccess.DataAccessException;
-import dataAccess.Model.AuthData;
-import dataAccess.Model.UserData;
+import Model.AuthData;
+import Model.UserData;
 import server.RequestResponses.RegisterRequest;
 import server.RequestResponses.RegisterResult;
 

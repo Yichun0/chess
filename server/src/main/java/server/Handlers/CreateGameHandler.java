@@ -1,16 +1,12 @@
 package server.Handlers;
 
 import com.google.gson.Gson;
-import dataAccess.DAO.GameDAO;
-import dataAccess.DAO.MemoryGameDAO;
 import dataAccess.DataAccessException;
-import dataAccess.Model.AuthData;
-import dataAccess.Model.GameData;
+import Model.AuthData;
 import server.RequestResponses.CreateGameRequest;
 import server.RequestResponses.CreateGameRespond;
 import server.RequestResponses.ErrorResponse;
-import server.RequestResponses.LoginRequest;
-import server.Services.CreateGameServices;
+import Service.CreateGameServices;
 import spark.Request;
 import spark.Response;
 import spark.Route;

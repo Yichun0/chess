@@ -2,11 +2,9 @@ package server.Handlers;
 
 import com.google.gson.Gson;
 import dataAccess.DataAccessException;
-import dataAccess.Model.AuthData;
 import server.RequestResponses.ErrorResponse;
 import server.RequestResponses.JoinGameRequest;
-import server.RequestResponses.LoginRequest;
-import server.Services.JoinGameServices;
+import Service.JoinGameServices;
 import spark.Request;
 import spark.Response;
 import spark.Route;

@@ -5,15 +5,12 @@ import dataAccess.DAO.GameDAO;
 import dataAccess.DAO.MemoryAuthDAO;
 import dataAccess.DAO.MemoryGameDAO;
 import dataAccess.DataAccessException;
-import dataAccess.Model.AuthData;
-import org.junit.jupiter.api.Assertions;
+import Model.AuthData;
 import org.junit.jupiter.api.Test;
 import server.RequestResponses.CreateGameRequest;
 import server.RequestResponses.CreateGameRespond;
 import server.RequestResponses.ErrorResponse;
-import server.Services.CreateGameServices;
-
-import java.sql.SQLException;
+import Service.CreateGameServices;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;

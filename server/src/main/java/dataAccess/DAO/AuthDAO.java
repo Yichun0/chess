@@ -1,7 +1,7 @@
 package dataAccess.DAO;
 
 import dataAccess.DataAccessException;
-import dataAccess.Model.AuthData;
+import Model.AuthData;
 
 public interface AuthDAO {
     boolean findAuthToken(AuthData authObjects) throws DataAccessException;

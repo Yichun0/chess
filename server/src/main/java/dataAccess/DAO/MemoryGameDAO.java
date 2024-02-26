@@ -1,11 +1,10 @@
 package dataAccess.DAO;
 
 import dataAccess.DataAccessException;
-import dataAccess.Model.GameData;
+import Model.GameData;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
 public class MemoryGameDAO implements GameDAO{

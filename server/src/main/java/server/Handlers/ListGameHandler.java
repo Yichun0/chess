@@ -2,11 +2,9 @@ package server.Handlers;
 
 import com.google.gson.Gson;
 import dataAccess.DataAccessException;
-import dataAccess.Model.AuthData;
-import server.RequestResponses.CreateGameRequest;
 import server.RequestResponses.ErrorResponse;
 import server.RequestResponses.ListGamesRespond;
-import server.Services.ListGamesServices;
+import Service.ListGamesServices;
 import spark.Request;
 import spark.Response;
 import spark.Route;

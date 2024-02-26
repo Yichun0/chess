@@ -1,9 +1,7 @@
 package server.Handlers;
 
-import com.google.gson.Gson;
 import dataAccess.DataAccessException;
-import server.RequestResponses.ClearResponse;
-import server.Services.ClearServices;
+import Service.ClearServices;
 import spark.Request;
 import spark.Response;
 import spark.Route;

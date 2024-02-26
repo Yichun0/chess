@@ -1,4 +1,4 @@
-package dataAccess.Model;
+package Model;
 
 public class UserData {
     public String Username;

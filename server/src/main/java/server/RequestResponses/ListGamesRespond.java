@@ -1,6 +1,6 @@
 package server.RequestResponses;
 
-import dataAccess.Model.GameData;
+import Model.GameData;
 
 import java.util.Collection;
 

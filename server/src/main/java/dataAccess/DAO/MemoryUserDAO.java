@@ -1,7 +1,7 @@
 package dataAccess.DAO;
 
 import dataAccess.DataAccessException;
-import dataAccess.Model.UserData;
+import Model.UserData;
 
 import java.util.HashMap;
 import java.util.Map;

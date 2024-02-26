@@ -1,4 +1,4 @@
-package server.Services;
+package Service;
 
 import chess.ChessGame;
 import dataAccess.DAO.AuthDAO;
@@ -6,13 +6,10 @@ import dataAccess.DAO.GameDAO;
 import dataAccess.DAO.MemoryAuthDAO;
 import dataAccess.DAO.MemoryGameDAO;
 import dataAccess.DataAccessException;
-import dataAccess.Model.AuthData;
-import dataAccess.Model.GameData;
+import Model.AuthData;
+import Model.GameData;
 import server.RequestResponses.CreateGameRequest;
 import server.RequestResponses.CreateGameRespond;
-
-import java.util.Collection;
-import java.util.UUID;
 
 public class CreateGameServices {
     public CreateGameRespond createGame(CreateGameRequest gameRequest, AuthData authToken) throws DataAccessException {

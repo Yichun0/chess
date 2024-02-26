@@ -1,9 +1,8 @@
 package dataAccess.DAO;
 
 import dataAccess.DataAccessException;
-import dataAccess.Model.AuthData;
+import Model.AuthData;
 
-import javax.xml.crypto.Data;
 import java.util.HashMap;
 import java.util.Map;
 

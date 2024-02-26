@@ -1,12 +1,12 @@
-package server.Services;
+package Service;
 
 import dataAccess.DAO.AuthDAO;
 import dataAccess.DAO.GameDAO;
 import dataAccess.DAO.MemoryAuthDAO;
 import dataAccess.DAO.MemoryGameDAO;
 import dataAccess.DataAccessException;
-import dataAccess.Model.AuthData;
-import dataAccess.Model.GameData;
+import Model.AuthData;
+import Model.GameData;
 import server.RequestResponses.ListGamesRespond;
 
 import java.util.Collection;

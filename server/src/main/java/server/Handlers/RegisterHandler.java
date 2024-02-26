@@ -5,7 +5,7 @@ import dataAccess.DataAccessException;
 import server.RequestResponses.ErrorResponse;
 import server.RequestResponses.RegisterRequest;
 import server.RequestResponses.RegisterResult;
-import server.Services.RegisterServices;
+import Service.RegisterServices;
 import spark.Request;
 import spark.Response;
 import spark.Route;

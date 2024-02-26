@@ -4,14 +4,10 @@ import dataAccess.DAO.AuthDAO;
 import dataAccess.DAO.MemoryAuthDAO;
 import dataAccess.DAO.MemoryUserDAO;
 import dataAccess.DAO.UserDAO;
-import dataAccess.Model.AuthData;
+import Model.AuthData;
 import org.junit.jupiter.api.Test;
 import server.Handlers.ClearHandler;
-import server.RequestResponses.ClearResponse;
-import server.RequestResponses.RegisterRequest;
-import server.RequestResponses.RegisterResult;
-import server.Services.ClearServices;
-import server.Services.RegisterServices;
+import Service.ClearServices;
 
 import static org.junit.jupiter.api.Assertions.*;
 

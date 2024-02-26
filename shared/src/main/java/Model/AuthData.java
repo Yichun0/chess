@@ -1,4 +1,4 @@
-package dataAccess.Model;
+package Model;
     public class AuthData {
         // constructor
         String username;

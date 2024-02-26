@@ -1,8 +1,7 @@
-package server.Services;
+package Service;
 
 import dataAccess.DAO.*;
 import dataAccess.DataAccessException;
-import server.RequestResponses.ClearResponse;
 
 public class ClearServices {
 
