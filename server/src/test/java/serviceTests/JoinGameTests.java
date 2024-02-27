@@ -25,7 +25,7 @@ public class JoinGameTests {
         JoinGameRequest joinGameRequest = new JoinGameRequest("WHITE", 1);
         GameData newGame = new GameData(1, null, null, "game", null);
         gameDAO.createGame(newGame);
-        joinGameService.JoinGame(joinGameRequest, authData.getAuthToken());
+        joinGameService.joinGame(joinGameRequest, authData.getAuthToken());
         assertEquals("username",authDAO.getUsername(authData));
 
     }
@@ -40,7 +40,7 @@ public class JoinGameTests {
         GameData newGame = new GameData(1, null, null, "game", null);
         gameDAO.createGame(newGame);
         try{
-            joinGameService.JoinGame(joinGameRequest, "wrongAuthToken");
+            joinGameService.joinGame(joinGameRequest, "wrongAuthToken");
         } catch (DataAccessException exception){
             assertEquals(new ErrorResponse("Error: unauthorized"), new ErrorResponse(exception.getMessage()));
         }
