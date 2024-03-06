@@ -1,9 +1,6 @@
 package serviceTests;
 
-import dataAccess.DAO.AuthDAO;
-import dataAccess.DAO.MemoryAuthDAO;
-import dataAccess.DAO.MemoryUserDAO;
-import dataAccess.DAO.UserDAO;
+import dataAccess.DAO.*;
 import dataAccess.DataAccessException;
 import Model.UserData;
 import org.junit.jupiter.api.Test;
@@ -17,10 +14,9 @@ import static org.junit.jupiter.api.Assertions.*;
 public class LoginTests {
     @Test
     public void positiveTest() throws DataAccessException {
-        UserDAO userDAO = new MemoryUserDAO();
+        UserDAO userDAO = new SQLUserDAO();
         UserData newUser = new UserData("username", "password", "email");
         userDAO.createUser(newUser);
-        userDAO.createPassword(newUser);
         LoginServices loginService = new LoginServices();
         LoginRequest request = new LoginRequest("username", "password");
         LoginRespond result = loginService.loginUser(request);

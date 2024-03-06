@@ -25,9 +25,50 @@ public class DatabaseManager {
                 var host = props.getProperty("db.host");
                 var port = Integer.parseInt(props.getProperty("db.port"));
                 connectionUrl = String.format("jdbc:mysql://%s:%d", host, port);
+                createDatabase();
+                createTables();
             }
         } catch (Exception ex) {
             throw new RuntimeException("unable to process db.properties. " + ex.getMessage());
+        }
+    }
+    static public String[] Tables = {
+            """
+            CREATE TABLE IF NOT EXISTS userTable (
+                          `username` varchar(256) NOT NULL,
+                          `password` String NOT NULL,
+                          `email` varchar(256) NOT NULL,
+                          PRIMARY KEY (`username`),
+                        )
+            """,
+            """
+             CREATE TABLE IF NOT EXISTS authTable (
+                          `authToken` String NOT NULL,
+                          `username` varchar(256) NOT NULL,
+                           PRIMARY KEY (`authToken`),
+                        )
+            """,
+            """
+            CREATE TABLE IF NOT EXISTS gameTable (
+                          `gameID` int NOT NULL AUTO_INCREMENT,
+                          `blackUsername` String NOT NULL,
+                          `whiteUsername` String NOT NULL,
+                          `gameName` String NOT NULL,
+                          PRIMARY KEY (`gameID`),
+                        )
+            """
+
+    };
+    static private void createTables() throws DataAccessException {
+        DatabaseManager.createDatabase();
+        try (var conn = DatabaseManager.getConnection()) {
+            for (var statement : Tables) {
+                try (var preparedStatement = conn.prepareStatement(statement)) {
+                    preparedStatement.executeUpdate();
+                }
+            }
+        } catch (SQLException ex) {
+            throw new DataAccessException(ex.getMessage());
         }
     }
 

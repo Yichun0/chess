@@ -1,9 +1,6 @@
 package serviceTests;
 
-import dataAccess.DAO.AuthDAO;
-import dataAccess.DAO.MemoryAuthDAO;
-import dataAccess.DAO.MemoryUserDAO;
-import dataAccess.DAO.UserDAO;
+import dataAccess.DAO.*;
 import dataAccess.DataAccessException;
 import org.junit.jupiter.api.Test;
 import server.Response.ErrorResponse;
@@ -17,8 +14,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 public class RegisterTests {
     @Test
     public void positiveTest() throws Exception {
-        UserDAO userDAO = new MemoryUserDAO();
-        AuthDAO authDAO = new MemoryAuthDAO();
+        UserDAO userDAO = new SQLUserDAO();
+        AuthDAO authDAO = new SQLAuthDao();
         RegisterServices services = new RegisterServices();
         RegisterRequest request = new RegisterRequest("username", "password", "email");
         RegisterResult result = services.registerUser(request);

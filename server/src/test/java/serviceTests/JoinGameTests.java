@@ -1,9 +1,6 @@
 package serviceTests;
 
-import dataAccess.DAO.AuthDAO;
-import dataAccess.DAO.GameDAO;
-import dataAccess.DAO.MemoryAuthDAO;
-import dataAccess.DAO.MemoryGameDAO;
+import dataAccess.DAO.*;
 import dataAccess.DataAccessException;
 import Model.AuthData;
 import Model.GameData;
@@ -18,7 +15,7 @@ public class JoinGameTests {
     @Test
     public void positiveTest() throws DataAccessException {
         GameDAO gameDAO = new MemoryGameDAO();
-        AuthDAO authDAO = new MemoryAuthDAO();
+        AuthDAO authDAO = new SQLAuthDao();
         AuthData authData = new AuthData("username","authToken");
         authDAO.createAuthToken(authData);
         JoinGameServices joinGameService = new JoinGameServices();
@@ -32,7 +29,7 @@ public class JoinGameTests {
     @Test
     public void negativeTest() throws DataAccessException{
         GameDAO gameDAO = new MemoryGameDAO();
-        AuthDAO authDAO = new MemoryAuthDAO();
+        AuthDAO authDAO = new SQLAuthDao();
         AuthData authData = new AuthData("username","authToken");
         authDAO.createAuthToken(authData);
         JoinGameServices joinGameService = new JoinGameServices();

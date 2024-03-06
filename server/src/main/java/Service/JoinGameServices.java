@@ -1,9 +1,6 @@
 package Service;
 
-import dataAccess.DAO.AuthDAO;
-import dataAccess.DAO.GameDAO;
-import dataAccess.DAO.MemoryAuthDAO;
-import dataAccess.DAO.MemoryGameDAO;
+import dataAccess.DAO.*;
 import dataAccess.DataAccessException;
 import Model.AuthData;
 import Model.GameData;
@@ -13,8 +10,8 @@ import static java.util.Objects.isNull;
 
 public class JoinGameServices {
     public void joinGame(JoinGameRequest joinRequest, String authToken) throws DataAccessException {
-        GameDAO gameDAO = new MemoryGameDAO();
-        AuthDAO authDAO =  new MemoryAuthDAO();
+        GameDAO gameDAO = new SQLGameDAO();
+        AuthDAO authDAO =  new SQLAuthDao();
         String playerColor = joinRequest.getPlayerColor();
         int gameID = joinRequest.getGameID();
         try {

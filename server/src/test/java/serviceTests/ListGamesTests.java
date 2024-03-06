@@ -1,10 +1,7 @@
 package serviceTests;
 
+import dataAccess.DAO.*;
 import Service.ClearServices;
-import dataAccess.DAO.AuthDAO;
-import dataAccess.DAO.GameDAO;
-import dataAccess.DAO.MemoryAuthDAO;
-import dataAccess.DAO.MemoryGameDAO;
 import dataAccess.DataAccessException;
 import Model.AuthData;
 import Model.GameData;
@@ -13,17 +10,20 @@ import server.Requests.CreateGameRequest;
 import server.Response.ErrorResponse;
 import Service.CreateGameServices;
 
+import java.sql.SQLException;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ListGamesTests {
     @Test
-    public void postitiveTest() throws DataAccessException {
+    public void postitiveTest() throws DataAccessException, SQLException {
+        UserDAO userDAO = new MemoryUserDAO();
+        AuthDAO authDAO = new SQLAuthDao();
+        GameDAO gameDAO = new MemoryGameDAO();
         ClearServices clear = new ClearServices();
         clear.clearData();
-        AuthDAO testAuthDAO = new MemoryAuthDAO();
-        GameDAO gameDAO = new MemoryGameDAO();
         AuthData authToken = new AuthData("username", "testAuth");
-        testAuthDAO.createAuthToken(authToken);
+        authDAO.createAuthToken(authToken);
         GameData game1 = new GameData(1234,null,null,"Game",null);
         GameData game2 = new GameData(2234,null,null,"Game2",null);
         gameDAO.createGame(game1);
@@ -32,8 +32,7 @@ public class ListGamesTests {
     }
     @Test
     public void negatitiveTest() throws DataAccessException{
-        AuthDAO testAuthDAO = new MemoryAuthDAO();
-        GameDAO gameDAO = new MemoryGameDAO();
+        AuthDAO testAuthDAO = new SQLAuthDao();
         CreateGameServices createGameService = new CreateGameServices();
         AuthData authToken = new AuthData("username", "testAuth");
         testAuthDAO.createAuthToken(authToken);

@@ -3,14 +3,16 @@ package Service;
 import dataAccess.DAO.*;
 import dataAccess.DataAccessException;
 
+import java.sql.SQLException;
+
 public class ClearServices {
 
-   public void clearData() throws DataAccessException{
-        AuthDAO authDAO = new MemoryAuthDAO();
-        UserDAO userDAO = new MemoryUserDAO();
-        GameDAO gameDAO = new MemoryGameDAO();
+    public void clearData() throws DataAccessException, SQLException {
+        AuthDAO authDAO = new SQLAuthDao();
+        UserDAO userDAO = new SQLUserDAO();
+        GameDAO gameDAO = new SQLGameDAO();
         userDAO.clearUserDAO();
         gameDAO.clearGameDAO();
         authDAO.clearAuthToken();
-   }
+    }
 }

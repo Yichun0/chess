@@ -23,15 +23,6 @@ public class MemoryUserDAO implements UserDAO{
         }
         return false;
     }
-    public void createPassword(UserData userData){
-        userDAO.put(userData.getPassword(),userData);
-    }
-    public boolean findPassword(UserData userData) {
-        if (userDAO.containsKey(userData.getPassword())){
-            return true;
-        }
-        return false;
-    }
 }
 
 
