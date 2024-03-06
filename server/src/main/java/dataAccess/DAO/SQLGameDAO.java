@@ -1,21 +1,24 @@
 package dataAccess.DAO;
 
-import dataAccess.DataAccessException;
 import Model.GameData;
+import dataAccess.DataAccessException;
+import dataAccess.DatabaseManager;
 
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MemoryGameDAO implements GameDAO{
+public class SQLGameDAO implements GameDAO{
     public static Map<Integer, GameData> gameDatas = new HashMap<>();
+
     public void clearGameDAO(){
         gameDatas.clear();
     }
 
     @Override
     public void createGame(GameData gameData) throws DataAccessException {
-       gameDatas.put(gameData.getGameID(), gameData);
+        gameDatas.put(gameData.getGameID(), gameData);
     }
 
     public boolean findGame(String gameName, int gameID){

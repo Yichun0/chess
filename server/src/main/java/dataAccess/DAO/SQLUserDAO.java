@@ -1,12 +1,12 @@
 package dataAccess.DAO;
 
-import dataAccess.DataAccessException;
 import Model.UserData;
+import dataAccess.DataAccessException;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class MemoryUserDAO implements UserDAO{
+public class SQLUserDAO implements UserDAO{
     public static Map<String, UserData> userDAO = new HashMap<>();
 
     public void clearUserDAO(){
@@ -33,5 +33,3 @@ public class MemoryUserDAO implements UserDAO{
         return false;
     }
 }
-
-

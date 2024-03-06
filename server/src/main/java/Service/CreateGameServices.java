@@ -1,10 +1,7 @@
 package Service;
 
 import chess.ChessGame;
-import dataAccess.DAO.AuthDAO;
-import dataAccess.DAO.GameDAO;
-import dataAccess.DAO.MemoryAuthDAO;
-import dataAccess.DAO.MemoryGameDAO;
+import dataAccess.DAO.*;
 import dataAccess.DataAccessException;
 import Model.AuthData;
 import Model.GameData;
@@ -15,7 +12,7 @@ public class CreateGameServices {
     public CreateGameRespond createGame(CreateGameRequest gameRequest, AuthData authToken) throws DataAccessException {
         String gameName = gameRequest.getGameName();
         GameDAO gameDAO = new MemoryGameDAO();
-        AuthDAO authDAO = new MemoryAuthDAO();
+        AuthDAO authDAO = new SQLAuthDao();
         if (gameName == null){
             throw new DataAccessException("Error: bad request");
         } else if (!authDAO.findAuthToken(authToken)) {
