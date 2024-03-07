@@ -33,14 +33,14 @@ public class JoinGameServices {
                     throw new DataAccessException("Error: already taken");
                 } else {
                     game.setWhiteUsername(username);
-                    gameDAO.createGame(game.getGameName());
+                    gameDAO.createGame(game);
                 }
             } else if(playerColor.equalsIgnoreCase("black")){
                 if (!isNull(game.getBlackUsername())) {
                     throw new DataAccessException("Error: already taken");
                 } else {
                     game.setBlackUsername(username);
-                    gameDAO.createGame(game.getGameName());
+                    gameDAO.createGame(game);
                 }
             }
         } catch (DataAccessException e){

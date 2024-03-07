@@ -8,10 +8,7 @@ import dataAccess.DataAccessException;
 import dataAccess.DatabaseManager;
 import server.Response.CreateGameRespond;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.*;
 
 public class SQLGameDAO implements GameDAO {
@@ -28,7 +25,7 @@ public class SQLGameDAO implements GameDAO {
     }
 
     @Override
-    public CreateGameRespond createGame(String gameName) throws DataAccessException {
+    public int createGame(GameData gameData) throws DataAccessException {
         Gson gson = new Gson();
         ChessBoard board = new ChessBoard();
         board.resetBoard();
@@ -36,16 +33,17 @@ public class SQLGameDAO implements GameDAO {
         game.setBoard(board);
         String gameString = gson.toJson(game);
         try (Connection conn = DatabaseManager.getConnection();
-             PreparedStatement preparedStatement = conn.prepareStatement("INSERT INTO gameTable (gameName,chessGame) VALUES (?,?,?,?)")) {
-            preparedStatement.setString(1, gameName);
-            preparedStatement.setString(5, gameString);
+             PreparedStatement preparedStatement = conn.prepareStatement("INSERT INTO gameTable (blackUsername, WhiteUsername, gameName,chessGame) VALUES (?,?,?,?)", Statement.RETURN_GENERATED_KEYS)) {
+            preparedStatement.setString(1, gameData.getBlackUsername());
+            preparedStatement.setString(2, gameData.getWhiteUsername());
+            preparedStatement.setString(3,gameData.getGameName());
+            preparedStatement.setString(4,gameString);
             preparedStatement.executeUpdate();
             var result =  preparedStatement.getGeneratedKeys();
-            var ID = 0;
             if (result.next()){
-                ID = result.getInt(1);
+                return result.getInt(1);
             }
-            return new CreateGameRespond(ID);
+            return 0;
         } catch (SQLException e) {
             throw new DataAccessException(e.getMessage());
         }

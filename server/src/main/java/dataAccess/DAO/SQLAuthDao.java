@@ -31,6 +31,7 @@ public class SQLAuthDao implements AuthDAO{
         PreparedStatement preparedStatement = connection.prepareStatement(statement)){
             preparedStatement.setString(1, authObjets.getAuthToken());
             preparedStatement.setString(2, authObjets.getUsername());
+            preparedStatement.executeUpdate();
         }
         catch (SQLException e){
             throw new DataAccessException(e.getMessage());
@@ -40,15 +41,16 @@ public class SQLAuthDao implements AuthDAO{
 
     @Override
     public boolean findAuthToken(AuthData authObjects) throws DataAccessException {
-        String sql = "SELECT * FROM auth_tokens WHERE auth_token = ?";
+        String sql = "SELECT * FROM authTable WHERE authToken = ?";
         try (Connection connection = DatabaseManager.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, authObjects.getAuthToken());
-            try (ResultSet resultSet = stmt.executeQuery()) {
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, authObjects.getAuthToken());
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 return resultSet.next();
             }
         } catch (SQLException e) {
-            return false;
+            throw new DataAccessException(e.getMessage());
+//            return false;
         } catch (DataAccessException e) {
             throw new DataAccessException(e.getMessage());
         }

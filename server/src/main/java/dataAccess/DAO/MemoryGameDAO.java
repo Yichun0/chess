@@ -15,11 +15,10 @@ public class MemoryGameDAO implements GameDAO{
     }
 
     @Override
-    public CreateGameRespond createGame(String gameName) throws DataAccessException {
-        Integer gameID = gameDatas.size();
-        GameData gameData = new GameData(gameID, null,null,gameName,null);
+    public int createGame(GameData gameData) throws DataAccessException {
+        int gameID = gameDatas.size();
        gameDatas.put(gameID,gameData);
-       return new CreateGameRespond(gameID);
+       return gameID;
     }
 
     public boolean findGame(String gameName, int gameID){

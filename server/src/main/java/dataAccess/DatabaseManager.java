@@ -31,10 +31,10 @@ public class DatabaseManager {
             """
             CREATE TABLE IF NOT EXISTS gameTable (
                           `gameID` int NOT NULL AUTO_INCREMENT,
-                          `blackUsername` varchar(255) NULL,
-                          `whiteUsername` varchar(255) NULL,
+                          `blackUsername` varchar(255),
+                          `whiteUsername` varchar(255),
                           `gameName` varchar(255) NOT NULL,
-                          `chessGame` varchar(255) NOT NULL,
+                          `chessGame` TEXT NOT NULL,
                           PRIMARY KEY (`gameID`)
                         )
             """

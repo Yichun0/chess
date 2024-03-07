@@ -26,8 +26,8 @@ public class ListGamesTests {
         authDAO.createAuthToken(authToken);
         GameData game1 = new GameData(1234,null,null,"Game",null);
         GameData game2 = new GameData(2234,null,null,"Game2",null);
-        gameDAO.createGame(game1.getGameName());
-        gameDAO.createGame(game2.getGameName());
+        gameDAO.createGame(game1);
+        gameDAO.createGame(game2);
         assertEquals(2, gameDAO.listGame().size());
     }
     @Test
