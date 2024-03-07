@@ -19,9 +19,9 @@ public class CreateGameServices {
             throw new DataAccessException("Error: unauthorized");
         }
         else {
-            int gameID = gameDAO.listGame().size() + 1;
-            gameDAO.createGame(new GameData(gameID, null, null, gameName, new ChessGame()));
-            return new CreateGameRespond(gameID);
+
+            CreateGameRespond gameID = gameDAO.createGame(gameName);
+            return gameID;
         }
     }
 }

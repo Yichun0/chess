@@ -3,6 +3,7 @@ package dataAccess.DAO;
 import Model.UserData;
 import dataAccess.DataAccessException;
 import dataAccess.DatabaseManager;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -33,23 +34,40 @@ public class SQLUserDAO implements UserDAO {
             preparedStatement.setString(3, userData.getEmail());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new DataAccessException(e.getMessage());
+            throw new DataAccessException("Error: already taken");
         }
     }
+//    public boolean findUser(UserData userData) throws DataAccessException{
+//        try (Connection connection = DatabaseManager.getConnection();
+//             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM userTable WHERE username = ?")) {
+//            preparedStatement.setString(1, userData.getUsername());
+//            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+//                if (resultSet.next()) {
+////                    String password = resultSet.getString("password");
+////                    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+////                    return encoder.matches(userData.getPassword(), password);
+//                }
+//            }
+//        } catch (SQLException e) {
+//            return false;
+//        }
+//        return false;
+//    }
 
-    public boolean findUser(UserData userData) throws DataAccessException {
+    public boolean verifyUser(UserData userData) throws DataAccessException {
         try (Connection connection = DatabaseManager.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM userTable WHERE username = ? AND password = ?")) {
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM userTable WHERE username = ?")) {
             preparedStatement.setString(1, userData.getUsername());
-            preparedStatement.setString(2, userData.getPassword());
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                return resultSet.next();
-            } catch (SQLException se) {
-                return false;
+                if (resultSet.next()) {
+                    String password = resultSet.getString("password");
+                    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+                    return encoder.matches(userData.getPassword(), password);
+                }
             }
         } catch (SQLException e) {
-            throw new DataAccessException(e.getMessage());
+            return false;
         }
-
+        return false;
     }
 }

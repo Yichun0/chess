@@ -40,31 +40,29 @@ public class SQLAuthDao implements AuthDAO{
 
     @Override
     public boolean findAuthToken(AuthData authObjects) throws DataAccessException {
-        String authToken = authObjects.getAuthToken();
+        String sql = "SELECT * FROM auth_tokens WHERE auth_token = ?";
         try (Connection connection = DatabaseManager.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM authTable WHERE authToken = ?")){
-            preparedStatement.setString(1, authToken);
-            try (ResultSet resultSet =  preparedStatement.executeQuery()){
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, authObjects.getAuthToken());
+            try (ResultSet resultSet = stmt.executeQuery()) {
                 return resultSet.next();
-            } catch (SQLException se){
-                return false;
             }
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
+            return false;
+        } catch (DataAccessException e) {
             throw new DataAccessException(e.getMessage());
         }
-
     }
-
     public void deleteAuthtoken(AuthData authObjects) throws DataAccessException{
-        if (!findAuthToken(authObjects)){
-            throw new DataAccessException("Error: unauthorized");
-        }
         try (Connection conn = DatabaseManager.getConnection();
-             PreparedStatement preparedStatement = conn.prepareStatement("DELETE FROM authTables WHERE authToken = ?")) {
+             PreparedStatement preparedStatement = conn.prepareStatement("DELETE FROM authTable WHERE authToken = ?")) {
             preparedStatement.setString(1,authObjects.getAuthToken());
-            preparedStatement.executeUpdate();
+            int effect = preparedStatement.executeUpdate();
+            if (effect == 0){
+                throw new DataAccessException("Error: unauthorized");
+            }
         }
+
         catch (SQLException e) {
             throw new DataAccessException(e.getMessage());
         }

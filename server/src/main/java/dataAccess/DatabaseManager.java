@@ -12,6 +12,33 @@ public class DatabaseManager {
     /*
      * Load the database information for the db.properties file.
      */
+    static public String[] Tables = {
+            """
+            CREATE TABLE IF NOT EXISTS userTable (
+                          `username` varchar(255) NOT NULL,
+                          `password` varchar(255) NOT NULL,
+                          `email` varchar(255) NOT NULL,
+                          PRIMARY KEY (`username`)
+                        )
+            """,
+            """
+             CREATE TABLE IF NOT EXISTS authTable (
+                          `authToken` varchar(255) NOT NULL,
+                          `username` varchar(255) NOT NULL,
+                           PRIMARY KEY (`authToken`)
+                        )
+            """,
+            """
+            CREATE TABLE IF NOT EXISTS gameTable (
+                          `gameID` int NOT NULL AUTO_INCREMENT,
+                          `blackUsername` varchar(255) NULL,
+                          `whiteUsername` varchar(255) NULL,
+                          `gameName` varchar(255) NOT NULL,
+                          `chessGame` varchar(255) NOT NULL,
+                          PRIMARY KEY (`gameID`)
+                        )
+            """
+    };
     static {
         try {
             try (var propStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("db.properties")) {
@@ -32,33 +59,7 @@ public class DatabaseManager {
             throw new RuntimeException("unable to process db.properties. " + ex.getMessage());
         }
     }
-    static public String[] Tables = {
-            """
-            CREATE TABLE IF NOT EXISTS userTable (
-                          `username` varchar(256) NOT NULL,
-                          `password` String NOT NULL,
-                          `email` varchar(256) NOT NULL,
-                          PRIMARY KEY (`username`),
-                        )
-            """,
-            """
-             CREATE TABLE IF NOT EXISTS authTable (
-                          `authToken` String NOT NULL,
-                          `username` varchar(256) NOT NULL,
-                           PRIMARY KEY (`authToken`),
-                        )
-            """,
-            """
-            CREATE TABLE IF NOT EXISTS gameTable (
-                          `gameID` int NOT NULL AUTO_INCREMENT,
-                          `blackUsername` String NOT NULL,
-                          `whiteUsername` String NOT NULL,
-                          `gameName` String NOT NULL,
-                          PRIMARY KEY (`gameID`),
-                        )
-            """
 
-    };
     static private void createTables() throws DataAccessException {
         DatabaseManager.createDatabase();
         try (var conn = DatabaseManager.getConnection()) {

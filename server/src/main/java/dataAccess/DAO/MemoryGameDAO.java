@@ -2,6 +2,7 @@ package dataAccess.DAO;
 
 import dataAccess.DataAccessException;
 import Model.GameData;
+import server.Response.CreateGameRespond;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -14,8 +15,11 @@ public class MemoryGameDAO implements GameDAO{
     }
 
     @Override
-    public void createGame(GameData gameData) throws DataAccessException {
-       gameDatas.put(gameData.getGameID(), gameData);
+    public CreateGameRespond createGame(String gameName) throws DataAccessException {
+        Integer gameID = gameDatas.size();
+        GameData gameData = new GameData(gameID, null,null,gameName,null);
+       gameDatas.put(gameID,gameData);
+       return new CreateGameRespond(gameID);
     }
 
     public boolean findGame(String gameName, int gameID){

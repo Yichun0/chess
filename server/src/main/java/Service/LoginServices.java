@@ -4,6 +4,7 @@ import dataAccess.DAO.*;
 import dataAccess.DataAccessException;
 import Model.AuthData;
 import Model.UserData;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import server.Requests.LoginRequest;
 import server.Response.LoginRespond;
 
@@ -16,9 +17,9 @@ public class LoginServices {
         String username = loginRequest.getUsername();
         String password = loginRequest.getPassword();
         UserData userData = new UserData(username,password,null);
-        if (username == null || password == null|| !userDAO.findUser(userData)){
+        if (username == null || password == null || !userDAO.verifyUser(userData)){
             throw new DataAccessException("Error: unauthorized");
-        } else if (userDAO.findUser(userData)) {
+        } else if (userDAO.verifyUser(userData)) {
             String authToken = UUID.randomUUID().toString();
             AuthData authData = new AuthData(username, authToken);
             authDAO.createAuthToken(authData);

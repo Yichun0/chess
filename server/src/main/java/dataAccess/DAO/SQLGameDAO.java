@@ -1,9 +1,12 @@
 package dataAccess.DAO;
 
 import Model.GameData;
+import chess.ChessBoard;
 import chess.ChessGame;
+import com.google.gson.Gson;
 import dataAccess.DataAccessException;
 import dataAccess.DatabaseManager;
+import server.Response.CreateGameRespond;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -25,14 +28,24 @@ public class SQLGameDAO implements GameDAO {
     }
 
     @Override
-    public void createGame(GameData gameData) throws DataAccessException {
+    public CreateGameRespond createGame(String gameName) throws DataAccessException {
+        Gson gson = new Gson();
+        ChessBoard board = new ChessBoard();
+        board.resetBoard();
+        ChessGame game = new ChessGame();
+        game.setBoard(board);
+        String gameString = gson.toJson(game);
         try (Connection conn = DatabaseManager.getConnection();
-             PreparedStatement preparedStatement = conn.prepareStatement("INSERT INTO gameTable (gameID, blackUsername,whiteUsername,gameName) VALUES (?,?,?,?)")) {
-            preparedStatement.setInt(1, gameData.getGameID());
-            preparedStatement.setString(2, gameData.getBlackUsername());
-            preparedStatement.setString(3, gameData.getWhiteUsername());
-            preparedStatement.setString(4, gameData.getGameName());
+             PreparedStatement preparedStatement = conn.prepareStatement("INSERT INTO gameTable (gameName,chessGame) VALUES (?,?,?,?)")) {
+            preparedStatement.setString(1, gameName);
+            preparedStatement.setString(5, gameString);
             preparedStatement.executeUpdate();
+            var result =  preparedStatement.getGeneratedKeys();
+            var ID = 0;
+            if (result.next()){
+                ID = result.getInt(1);
+            }
+            return new CreateGameRespond(ID);
         } catch (SQLException e) {
             throw new DataAccessException(e.getMessage());
         }
@@ -84,7 +97,11 @@ public class SQLGameDAO implements GameDAO {
                 var blackUsername = resultSet.getString("blackUsername");
                 var whiteUsername = resultSet.getString("whiteUsername");
                 var gameName = resultSet.getString("gameName");
-                games.add(new GameData(gameID, blackUsername, whiteUsername, gameName, new ChessGame()));
+                var game = resultSet.getString("game");
+                // turning game back to chess game object using gson
+                Gson gson  = new Gson();
+                ChessGame chessGame = gson.fromJson(game, ChessGame.class);
+                games.add(new GameData(gameID, blackUsername, whiteUsername, gameName, chessGame));
             }
         } catch (SQLException e) {
             throw new DataAccessException(e.getMessage());

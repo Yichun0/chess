@@ -2,6 +2,7 @@ package dataAccess.DAO;
 
 import dataAccess.DataAccessException;
 import Model.UserData;
+import org.eclipse.jetty.server.Authentication;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,8 +17,15 @@ public class MemoryUserDAO implements UserDAO{
     public void createUser(UserData userData){
         userDAO.put(userData.getUsername(),userData);
     }
-
     public boolean findUser(UserData userData) {
+
+        if (userDAO.containsKey(userData.getUsername())) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean verifyUser(UserData userData) {
         if (userDAO.containsKey(userData.getUsername())){
             return true;
         }
