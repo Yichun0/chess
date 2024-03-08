@@ -37,22 +37,6 @@ public class SQLUserDAO implements UserDAO {
             throw new DataAccessException("Error: already taken");
         }
     }
-//    public boolean findUser(UserData userData) throws DataAccessException{
-//        try (Connection connection = DatabaseManager.getConnection();
-//             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM userTable WHERE username = ?")) {
-//            preparedStatement.setString(1, userData.getUsername());
-//            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-//                if (resultSet.next()) {
-////                    String password = resultSet.getString("password");
-////                    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-////                    return encoder.matches(userData.getPassword(), password);
-//                }
-//            }
-//        } catch (SQLException e) {
-//            return false;
-//        }
-//        return false;
-//    }
 
     public boolean verifyUser(UserData userData) throws DataAccessException {
         try (Connection connection = DatabaseManager.getConnection();

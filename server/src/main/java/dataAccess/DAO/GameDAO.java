@@ -7,6 +7,7 @@ import server.Response.CreateGameRespond;
 
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.List;
 
 public interface GameDAO {
     void clearGameDAO() throws DataAccessException;

@@ -1,5 +1,6 @@
 package dataAccessTests;
 
+import Model.AuthData;
 import Model.UserData;
 import Service.LoginServices;
 import dataAccess.DAO.*;
@@ -7,43 +8,62 @@ import dataAccess.DataAccessException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import server.Requests.LoginRequest;
 import server.Response.ErrorResponse;
 import server.Response.LoginRespond;
 
 import java.sql.SQLException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class UserDAOTests {
-    UserDAO userDAO = new SQLUserDAO();
+    SQLUserDAO user = new SQLUserDAO();
     @BeforeEach
     public void clear() throws DataAccessException {
-        userDAO.clearUserDAO();
-    }
-    public void positiveTest() throws DataAccessException {
-        UserDAO userDAO = new SQLUserDAO();
-        UserData newUser = new UserData("username", "password", "email");
-        userDAO.createUser(newUser);
-        LoginServices loginService = new LoginServices();
-        LoginRequest request = new LoginRequest("username", "password");
-        LoginRespond result = loginService.loginUser(request);
-        assertEquals("username", result.getUsername());
+        user.clearUserDAO();
     }
 
     @Test
-    public void negativeTest() throws DataAccessException {
-        UserDAO userDAO = new SQLUserDAO();
-        AuthDAO authDAO = new MemoryAuthDAO();
-        LoginServices services = new LoginServices();
-        try {
-            userDAO.createUser(new UserData("username", "password", "email"));
-            LoginRequest request = new LoginRequest("username", null );
-            LoginRespond result = services.loginUser(request);
-            assertNotNull(result.getAuthToken());
-        } catch (DataAccessException exception) {
-            assertEquals(new ErrorResponse("Error: unauthorized"), new ErrorResponse(exception.getMessage()),"Error: unauthorized");
+    public void positiveClearTest() throws DataAccessException {
+        UserData userData = new UserData("username","password", "email");
+        boolean rs = user.verifyUser(userData);
+        assertEquals("false", String.valueOf(rs));
+
+    }
+    @Test
+    public void createPositive() throws DataAccessException {
+        String password = "password";
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String hashedPassword = encoder.encode(password);
+        UserData userData = new UserData("username",hashedPassword, "email");
+        user.createUser(userData);
+        boolean rs = user.verifyUser(new UserData("username","password","email"));
+        assertTrue(rs, "String.valueOf(rs)");
+    }
+
+    @Test
+    public void createNegative() throws DataAccessException{
+        UserData userData = new UserData("username","password", "email");
+        user.createUser(userData);
+        try{
+            user.createUser(userData);
+        } catch (DataAccessException e){
+            assertEquals(new ErrorResponse("Error: already taken"), new ErrorResponse(e.getMessage()), "Error: unauthorized");
         }
+    }
+    @Test
+    public void verifyPositive() throws DataAccessException{
+        UserData userData = new UserData("username","password", "email");
+        boolean rs = user.verifyUser(userData);
+        assertEquals("false", String.valueOf(rs));
+    }
+
+    @Test
+    public void verifyNegative() throws DataAccessException {
+        UserData userData = new UserData("username", "password", "email");
+        user.createUser(userData);
+        boolean rs = user.verifyUser(new UserData("username", "password", "email"));
+        assertFalse(rs, "wrong ");
     }
 }
