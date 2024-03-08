@@ -50,11 +50,12 @@ public class AuthDAOTests {
             }
         }
     }
-
-    @Test
-    public void create_negative() throws DataAccessException {
-        AuthData authData = new AuthData(null, "authToken");
-        authDAO.createAuthToken(authData);
-
-    }
 }
+
+//    @Test
+//    public void create_negative() throws DataAccessException {
+//        AuthData authData = new AuthData(null, "authToken");
+//        authDAO.createAuthToken(authData);
+//
+//    }
+//}

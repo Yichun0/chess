@@ -4,15 +4,24 @@ import Model.UserData;
 import Service.LoginServices;
 import dataAccess.DAO.*;
 import dataAccess.DataAccessException;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import server.Requests.LoginRequest;
 import server.Response.ErrorResponse;
 import server.Response.LoginRespond;
 
+import java.sql.SQLException;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class UserDAOTests {
+    UserDAO userDAO = new SQLUserDAO();
+    @BeforeEach
+    public void clear() throws DataAccessException {
+        userDAO.clearUserDAO();
+    }
     public void positiveTest() throws DataAccessException {
         UserDAO userDAO = new SQLUserDAO();
         UserData newUser = new UserData("username", "password", "email");
@@ -25,7 +34,7 @@ public class UserDAOTests {
 
     @Test
     public void negativeTest() throws DataAccessException {
-        UserDAO userDAO = new MemoryUserDAO();
+        UserDAO userDAO = new SQLUserDAO();
         AuthDAO authDAO = new MemoryAuthDAO();
         LoginServices services = new LoginServices();
         try {
