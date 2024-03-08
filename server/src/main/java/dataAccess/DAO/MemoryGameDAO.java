@@ -2,6 +2,7 @@ package dataAccess.DAO;
 
 import dataAccess.DataAccessException;
 import Model.GameData;
+import server.Requests.JoinGameRequest;
 import server.Response.CreateGameRespond;
 
 import java.util.Collection;
@@ -26,13 +27,10 @@ public class MemoryGameDAO implements GameDAO{
         return gameDatas.containsKey(gameID);
     }
 
-    public GameData getGame(int gameID) throws DataAccessException{
-        GameData game = gameDatas.get(gameID);
-        if (game == null){
-            throw new DataAccessException("Error: bad request");
-        }
-        return game;
+    public void joinGame(String username, JoinGameRequest request ) throws DataAccessException{
+
     }
+
     public Collection<GameData> listGame(){
         return gameDatas.values();
     }

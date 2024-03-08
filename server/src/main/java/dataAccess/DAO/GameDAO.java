@@ -2,13 +2,15 @@ package dataAccess.DAO;
 
 import dataAccess.DataAccessException;
 import Model.GameData;
+import server.Requests.JoinGameRequest;
 import server.Response.CreateGameRespond;
 
+import java.sql.SQLException;
 import java.util.Collection;
 
 public interface GameDAO {
     void clearGameDAO() throws DataAccessException;
-    GameData getGame(int gameID) throws DataAccessException;
+    void joinGame(String username, JoinGameRequest request ) throws DataAccessException, SQLException;
 
     int createGame(GameData gameData) throws DataAccessException;
 

@@ -9,11 +9,13 @@ import server.Response.ErrorResponse;
 import server.Requests.JoinGameRequest;
 import Service.JoinGameServices;
 
+import java.sql.SQLException;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class JoinGameTests {
     @Test
-    public void positiveTest() throws DataAccessException {
+    public void positiveTest() throws DataAccessException, SQLException {
         GameDAO gameDAO = new MemoryGameDAO();
         AuthDAO authDAO = new SQLAuthDao();
         AuthData authData = new AuthData("username","authToken");
@@ -38,7 +40,7 @@ public class JoinGameTests {
         gameDAO.createGame(newGame);
         try{
             joinGameService.joinGame(joinGameRequest, "wrongAuthToken");
-        } catch (DataAccessException exception){
+        } catch (DataAccessException | SQLException exception){
             assertEquals(new ErrorResponse("Error: unauthorized"), new ErrorResponse(exception.getMessage()));
         }
     }

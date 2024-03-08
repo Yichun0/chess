@@ -8,32 +8,25 @@ import dataAccess.DatabaseManager;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import server.Response.ErrorResponse;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class AuthDAOTests {
-    static void insertUser() throws DataAccessException {
-        String username = "username";
-        String authToken = "authToken";
-        try (Connection connection = DatabaseManager.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO authTable (authtoken, username) VALUES (?,?)")) {
-            preparedStatement.setString(1, authToken);
-            preparedStatement.setString(2, username);
+    AuthDAO authDAO = new SQLAuthDao();
 
-        } catch (SQLException e) {
-            throw new DataAccessException(e.getMessage());
-        }
+    @BeforeEach
+    public void clear() throws DataAccessException, SQLException {
+        authDAO.clearAuthToken();
     }
 
     @Test
     public void positiveClearTest() throws DataAccessException, SQLException {
-        AuthDAO authDAO = new SQLAuthDao();
         authDAO.clearAuthToken();
         AuthData authData = new AuthData("username", "authToken");
         assertFalse(authDAO.findAuthToken(authData));
@@ -42,8 +35,6 @@ public class AuthDAOTests {
 
     @Test
     public void positiveCreateTest() throws DataAccessException, SQLException {
-        AuthDAO authDAO = new SQLAuthDao();
-        authDAO.clearAuthToken();
         AuthData authData = new AuthData("username", "authToken");
         authDAO.createAuthToken(authData);
         try (Connection conn = DatabaseManager.getConnection();
@@ -53,8 +44,17 @@ public class AuthDAOTests {
                 if (resultSet.next()) {
                     String username = resultSet.getString("username");
                     assertEquals("username", username);
+                } else {
+                    fail();
                 }
             }
         }
+    }
+
+    @Test
+    public void create_negative() throws DataAccessException {
+        AuthData authData = new AuthData(null, "authToken");
+        authDAO.createAuthToken(authData);
+
     }
 }

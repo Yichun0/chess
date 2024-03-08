@@ -2,7 +2,7 @@ package server.Requests;
 
 public class JoinGameRequest {
     private String playerColor;
-    private int gameID;
+    private Integer gameID;
 
     public String getPlayerColor() {
         return playerColor;
@@ -12,7 +12,7 @@ public class JoinGameRequest {
         this.playerColor = playerColor;
     }
 
-    public int getGameID() {
+    public Integer getGameID() {
         return gameID;
     }
 

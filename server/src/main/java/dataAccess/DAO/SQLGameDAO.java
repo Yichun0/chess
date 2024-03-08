@@ -6,6 +6,7 @@ import chess.ChessGame;
 import com.google.gson.Gson;
 import dataAccess.DataAccessException;
 import dataAccess.DatabaseManager;
+import server.Requests.JoinGameRequest;
 import server.Response.CreateGameRespond;
 
 import java.sql.*;
@@ -65,25 +66,61 @@ public class SQLGameDAO implements GameDAO {
 
     }
 
-    public GameData getGame(int gameID) throws DataAccessException {
-        GameData game = gameDatas.get(gameID);
-        if (game == null) {
-            throw new DataAccessException("Error: bad request");
-        }
-        try (Connection conn = DatabaseManager.getConnection();
-             PreparedStatement preparedStatement = conn.prepareStatement("SELECT gameName FROM gametable WHERE gameID = ?")) {
-            preparedStatement.setInt(1, gameID);
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                if (resultSet.next()) {
-                    String gameName = resultSet.getString("gameName");
-                    return new GameData(gameID, null, null, gameName, new ChessGame());
+    public void joinGame(String username, JoinGameRequest request ) throws DataAccessException{
+        try (Connection connection = DatabaseManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT whiteUsername, blackUsername FROM gameTable WHERE gameID = ?")) {
+            preparedStatement.setInt(1, request.getGameID());
+            try (ResultSet result = preparedStatement.executeQuery()) {
+                if (result.next()) {
+                    if (request.getPlayerColor() == null) {
+                        return; //join as watcher
+                    } else if (request.getPlayerColor().equalsIgnoreCase("white")) {
+                        // whiteUser
+                        String whiteUser = result.getString("whiteUsername");
+                        if (whiteUser != null) {
+                            throw new DataAccessException("Error: already taken");
+                        } else {
+                            PreparedStatement stm = connection.prepareStatement("UPDATE gameTable SET whiteUsername =? Where gameID = ? ");
+                            stm.setString(1, username);
+                            stm.setInt(2, request.getGameID());
+                            stm.executeUpdate();
+                        }
+                    } else {
+                        //black user
+                        String blackUser = result.getString("blackUsername");
+                        if (blackUser != null) {
+                            throw new DataAccessException("Error: already taken");
+                        } else {
+                            PreparedStatement stm = connection.prepareStatement("UPDATE gameTable SET blackUsername =? Where gameID = ? ");
+                            stm.setString(1, username);
+                            stm.setInt(2, request.getGameID());
+                            stm.executeUpdate();
+                        }
+                    }
+                } else {
+                    throw new DataAccessException("Error: bad request");
                 }
             }
-            return null;
         } catch (SQLException e) {
             throw new DataAccessException(e.getMessage());
         }
     }
+
+//    public GameData getGame(int gameID) throws DataAccessException {
+//        try (Connection conn = DatabaseManager.getConnection();
+//             PreparedStatement preparedStatement = conn.prepareStatement("SELECT gameName FROM gametable WHERE gameID = ?")) {
+//            preparedStatement.setInt(1, gameID);
+//            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+//                if (resultSet.next()) {
+//                    String gameName = resultSet.getString("gameName");
+//                    return new GameData(gameID, null, null, gameName, new ChessGame());
+//                }
+//            }
+//            return null;
+//        } catch (SQLException e) {
+//            throw new DataAccessException(e.getMessage());
+//        }
+//    }
 
     public Collection<GameData> listGame() throws DataAccessException {
         List<GameData> games = new ArrayList<>();
@@ -95,11 +132,11 @@ public class SQLGameDAO implements GameDAO {
                 var blackUsername = resultSet.getString("blackUsername");
                 var whiteUsername = resultSet.getString("whiteUsername");
                 var gameName = resultSet.getString("gameName");
-                var game = resultSet.getString("game");
+                var game = resultSet.getString("chessGame");
                 // turning game back to chess game object using gson
                 Gson gson  = new Gson();
                 ChessGame chessGame = gson.fromJson(game, ChessGame.class);
-                games.add(new GameData(gameID, blackUsername, whiteUsername, gameName, chessGame));
+                games.add(new GameData(gameID, whiteUsername, blackUsername, gameName, chessGame));
             }
         } catch (SQLException e) {
             throw new DataAccessException(e.getMessage());
