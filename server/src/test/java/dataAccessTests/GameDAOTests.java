@@ -71,11 +71,6 @@ public class GameDAOTests {
     }
     @Test
     public void joinPositive() throws DataAccessException, SQLException {
-        GameData newgame = new GameData(1, null, null, "gameName", null);
-        game.createGame(newgame);
-        JoinGameRequest request = new JoinGameRequest("White", 1);
-        String username = "username";
-        game.joinGame(username, request);
         try (Connection conn = DatabaseManager.getConnection();
              PreparedStatement preparedStatement = conn.prepareStatement("SELECT whiteUsername FROM gametable WHERE gameID = ?")) {
             preparedStatement.setInt(1, 1);
@@ -83,6 +78,9 @@ public class GameDAOTests {
                 if (resultSet.next()) {
                     String whiteUsername = resultSet.getString("whiteUsername");
                     assertEquals("username", whiteUsername);
+                }
+                else {
+                    fail();
                 }
             }
         }

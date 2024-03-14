@@ -106,22 +106,6 @@ public class SQLGameDAO implements GameDAO {
         }
     }
 
-//    public GameData getGame(int gameID) throws DataAccessException {
-//        try (Connection conn = DatabaseManager.getConnection();
-//             PreparedStatement preparedStatement = conn.prepareStatement("SELECT gameName FROM gametable WHERE gameID = ?")) {
-//            preparedStatement.setInt(1, gameID);
-//            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-//                if (resultSet.next()) {
-//                    String gameName = resultSet.getString("gameName");
-//                    return new GameData(gameID, null, null, gameName, new ChessGame());
-//                }
-//            }
-//            return null;
-//        } catch (SQLException e) {
-//            throw new DataAccessException(e.getMessage());
-//        }
-//    }
-
     public Collection<GameData> listGame() throws DataAccessException {
         List<GameData> games = new ArrayList<>();
         try (Connection connection = DatabaseManager.getConnection();
