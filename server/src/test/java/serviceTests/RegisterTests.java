@@ -3,9 +3,9 @@ package serviceTests;
 import dataAccess.DAO.*;
 import dataAccess.DataAccessException;
 import org.junit.jupiter.api.Test;
-import server.Response.ErrorResponse;
-import server.Requests.RegisterRequest;
-import server.Response.RegisterResult;
+import Response.ErrorResponse;
+import Requests.RegisterRequest;
+import Response.RegisterResult;
 import Service.RegisterServices;
 
 import static org.junit.jupiter.api.Assertions.*;

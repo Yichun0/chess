@@ -1,11 +1,12 @@
 package server.Handlers;
 
+import Requests.LoginRequest;
 import com.google.gson.Gson;
 import dataAccess.DataAccessException;
-import server.Requests.*;
+
 import Service.LoginServices;
-import server.Response.ErrorResponse;
-import server.Response.LoginRespond;
+import Response.ErrorResponse;
+import Response.LoginRespond;
 import spark.Request;
 import spark.Response;
 import spark.Route;

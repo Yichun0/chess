@@ -1,4 +1,4 @@
-package server.Response;
+package Response;
 
 public class CreateGameRespond {
     int gameID;

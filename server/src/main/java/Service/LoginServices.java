@@ -4,9 +4,8 @@ import dataAccess.DAO.*;
 import dataAccess.DataAccessException;
 import Model.AuthData;
 import Model.UserData;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import server.Requests.LoginRequest;
-import server.Response.LoginRespond;
+import Requests.LoginRequest;
+import Response.LoginRespond;
 
 import java.util.UUID;
 

@@ -1,13 +1,13 @@
 package serviceTests;
 
+import Requests.LoginRequest;
 import dataAccess.DAO.*;
 import dataAccess.DataAccessException;
 import Model.UserData;
 import org.junit.jupiter.api.Test;
-import server.Requests.*;
 import Service.LoginServices;
-import server.Response.ErrorResponse;
-import server.Response.LoginRespond;
+import Response.ErrorResponse;
+import Response.LoginRespond;
 
 import static org.junit.jupiter.api.Assertions.*;
 

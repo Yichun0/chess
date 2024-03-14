@@ -1,19 +1,12 @@
 package dataAccessTests;
 
-import Model.AuthData;
 import Model.UserData;
-import Service.LoginServices;
 import dataAccess.DAO.*;
 import dataAccess.DataAccessException;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import server.Requests.LoginRequest;
-import server.Response.ErrorResponse;
-import server.Response.LoginRespond;
-
-import java.sql.SQLException;
+import Response.ErrorResponse;
 
 import static org.junit.jupiter.api.Assertions.*;
 

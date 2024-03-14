@@ -1,4 +1,4 @@
-package server.Requests;
+package Requests;
 
 public class JoinGameRequest {
     private String playerColor;

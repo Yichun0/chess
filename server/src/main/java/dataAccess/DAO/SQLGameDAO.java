@@ -6,8 +6,7 @@ import chess.ChessGame;
 import com.google.gson.Gson;
 import dataAccess.DataAccessException;
 import dataAccess.DatabaseManager;
-import server.Requests.JoinGameRequest;
-import server.Response.CreateGameRespond;
+import Requests.JoinGameRequest;
 
 import java.sql.*;
 import java.util.*;

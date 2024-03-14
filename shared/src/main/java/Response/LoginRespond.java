@@ -1,8 +1,8 @@
-package server.Response;
+package Response;
 
 public class LoginRespond{
-    String username;
-    String authToken;
+    public String username;
+    public String authToken;
 
     public String getUsername() {
         return username;

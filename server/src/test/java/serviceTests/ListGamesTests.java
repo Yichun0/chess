@@ -6,8 +6,8 @@ import dataAccess.DataAccessException;
 import Model.AuthData;
 import Model.GameData;
 import org.junit.jupiter.api.Test;
-import server.Requests.CreateGameRequest;
-import server.Response.ErrorResponse;
+import Requests.CreateGameRequest;
+import Response.ErrorResponse;
 import Service.CreateGameServices;
 
 import java.sql.SQLException;

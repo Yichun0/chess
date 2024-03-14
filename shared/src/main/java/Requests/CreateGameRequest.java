@@ -1,4 +1,4 @@
-package server.Requests;
+package Requests;
 
 public class CreateGameRequest {
     private String gameName;

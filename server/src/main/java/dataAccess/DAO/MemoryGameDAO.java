@@ -2,8 +2,7 @@ package dataAccess.DAO;
 
 import dataAccess.DataAccessException;
 import Model.GameData;
-import server.Requests.JoinGameRequest;
-import server.Response.CreateGameRespond;
+import Requests.JoinGameRequest;
 
 import java.util.Collection;
 import java.util.HashMap;

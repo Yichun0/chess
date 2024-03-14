@@ -1,25 +1,18 @@
 package dataAccessTests;
 
 import Model.GameData;
-import Model.UserData;
-import Service.LoginServices;
 import dataAccess.DAO.*;
 import dataAccess.DataAccessException;
 import dataAccess.DatabaseManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import server.Requests.JoinGameRequest;
-import server.Requests.LoginRequest;
-import server.Response.ErrorResponse;
-import server.Response.LoginRespond;
+import Requests.JoinGameRequest;
+import Response.ErrorResponse;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
