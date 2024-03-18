@@ -37,7 +37,7 @@ public class ListGamesTests {
         AuthData authToken = new AuthData("username", "testAuth");
         testAuthDAO.createAuthToken(authToken);
         GameData game1 = new GameData(1234,null,null,"Game",null);
-        CreateGameRequest gameRequest = new CreateGameRequest(null,"wrongAuthToken");
+        CreateGameRequest gameRequest = new CreateGameRequest(null);
         try{
             createGameService.createGame(gameRequest,authToken);
         }

@@ -5,8 +5,6 @@ import exception.ResponseException;
 import java.security.Provider;
 import java.util.Scanner;
 public class PreLogin {
-
-    private String serverUrl;
     private Scanner scanner;
     private ServerFacade serverFacade;
     public PreLogin(Scanner scanner, ServerFacade server){
@@ -43,8 +41,19 @@ public class PreLogin {
     }
     public void login(){
         //prompt the user to input log in information
-
+        System.out.println("username: ");
+        String username = scanner.next();
+        System.out.println("password: ");
+        String password = scanner.next();
         // call server login API
+        try{
+            serverFacade.login(username,password);
+            System.out.println(username + "is successfully logged in");
+            PostLogin postLogin = new PostLogin(scanner,serverFacade);
+            postLogin.run();
+        } catch (ResponseException e) {
+            throw new RuntimeException(e);
+        }
         // successful log in --> transition to PostLogin UI
 
     }
@@ -58,7 +67,8 @@ public class PreLogin {
         try{
             serverFacade.register(username, password, email);
             System.out.println(username + " is successfully registered in" + "\n");
-            PostLogin postLogin = new PostLogin();
+            PostLogin postLogin = new PostLogin(scanner, serverFacade);
+            postLogin.run();
         } catch (ResponseException e) {
             System.out.println("Registration Error");
             throw new RuntimeException(e);

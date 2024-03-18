@@ -38,21 +38,21 @@ public class ServerFacade {
     }
 
 
-    public LoginRespond loginRespond(String username, String password) throws ResponseException {
+    public LoginRespond login(String username, String password) throws ResponseException {
         var path = "/session";
         LoginRequest requestBody = new LoginRequest(username, password);
         return this.makeRequest("POST", path, requestBody, LoginRespond.class);
     }
 
-    public Collection<GameData> games() throws ResponseException {
+    public Collection<GameData> listGames() throws ResponseException {
         String path = "/game";
         var response =  this.makeRequest("GET", path, null, ListGamesRespond.class);
         return response.getGames();
     }
 
-    public CreateGameRespond createGame(String gameName,String authToken) throws ResponseException {
+    public CreateGameRespond createGame(String gameName) throws ResponseException {
         String path = "/game";
-        CreateGameRequest request = new CreateGameRequest(gameName,authToken);
+        CreateGameRequest request = new CreateGameRequest(gameName);
         CreateGameRespond respond = this.makeRequest("POST",path,request, CreateGameRespond.class);
         return respond;
     }
@@ -120,4 +120,4 @@ public class ServerFacade {
         return status / 100 == 2;
     }
 }
-}
+

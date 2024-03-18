@@ -23,7 +23,7 @@ public class CreateGamesTests {
         CreateGameServices createGameService = new CreateGameServices();
         AuthData authData = new AuthData("username", "authToken");
         authDAO.createAuthToken(authData);
-        CreateGameRequest request = new CreateGameRequest("gameName","authToken");
+        CreateGameRequest request = new CreateGameRequest("gameName");
         CreateGameRespond respond = createGameService.createGame(request,authData);
         assertEquals(true, gameDAO.findGame("gameName",respond.getGameID()));
     }
@@ -34,7 +34,7 @@ public class CreateGamesTests {
         CreateGameServices createGameService = new CreateGameServices();
         AuthData authData = new AuthData("username", "authToken");
         authDAO.createAuthToken(authData);
-        CreateGameRequest request = new CreateGameRequest("gameName","WrongAuthToken");
+        CreateGameRequest request = new CreateGameRequest("gameName");
         try{
             createGameService.createGame(request,authData);
         } catch (DataAccessException exception){
