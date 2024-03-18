@@ -4,7 +4,7 @@ import Model.GameData;
 import chess.ChessBoard;
 import chess.ChessGame;
 import com.google.gson.Gson;
-import dataAccess.DataAccessException;
+import exception.DataAccessException;
 import dataAccess.DatabaseManager;
 import Requests.JoinGameRequest;
 

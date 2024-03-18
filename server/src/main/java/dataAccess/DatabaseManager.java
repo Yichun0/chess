@@ -1,5 +1,7 @@
 package dataAccess;
 
+import exception.DataAccessException;
+
 import java.sql.*;
 import java.util.Properties;
 
@@ -60,7 +62,7 @@ public class DatabaseManager {
         }
     }
 
-    static private void createTables() throws DataAccessException {
+    static private void createTables() throws exception.DataAccessException {
         DatabaseManager.createDatabase();
         try (var conn = DatabaseManager.getConnection()) {
             for (var statement : Tables) {
@@ -69,14 +71,14 @@ public class DatabaseManager {
                 }
             }
         } catch (SQLException ex) {
-            throw new DataAccessException(ex.getMessage());
+            throw new exception.DataAccessException(ex.getMessage());
         }
     }
 
     /**
      * Creates the database if it does not already exist.
      */
-    public static void createDatabase() throws DataAccessException {
+    public static void createDatabase() throws exception.DataAccessException {
         try {
             var statement = "CREATE DATABASE IF NOT EXISTS " + databaseName;
             var conn = DriverManager.getConnection(connectionUrl, user, password);
@@ -84,7 +86,7 @@ public class DatabaseManager {
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
-            throw new DataAccessException(e.getMessage());
+            throw new exception.DataAccessException(e.getMessage());
         }
     }
 
@@ -100,7 +102,7 @@ public class DatabaseManager {
      * }
      * </code>
      */
-    public static Connection getConnection() throws DataAccessException {
+    public static Connection getConnection() throws exception.DataAccessException {
         try {
             var conn = DriverManager.getConnection(connectionUrl, user, password);
             conn.setCatalog(databaseName);

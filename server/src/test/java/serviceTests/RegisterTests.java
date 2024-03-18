@@ -1,7 +1,7 @@
 package serviceTests;
 
 import dataAccess.DAO.*;
-import dataAccess.DataAccessException;
+import exception.DataAccessException;
 import org.junit.jupiter.api.Test;
 import Response.ErrorResponse;
 import Requests.RegisterRequest;

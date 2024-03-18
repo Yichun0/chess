@@ -2,7 +2,7 @@ package serviceTests;
 
 import dataAccess.DAO.*;
 import Service.ClearServices;
-import dataAccess.DataAccessException;
+import exception.DataAccessException;
 import Model.AuthData;
 import Model.GameData;
 import org.junit.jupiter.api.Test;

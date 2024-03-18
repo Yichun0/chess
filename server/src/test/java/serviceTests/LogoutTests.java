@@ -4,7 +4,7 @@ import dataAccess.DAO.AuthDAO;
 import dataAccess.DAO.MemoryAuthDAO;
 import dataAccess.DAO.MemoryUserDAO;
 import dataAccess.DAO.UserDAO;
-import dataAccess.DataAccessException;
+import exception.DataAccessException;
 import Model.AuthData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

@@ -1,13 +1,17 @@
 package ui;
 
+import exception.ResponseException;
+
 import java.security.Provider;
 import java.util.Scanner;
 public class PreLogin {
 
     private String serverUrl;
     private Scanner scanner;
-    public PreLogin(Scanner scanner){
+    private ServerFacade serverFacade;
+    public PreLogin(Scanner scanner, ServerFacade server){
         this.scanner = new Scanner(System.in);
+        this.serverFacade = server;
     }
     public void run(){
         System.out.println("Welcome to the chess game.");
@@ -49,6 +53,16 @@ public class PreLogin {
         String username = scanner.next();
         System.out.println("password: ");
         String password = scanner.next();
+        System.out.println("email: ");
+        String email = scanner.next();
+        try{
+            serverFacade.register(username, password, email);
+            System.out.println(username + " is successfully registered in" + "\n");
+            PostLogin postLogin = new PostLogin();
+        } catch (ResponseException e) {
+            System.out.println("Registration Error");
+            throw new RuntimeException(e);
+        }
         // input register information
         // call register API and Login API
         //successful --> transition to PostLogin

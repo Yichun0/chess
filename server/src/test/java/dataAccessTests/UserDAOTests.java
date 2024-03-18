@@ -2,7 +2,7 @@ package dataAccessTests;
 
 import Model.UserData;
 import dataAccess.DAO.*;
-import dataAccess.DataAccessException;
+import exception.DataAccessException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

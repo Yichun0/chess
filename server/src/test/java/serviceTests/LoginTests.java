@@ -2,7 +2,7 @@ package serviceTests;
 
 import Requests.LoginRequest;
 import dataAccess.DAO.*;
-import dataAccess.DataAccessException;
+import exception.DataAccessException;
 import Model.UserData;
 import org.junit.jupiter.api.Test;
 import Service.LoginServices;

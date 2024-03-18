@@ -2,7 +2,7 @@ package dataAccessTests;
 
 import Model.GameData;
 import dataAccess.DAO.*;
-import dataAccess.DataAccessException;
+import exception.DataAccessException;
 import dataAccess.DatabaseManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

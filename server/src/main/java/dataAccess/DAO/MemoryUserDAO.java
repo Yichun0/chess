@@ -1,8 +1,6 @@
 package dataAccess.DAO;
 
-import dataAccess.DataAccessException;
 import Model.UserData;
-import org.eclipse.jetty.server.Authentication;
 
 import java.util.HashMap;
 import java.util.Map;

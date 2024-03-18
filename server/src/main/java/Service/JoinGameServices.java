@@ -1,7 +1,7 @@
 package Service;
 
 import dataAccess.DAO.*;
-import dataAccess.DataAccessException;
+import exception.DataAccessException;
 import Model.AuthData;
 import Requests.JoinGameRequest;
 

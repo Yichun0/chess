@@ -1,7 +1,7 @@
 package dataAccess.DAO;
 
 import Model.AuthData;
-import dataAccess.DataAccessException;
+import exception.DataAccessException;
 import dataAccess.DatabaseManager;
 
 import java.sql.SQLException;

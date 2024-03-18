@@ -2,7 +2,7 @@ package server.Handlers;
 
 import Requests.LoginRequest;
 import com.google.gson.Gson;
-import dataAccess.DataAccessException;
+import exception.DataAccessException;
 
 import Service.LoginServices;
 import Response.ErrorResponse;
