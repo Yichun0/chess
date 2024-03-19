@@ -71,10 +71,22 @@ public class PostLogin {
         System.out.println("Games: ");
         Collection<GameData> gamelist = serverFacade.listGames();
         for (int i = 0; i < gamelist.size(); i++) {
-            System.out.println(gameIndex + ". " + gamelist[i].);
+//            System.out.println(gameIndex + ". " + gamelist[i]);
         }
     }
-    public void joinGame(){
+    public void joinGame() throws ResponseException {
+        Collection<GameData> games = serverFacade.listGames();
+        System.out.println("game ID: ");
+        int gameID = scanner.nextInt();
+        System.out.println("player color: ");
+        String playerColor = scanner.next();
+        try{
+            serverFacade.joinGame(gameID,playerColor);
+            System.out.println("successfully joined");
+            GamePlay playgame = new GamePlay(scanner,serverFacade);
+        } catch (ResponseException e){
+
+        }
 
     }
     public void observeGame(){

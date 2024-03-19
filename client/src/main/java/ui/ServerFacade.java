@@ -63,6 +63,10 @@ public class ServerFacade {
         this.makeRequest("PUT", path, request, null);
     }
 
+    public void joinAsObserver() throws ResponseException{
+
+    }
+
     public void quit() throws ResponseException {
         String path = "/db";
         this.makeRequest("DELETE", path, null, ClearResponse.class);
