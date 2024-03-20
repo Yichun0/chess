@@ -4,10 +4,7 @@ import Model.GameData;
 import exception.DataAccessException;
 import exception.ResponseException;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class PostLogin {
     private String serverUrl;
@@ -34,8 +31,7 @@ public class PostLogin {
             case "logout" -> logout();
             case "create game" -> createGame();
             case "list games" -> listGames();
-            case "join games" -> joinGame();
-            case "observe games" -> observeGame();
+            case "join game or observe game" -> joinGame();
             case "quit" -> quit();
             default -> run();
         }
@@ -82,10 +78,8 @@ public class PostLogin {
                 String whiteUsername = games.get(i).getWhiteUsername();
                 if (blackUsername != null) {
                     System.out.println("black player: " + blackUsername);
-                    new GamePlay(scanner, serverFacade);
                 } else if (whiteUsername != null) {
                     System.out.println("white player: " + whiteUsername);
-                    new GamePlay(scanner, serverFacade);
                 }
                 System.out.println("\n");
             }
@@ -97,23 +91,34 @@ public class PostLogin {
     public void joinGame() throws ResponseException {
         Collection<GameData> gamelist = serverFacade.listGames();
         List<GameData> games = new ArrayList<>(gamelist);
-        System.out.println("enter the number of the game you want to play: ");
+        System.out.println("You can join game or observe game by not entering a player color");
+        System.out.println("enter the number of the game you want to play or observe: ");
         int gameIndex = scanner.nextInt();
         int gameID = games.get(gameIndex).getGameID();
         System.out.println("player color: ");
         String playerColor = scanner.next();
-        try{
-            serverFacade.joinGame(gameID,playerColor);
-            System.out.println("successfully joined");
-            new GamePlay(scanner,serverFacade);
-        } catch (ResponseException e){
+        if (playerColor == null) {
+            observeGame(gameIndex,games);
+        } else {
+            try {
+                serverFacade.joinGame(gameID, playerColor);
+                System.out.println("successfully joined");
+                new GamePlay(scanner, serverFacade).drawBoard();
+            } catch (ResponseException e) {
+                System.out.println(e.getMessage());
+                help();
+            }
+        }
+    }
+    public void observeGame(int gameIndex, List<GameData> games) throws ResponseException {
+        int gameID = games.get(gameIndex).getGameID();
+        try {
+            serverFacade.joinGame(gameID, null);
+            System.out.println("successfully joined as observer for " + gameID);
+        } catch (ResponseException e) {
             System.out.println(e.getMessage());
             help();
         }
-
-    }
-    public void observeGame(){
-
     }
     public void quit(){
         // exit the program
