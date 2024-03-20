@@ -103,7 +103,7 @@ public class PostLogin {
             try {
                 serverFacade.joinGame(gameID, playerColor);
                 System.out.println("successfully joined");
-                new GamePlay(scanner, serverFacade).drawBoard();
+                new CreateBoard();
             } catch (ResponseException e) {
                 System.out.println(e.getMessage());
                 help();
