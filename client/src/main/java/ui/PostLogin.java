@@ -4,7 +4,9 @@ import Model.GameData;
 import exception.DataAccessException;
 import exception.ResponseException;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Scanner;
 
 public class PostLogin {
@@ -68,24 +70,45 @@ public class PostLogin {
     }
     public void listGames() throws ResponseException {
         int gameIndex = 1;
-        System.out.println("Games: ");
-        Collection<GameData> gamelist = serverFacade.listGames();
-        for (int i = 0; i < gamelist.size(); i++) {
-//            System.out.println(gameIndex + ". " + gamelist[i]);
+        try {
+            System.out.println("Games: ");
+            Collection<GameData> gamelist = serverFacade.listGames();
+            List<GameData> games = new ArrayList<>(gamelist);
+            for (int i = 0; i < gamelist.size(); i++) {
+                System.out.println(gameIndex + ". " + games.get(i));
+                int gameID = games.get(i).getGameID();
+                System.out.println("Game ID: " + gameID);
+                String blackUsername = games.get(i).getBlackUsername();
+                String whiteUsername = games.get(i).getWhiteUsername();
+                if (blackUsername != null) {
+                    System.out.println("black player: " + blackUsername);
+                    new GamePlay(scanner, serverFacade);
+                } else if (whiteUsername != null) {
+                    System.out.println("white player: " + whiteUsername);
+                    new GamePlay(scanner, serverFacade);
+                }
+                System.out.println("\n");
+            }
+        } catch(ResponseException e){
+            System.out.println(e.getMessage());
+            help();
         }
     }
     public void joinGame() throws ResponseException {
-        Collection<GameData> games = serverFacade.listGames();
-        System.out.println("game ID: ");
-        int gameID = scanner.nextInt();
+        Collection<GameData> gamelist = serverFacade.listGames();
+        List<GameData> games = new ArrayList<>(gamelist);
+        System.out.println("enter the number of the game you want to play: ");
+        int gameIndex = scanner.nextInt();
+        int gameID = games.get(gameIndex).getGameID();
         System.out.println("player color: ");
         String playerColor = scanner.next();
         try{
             serverFacade.joinGame(gameID,playerColor);
             System.out.println("successfully joined");
-            GamePlay playgame = new GamePlay(scanner,serverFacade);
+            new GamePlay(scanner,serverFacade);
         } catch (ResponseException e){
-
+            System.out.println(e.getMessage());
+            help();
         }
 
     }
