@@ -20,12 +20,11 @@ import java.util.Collection;
 
 public class ServerFacade {
     private final String serverUrl;
+    public String authToken;
     public ServerFacade(String url){
         serverUrl = url;
     }
-    public void register(){
 
-    }
     public void register(String username, String password, String email) throws ResponseException {
         String path = "/user";
         RegisterRequest requestBody =  new RegisterRequest(username, password, email);
@@ -75,7 +74,9 @@ public class ServerFacade {
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
             http.setRequestMethod(method);
             http.setDoOutput(true);
-
+            if (authToken != null) {
+                http.addRequestProperty("authorization", authToken);
+            }
             writeBody(request, http);
             http.connect();
             throwIfNotSuccessful(http);
