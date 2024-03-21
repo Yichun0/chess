@@ -19,15 +19,17 @@ public class PreLogin {
                 quit - playing chess
                 help - with possible commands
                 """);
-        String command = scanner.next();
-        switch (command){
-            case "help" -> help();
-            case "register" -> register();
-            case "login" -> login();
-            case " quit" -> quit();
-            default -> run();
+        while(true) {
+            System.out.print("join game ");
+            String command = scanner.nextLine();
+            switch (command) {
+                case "help" -> help();
+                case "register" -> register();
+                case "login" -> login();
+                case " quit" -> quit();
+                default -> run();
+            }
         }
-
     }
     public void help(){
         // display text informing user actions
@@ -42,28 +44,28 @@ public class PreLogin {
     public void login(){
         //prompt the user to input log in information
         System.out.println("username: ");
-        String username = scanner.next();
+        String username = scanner.nextLine();
         System.out.println("password: ");
-        String password = scanner.next();
+        String password = scanner.nextLine();
         // call server login API
         try{
             serverFacade.login(username,password);
-            System.out.println(username + "is successfully logged in");
+            System.out.println(username + " is successfully logged in" + "\n");
             PostLogin postLogin = new PostLogin(scanner,serverFacade);
             postLogin.run();
         } catch (ResponseException e) {
-            throw new RuntimeException(e);
+            System.out.println(e.getMessage());
         }
         // successful log in --> transition to PostLogin UI
 
     }
     public void register(){
         System.out.println("username: ");
-        String username = scanner.next();
+        String username = scanner.nextLine();
         System.out.println("password: ");
-        String password = scanner.next();
+        String password = scanner.nextLine();
         System.out.println("email: ");
-        String email = scanner.next();
+        String email = scanner.nextLine();
         try{
             serverFacade.register(username, password, email);
             System.out.println(username + " is successfully registered in" + "\n");
@@ -71,10 +73,6 @@ public class PreLogin {
             postLogin.run();
         } catch (ResponseException e) {
             System.out.println("Registration Error");
-            throw new RuntimeException(e);
         }
-        // input register information
-        // call register API and Login API
-        //successful --> transition to PostLogin
     }
 }

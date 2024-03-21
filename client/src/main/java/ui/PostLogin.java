@@ -25,17 +25,19 @@ public class PostLogin {
                 quit
                 help
                 """);
-        String command = scanner.next();
-        switch (command){
-            case "help" -> help();
-            case "logout" -> logout();
-            case "create game" -> createGame();
-            case "list games" -> listGames();
-            case "join game or observe game" -> joinGame();
-            case "quit" -> quit();
-            default -> run();
+        while(true) {
+            System.out.print("play game ");
+            String command = scanner.nextLine();
+            switch (command) {
+                case "help" -> help();
+                case "logout" -> logout();
+                case "create game" -> createGame();
+                case "list games" -> listGames();
+                case "join game or observe game" -> joinGame();
+                case "quit" -> quit();
+                default -> run();
+            }
         }
-
     }
     public void help() throws ResponseException {
         // display text informing user actions
@@ -56,7 +58,7 @@ public class PostLogin {
     public void createGame() throws ResponseException{
         try {
             System.out.println("New game Name: ");
-            String gameName = scanner.next();
+            String gameName = scanner.nextLine();
             serverFacade.createGame(gameName);
             System.out.println("successfully create game" + gameName);
         } catch (ResponseException e) {
@@ -96,7 +98,7 @@ public class PostLogin {
         int gameIndex = scanner.nextInt();
         int gameID = games.get(gameIndex).getGameID();
         System.out.println("player color: ");
-        String playerColor = scanner.next();
+        String playerColor = scanner.nextLine();
         if (playerColor == null) {
             observeGame(gameIndex,games);
         } else {
