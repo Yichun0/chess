@@ -40,7 +40,9 @@ public class ServerFacade {
     public LoginRespond login(String username, String password) throws ResponseException {
         var path = "/session";
         LoginRequest requestBody = new LoginRequest(username, password);
-        return this.makeRequest("POST", path, requestBody, LoginRespond.class);
+        LoginRespond respond =  this.makeRequest("POST", path, requestBody, LoginRespond.class);
+        authToken = respond.getAuthToken();
+        return respond;
     }
 
     public Collection<GameData> listGames() throws ResponseException {
