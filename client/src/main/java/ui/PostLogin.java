@@ -26,7 +26,7 @@ public class PostLogin {
                 help
                 """);
         while(true) {
-            System.out.print("play game ");
+            System.out.print("play a game >>> ");
             String command = scanner.nextLine();
             switch (command) {
                 case "help" -> help();

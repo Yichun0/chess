@@ -20,7 +20,7 @@ public class PreLogin {
                 help - with possible commands
                 """);
         while(true) {
-            System.out.print("join game ");
+            System.out.print("start a game >>> ");
             String command = scanner.nextLine();
             switch (command) {
                 case "help" -> help();
