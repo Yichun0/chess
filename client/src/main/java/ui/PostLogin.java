@@ -7,7 +7,6 @@ import exception.ResponseException;
 import java.util.*;
 
 public class PostLogin {
-    private String serverUrl;
     private Scanner scanner;
     private ServerFacade serverFacade;
     public PostLogin(Scanner scanner, ServerFacade server){
@@ -19,21 +18,21 @@ public class PostLogin {
         System.out.println("""
                 create game
                 list games
-                join games
-                observe games
+                join game
+                observe game
                 logout
                 quit
                 help
                 """);
         while(true) {
-            System.out.print("play a game >>> ");
+            System.out.print("play a game >>> " +"\n");
             String command = scanner.nextLine();
             switch (command) {
                 case "help" -> help();
                 case "logout" -> logout();
                 case "create game" -> createGame();
                 case "list games" -> listGames();
-                case "join game or observe game" -> joinGame();
+                case "join game", "observe game"-> joinGame();
                 case "quit" -> quit();
                 default -> run();
             }
@@ -73,7 +72,7 @@ public class PostLogin {
             Collection<GameData> gamelist = serverFacade.listGames();
             List<GameData> games = new ArrayList<>(gamelist);
             for (int i = 0; i < gamelist.size(); i++) {
-                System.out.println(gameIndex + ". " + games.get(i));
+                System.out.println(gameIndex + i + ". " + games.get(i).getGameName());
                 int gameID = games.get(i).getGameID();
                 System.out.println("Game ID: " + gameID);
                 String blackUsername = games.get(i).getBlackUsername();
@@ -96,16 +95,18 @@ public class PostLogin {
         System.out.println("You can join game or observe game by not entering a player color");
         System.out.println("enter the number of the game you want to play or observe: ");
         int gameIndex = scanner.nextInt();
-        int gameID = games.get(gameIndex).getGameID();
+        int gameID = games.get(gameIndex - 1).getGameID();
         System.out.println("player color: ");
-        String playerColor = scanner.nextLine();
+        String playerColor = scanner.next();
         if (playerColor == null) {
             observeGame(gameIndex,games);
         } else {
             try {
+                CreateBoard.drawColorBoard("white");
+                CreateBoard.drawColorBoard("Black");
                 serverFacade.joinGame(gameID, playerColor);
                 System.out.println("successfully joined");
-                new CreateBoard();
+
             } catch (ResponseException e) {
                 System.out.println(e.getMessage());
                 help();

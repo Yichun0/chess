@@ -28,7 +28,8 @@ public class ServerFacade {
     public void register(String username, String password, String email) throws ResponseException {
         String path = "/user";
         RegisterRequest requestBody =  new RegisterRequest(username, password, email);
-        this.makeRequest("POST", path, requestBody, RegisterResult.class,  null);
+        RegisterResult registerResult = this.makeRequest("POST", path, requestBody, RegisterResult.class,  null);
+        authToken = registerResult.authToken();
     }
 
 
