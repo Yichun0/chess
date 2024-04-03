@@ -32,7 +32,8 @@ public class PostLogin {
                 case "logout" -> logout();
                 case "create game" -> createGame();
                 case "list games" -> listGames();
-                case "join game", "observe game"-> joinGame();
+                case "join game"-> joinGame();
+                case "observe game" -> observeGame();
                 case "quit" -> quit();
                 default -> run();
             }
@@ -92,18 +93,17 @@ public class PostLogin {
     public void joinGame() throws ResponseException {
         Collection<GameData> gamelist = serverFacade.listGames();
         List<GameData> games = new ArrayList<>(gamelist);
-        System.out.println("You can join game or observe game by not entering a player color");
-        System.out.println("enter the number of the game you want to play or observe: ");
+        System.out.println("enter the number of the game you want to play: ");
         int gameIndex = scanner.nextInt();
         int gameID = games.get(gameIndex - 1).getGameID();
         System.out.println("player color: ");
         String playerColor = scanner.next();
         if (playerColor == null) {
-            observeGame(gameIndex,games);
+            observeGame();
         } else {
             try {
-                CreateBoard.drawColorBoard("white");
-                CreateBoard.drawColorBoard("Black");
+                GamePlay gamePlay = new GamePlay(scanner,serverFacade,playerColor);
+                gamePlay.help();
                 serverFacade.joinGame(gameID, playerColor);
                 System.out.println("successfully joined");
 
@@ -113,10 +113,14 @@ public class PostLogin {
             }
         }
     }
-    public void observeGame(int gameIndex, List<GameData> games) throws ResponseException {
-        int gameID = games.get(gameIndex).getGameID();
+    public void observeGame() throws ResponseException {
+        Collection<GameData> gamelist = serverFacade.listGames();
+        List<GameData> games = new ArrayList<>(gamelist);
+        System.out.println("enter the number of the game you want to observe: ");
+        int gameIndex = scanner.nextInt();
+        int gameID = games.get(gameIndex - 1).getGameID();
         try {
-            serverFacade.joinGame(gameID, null);
+            serverFacade.observeGame(gameID);
             System.out.println("successfully joined as observer for " + gameID);
         } catch (ResponseException e) {
             System.out.println(e.getMessage());

@@ -65,6 +65,12 @@ public class ServerFacade {
         this.makeRequest("PUT", path, request, null,authToken);
     }
 
+    public void observeGame(int gameID) throws ResponseException{
+        String path = "/game";
+        JoinGameRequest request = new JoinGameRequest(null, gameID);
+        this.makeRequest("POST", path, request,null,authToken);
+
+    }
 
     public void clear() throws ResponseException {
         String path = "/db";
