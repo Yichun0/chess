@@ -102,10 +102,11 @@ public class PostLogin {
             observeGame();
         } else {
             try {
-                GamePlay gamePlay = new GamePlay(scanner,serverFacade,playerColor);
-                gamePlay.help();
                 serverFacade.joinGame(gameID, playerColor);
                 System.out.println("successfully joined");
+                //websocket connection
+                GamePlay gamePlay = new GamePlay(scanner,serverFacade,playerColor);
+                gamePlay.help();
 
             } catch (ResponseException e) {
                 System.out.println(e.getMessage());

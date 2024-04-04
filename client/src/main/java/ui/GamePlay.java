@@ -6,6 +6,8 @@ import chess.ChessPiece;
 import chess.ChessPosition;
 import exception.ResponseException;
 import ui.EscapeSequences;
+import ui.WebSocket.ServerMessageHandler;
+import webSocketMessages.serverMessages.ServerMessage;
 
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
@@ -13,7 +15,7 @@ import java.util.Scanner;
 
 import static ui.EscapeSequences.*;
 
-public class GamePlay {
+public class GamePlay implements ServerMessageHandler {
     private Scanner scanner;
     private ServerFacade serverFacade;
     private String playerColor;
@@ -70,4 +72,8 @@ public class GamePlay {
     }
 
 
+    @Override
+    public void notify(ServerMessage serverMessage) {
+
+    }
 }

@@ -19,7 +19,6 @@ public class CreateBoard {
 
     public static void drawColorBoard(String teamColor) {
         ChessBoard board = new ChessBoard();
-        board.resetBoard();
         drawGeneralBoard(board, teamColor);
     }
 

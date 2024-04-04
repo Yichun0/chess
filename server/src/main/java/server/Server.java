@@ -1,5 +1,7 @@
 package server;
 
+
+import Websocket.WebSocketHandler;
 import server.Handlers.*;
 import spark.*;
 
@@ -32,6 +34,9 @@ public class Server {
 
         JoinGameHandler joinGameHandler = new JoinGameHandler();
         Spark.put("/game", joinGameHandler);
+
+        WebSocketHandler webSocketHandler = new WebSocketHandler();
+        Spark.webSocket("/connect", webSocketHandler);
 
         Spark.awaitInitialization();
         return Spark.port();
