@@ -1,5 +1,6 @@
 package ui.WebSocket;
 
+import chess.ChessGame;
 import com.google.gson.Gson;
 import com.sun.nio.sctp.NotificationHandler;
 import exception.DataAccessException;
@@ -48,8 +49,13 @@ public class WebSocketFacade extends Endpoint {
 
     }
     // methods for each userGameCommands to send message to server
-    public void joinPlayer(String Message){
-
+    public void joinPlayer(String authToken, int gameID, ChessGame.TeamColor playerColor) throws ResponseException {
+        try {
+            var command = new UserGameCommand(authToken);
+            this.session.getBasicRemote().sendText(new Gson().toJson(command));
+        } catch (IOException e) {
+            throw new ResponseException(500, e.getMessage());
+        }
     }
 
     public void joinObserver(){

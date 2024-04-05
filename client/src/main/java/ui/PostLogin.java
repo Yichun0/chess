@@ -104,9 +104,9 @@ public class PostLogin {
             try {
                 serverFacade.joinGame(gameID, playerColor);
                 System.out.println("successfully joined");
-                //websocket connection
                 GamePlay gamePlay = new GamePlay(scanner,serverFacade,playerColor);
                 gamePlay.help();
+                //websocket connection
 
             } catch (ResponseException e) {
                 System.out.println(e.getMessage());
