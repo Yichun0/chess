@@ -1,15 +1,20 @@
 package ui;
 
 import Model.GameData;
-import exception.DataAccessException;
+import chess.ChessGame;
 import exception.ResponseException;
+import ui.WebSocket.WebSocketFacade;
 
+import java.io.IOException;
 import java.util.*;
 
 public class PostLogin {
     private Scanner scanner;
     private ServerFacade serverFacade;
-    public PostLogin(Scanner scanner, ServerFacade server){
+
+    private String Username;
+//    private WebSocketFacade webSocketFacade = new WebSocketFacade("http://localhost:8080");
+    public PostLogin(Scanner scanner, ServerFacade server, String username) throws ResponseException {
         this.scanner = new Scanner(System.in);
         this.serverFacade = server;
     }
@@ -90,7 +95,13 @@ public class PostLogin {
             help();
         }
     }
-    public void joinGame() throws ResponseException {
+    public void joinGame() throws ResponseException{
+//        try{
+//        WebSocketFacade webSocketFacade = new WebSocketFacade("http://localhost:8080");
+//        webSocketFacade.sendMessage("this is the client");}
+//        catch (IOException e){
+//            System.out.println(e.getMessage());
+//        }
         Collection<GameData> gamelist = serverFacade.listGames();
         List<GameData> games = new ArrayList<>(gamelist);
         System.out.println("enter the number of the game you want to play: ");
@@ -104,9 +115,14 @@ public class PostLogin {
             try {
                 serverFacade.joinGame(gameID, playerColor);
                 System.out.println("successfully joined");
+                //websocket connection
+                if (playerColor.equalsIgnoreCase("White")){
+                WebSocketFacade.joinPlayer(serverFacade.getAuthToken(),gameID, ChessGame.TeamColor.WHITE);}
+                else{
+                    WebSocketFacade.joinPlayer(serverFacade.getAuthToken(),gameID, ChessGame.TeamColor.BLACK);
+                }
                 GamePlay gamePlay = new GamePlay(scanner,serverFacade,playerColor);
                 gamePlay.help();
-                //websocket connection
 
             } catch (ResponseException e) {
                 System.out.println(e.getMessage());

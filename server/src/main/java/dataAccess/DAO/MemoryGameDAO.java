@@ -4,6 +4,7 @@ import exception.DataAccessException;
 import Model.GameData;
 import Requests.JoinGameRequest;
 
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,6 +13,21 @@ public class MemoryGameDAO implements GameDAO{
     public static Map<Integer, GameData> gameDatas = new HashMap<>();
     public void clearGameDAO(){
         gameDatas.clear();
+    }
+
+    @Override
+    public String getGame(int gameID) throws DataAccessException {
+        return null;
+    }
+
+    @Override
+    public int getGameID(String gameName) throws DataAccessException, SQLException {
+        return 0;
+    }
+
+    @Override
+    public String getGameName(int gameID) throws DataAccessException {
+        return null;
     }
 
     @Override

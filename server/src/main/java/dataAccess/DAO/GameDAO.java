@@ -9,6 +9,9 @@ import java.util.Collection;
 
 public interface GameDAO {
     void clearGameDAO() throws DataAccessException;
+    public String getGame(int gameID) throws DataAccessException ;
+    int getGameID(String gameName) throws DataAccessException, SQLException;
+    String getGameName(int gameID) throws DataAccessException;
     void joinGame(String username, JoinGameRequest request ) throws DataAccessException, SQLException;
 
     int createGame(GameData gameData) throws DataAccessException;

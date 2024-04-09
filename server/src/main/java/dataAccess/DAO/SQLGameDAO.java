@@ -12,6 +12,8 @@ import java.sql.*;
 import java.util.*;
 
 public class SQLGameDAO implements GameDAO {
+    public int newGameID;
+    public String gameName;
     public static Map<Integer, GameData> gameDatas = new HashMap<>();
 
     public void clearGameDAO() throws DataAccessException {
@@ -48,8 +50,63 @@ public class SQLGameDAO implements GameDAO {
             throw new DataAccessException(e.getMessage());
         }
     }
+    public int getGameID(String gameName) throws DataAccessException, SQLException {
+        try (Connection connection = DatabaseManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT gameID FROM gameTable WHERE gameName = ?")) {
+            preparedStatement.setString(1, gameName);
+            try (ResultSet rs = preparedStatement.executeQuery()) {
+                if (rs.next()) {
+                    newGameID = rs.getInt("game_id");
+                }
+            }
+        } catch (SQLException e) {
+            throw new DataAccessException(e.getMessage());
+        }
+        newGameID++;
+        return newGameID;
+    }
+    public boolean playerTaken(String username, String playerColor) throws DataAccessException {
+        try (Connection connection = DatabaseManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT gameName FROM gameTable WHERE gameID = ?")) {
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return true;
+    }
 
+    public String getGame(int gameID) throws DataAccessException {
+        String chessGame = null;
+        try (Connection connection = DatabaseManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT chessGame FROM gameTable WHERE gameID = ?")) {
+            preparedStatement.setInt(1, gameID);
+            try (ResultSet rs = preparedStatement.executeQuery()) {
+                if (rs.next()) {
+                    chessGame = rs.getString("chessGame");
+
+                }
+            }
+        } catch (SQLException e) {
+            throw new DataAccessException(e.getMessage());
+        }
+        return chessGame;
+    }
+
+        public String getGameName (int gameID) throws DataAccessException {
+        try (Connection connection = DatabaseManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT gameName FROM gameTable WHERE gameID = ?")) {
+            preparedStatement.setInt(1, gameID);
+            try (ResultSet rs = preparedStatement.executeQuery()) {
+                if (rs.next()) {
+                    String gameName = rs.getString("gameName");
+                }
+            }
+        } catch (SQLException e) {
+            throw new DataAccessException(e.getMessage());
+        }
+        return gameName;
+    }
     public boolean findGame(String gameName, int gameID) throws DataAccessException {
+        // check whether the game exit in the database or not
         GameData game = new GameData(gameID, null, null, gameName, null);
         try (Connection connection = DatabaseManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM gameTable WHERE gameID = ?")) {

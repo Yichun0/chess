@@ -7,6 +7,7 @@ import chess.ChessPosition;
 import exception.ResponseException;
 import ui.EscapeSequences;
 import ui.WebSocket.ServerMessageHandler;
+import ui.WebSocket.WebSocketFacade;
 import webSocketMessages.serverMessages.ServerMessage;
 
 import java.io.PrintStream;
@@ -19,10 +20,12 @@ public class GamePlay implements ServerMessageHandler {
     private Scanner scanner;
     private ServerFacade serverFacade;
     private String playerColor;
-    public GamePlay(Scanner scanner, ServerFacade server, String playercolor){
+    private WebSocketFacade webSocketFacade;
+    private ChessBoard board;
+    public GamePlay(Scanner scanner, ServerFacade server, String playerColor){
         this.scanner = new Scanner(System.in);
         this.serverFacade = server;
-        this.playerColor = playercolor;
+        this.playerColor = playerColor;
     }
     public void run() throws ResponseException {
         System.out.println("Welcome to the chess game.");
@@ -59,6 +62,7 @@ public class GamePlay implements ServerMessageHandler {
         CreateBoard.drawColorBoard(playerColor);
     }
     public void leave(){
+
 
     }
     public void makeMoves(){

@@ -1,47 +1,52 @@
 package ui.WebSocket;
 
 import chess.ChessGame;
+import chess.ChessMove;
 import com.google.gson.Gson;
-import com.sun.nio.sctp.NotificationHandler;
-import exception.DataAccessException;
 import exception.ResponseException;
-import webSocketMessages.JoinPlayer;
+import ui.CreateBoard;
+import webSocketMessages.serverMessages.LoadGame;
 import webSocketMessages.serverMessages.ServerMessage;
-import webSocketMessages.userCommands.UserGameCommand;
+import webSocketMessages.userCommands.*;
 
-import javax.management.Notification;
 import javax.websocket.*;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 
 public class WebSocketFacade extends Endpoint {
-
-    ServerMessageHandler serverMessageHandler;
     private final Session session;
 
-    public WebSocketFacade(String url, ServerMessageHandler serverMessageHandler) throws ResponseException {
+    public WebSocketFacade() throws ResponseException {
         try {
-            url = url.replace("http", "ws");
-            URI socketURI = new URI(url + "/connect");
-            this.serverMessageHandler = serverMessageHandler;
+            URI uri = new URI("ws://localhost:8080/connect");
 
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
-            this.session = container.connectToServer(this, socketURI);
+            this.session = container.connectToServer(this, uri);
 
             //set message handler
             this.session.addMessageHandler(new MessageHandler.Whole<String>() {
                 @Override
                 public void onMessage(String message) {
-                    ServerMessage notification = new Gson().fromJson(message, ServerMessage.class);
-                    serverMessageHandler.notify(notification);
+                    ServerMessage serverMessage = new Gson().fromJson(message, ServerMessage.class);
+                    switch (serverMessage.getServerMessageType()){
+                        case ERROR, NOTIFICATION -> System.out.println(message);
+                        case LOAD_GAME -> {
+                            LoadGame gameObj = new Gson().fromJson(message, LoadGame.class);
+                            ChessGame currentGame = gameObj.getGame();
+                            String color = gameObj.getPalyerColor();
+                            CreateBoard.drawGeneralBoard(currentGame.getBoard(),color);
+                        }
+
+                    }
                 }
             });
         } catch (DeploymentException | IOException | URISyntaxException ex) {
             throw new ResponseException(500, ex.getMessage());
         }
+    }
+    public void sendMessage(String message) throws IOException {
+        this.session.getBasicRemote().sendText(message);
     }
 
     @Override
@@ -49,27 +54,50 @@ public class WebSocketFacade extends Endpoint {
 
     }
     // methods for each userGameCommands to send message to server
-    public void joinPlayer(String authToken, int gameID, ChessGame.TeamColor playerColor) throws ResponseException {
+    public static void joinPlayer(String authToken, int gameID, ChessGame.TeamColor playerColor){
         try {
-            var command = new UserGameCommand(authToken);
-            this.session.getBasicRemote().sendText(new Gson().toJson(command));
-        } catch (IOException e) {
-            throw new ResponseException(500, e.getMessage());
+            WebSocketFacade wsf =  new WebSocketFacade();
+            var command = new JoinPlayer(gameID,playerColor,authToken);
+            wsf.sendMessage(new Gson().toJson(command));
+        } catch (IOException | ResponseException e) {
+            System.out.println(e.getMessage());
         }
     }
 
-    public void joinObserver(){
+    public void joinObserver(int gameID, String authToken){
+        try{
+            var command = new JoinObserver(gameID, authToken);
+            this.sendMessage(new Gson().toJson(command));
+        } catch (IOException e){
+            System.out.println(e.getMessage());
+        }
 
     }
 
-    public void makeMove(){
+    public void makeMove(String authToken, int gameID, ChessMove move){
+        try{
+            var command = new MakeMoves(authToken,gameID,move);
+            this.sendMessage(new Gson().toJson(command));
+        } catch (IOException e){
+            System.out.println(e.getMessage());
+        }
 
     }
-    public void leave(){
-
+    public void leave(String authToken, int gameID){
+        try{
+            var command = new LeaveGame(authToken,gameID);
+            this.sendMessage(new Gson().toJson(command));
+        } catch (IOException e){
+            System.out.println(e.getMessage());
+        }
     }
-    public void resign(){
-
+    public void resign(String authToken, int gameID){
+        try{
+            var command = new ResignGame(authToken,gameID);
+            this.sendMessage(new Gson().toJson(command));
+        } catch (IOException e){
+            System.out.println(e.getMessage());
+        }
     }
 
 }

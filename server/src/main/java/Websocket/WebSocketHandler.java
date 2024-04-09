@@ -1,6 +1,7 @@
 package Websocket;
 
 import Model.AuthData;
+import chess.ChessGame;
 import com.google.gson.Gson;
 import dataAccess.DAO.AuthDAO;
 import dataAccess.DAO.GameDAO;
@@ -10,13 +11,24 @@ import exception.DataAccessException;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
-import webSocketMessages.JoinPlayer;
+import webSocketMessages.userCommands.JoinPlayer;
+import webSocketMessages.serverMessages.ServerMessage;
 import webSocketMessages.userCommands.UserGameCommand;
+
+import java.io.IOException;
+import java.sql.SQLException;
 
 @WebSocket
 public class WebSocketHandler {
+
+//    Map<Integer, List<Connection>> individualGameMap = new HashMap<>();
+    private Session session;
+//    public final ConcurrentHashMap<String, Connection> userMap = new ConcurrentHashMap<>();
     @OnWebSocketMessage
-    public void onMessage(Session session, String message) throws DataAccessException {
+    public void onMessage(Session session, String message) throws DataAccessException, SQLException, IOException {
+//        String resp = "hi, this is the server";
+//        System.out.println(resp);
+//        session.getRemote().sendString("hello");
         UserGameCommand userCommand = new Gson().fromJson(message, UserGameCommand.class);
         switch (userCommand.getCommandType()){
             case JOIN_PLAYER -> joinPlayer(session, message);
@@ -27,7 +39,7 @@ public class WebSocketHandler {
         }
 
     }
-    public void joinPlayer(Session session, String message) throws DataAccessException {
+    public void joinPlayer(Session session, String message) throws DataAccessException, SQLException, IOException {
         // message is information for joinplayer
         JoinPlayer joinPlayer = new Gson().fromJson(message, JoinPlayer.class);
         int gameID = joinPlayer.getGameID();
@@ -35,8 +47,21 @@ public class WebSocketHandler {
         AuthDAO authDAO = new SQLAuthDao();
         String username = authDAO.getUsername(new AuthData(null,authToken));
         GameDAO gameDAO = new SQLGameDAO();
-        // find and verify the game
-        // verify authtoken, username
+        ChessGame.TeamColor playerColor =  joinPlayer.getPlayerColor();
+        ConnectionManager connectionManager = new ConnectionManager();
+        connectionManager.loadGame(playerColor.toString(),gameID,session);
+        String serMessage = "\n\033[0mNotification:  " + username + " has joined game " + gameID + " as " + playerColor.toString();
+        connectionManager.serverMessage(gameID,session,username,serMessage);
+
+//        userMap.put(authToken,connection);
+//        // find and verify the game
+//        if (gameID != gameDAO.getGameID(gameName)){
+//            badGameID(session);
+//        } // verify authtoken, username
+//        else if (authDAO.findAuthToken(new AuthData(username,authToken))) {
+//            badAuthToken(session);
+//        }
+        // verify player color not taken
     }
 
     public void joinObserver(){
@@ -52,4 +77,18 @@ public class WebSocketHandler {
     public void resign(){
 
     }
+//
+//    public void badGameID(Session session) throws IOException {
+//        String error = String.format("Invalid game ID");
+//        ServerMessage serverMessage = new ServerMessage();
+//        String errorMessage = serverMessage.serverErrorMessage(ServerMessage.ServerMessageType.ERROR,error);
+//        session.getRemote().sendString(new Gson().toJson(errorMessage));
+//    }
+//    public void badAuthToken(Session session) throws IOException{
+//        String error = String.format("Invalid authToken");
+//        ServerMessage serverMessage = new ServerMessage();
+//        String errorMessage = serverMessage.serverErrorMessage(ServerMessage.ServerMessageType.ERROR,error);
+//        session.getRemote().sendString(new Gson().toJson(errorMessage));
+//    }
+
 }
