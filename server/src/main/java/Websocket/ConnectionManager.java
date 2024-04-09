@@ -1,6 +1,5 @@
 package Websocket;
 
-import Model.AuthData;
 import chess.ChessGame;
 import com.google.gson.Gson;
 import dataAccess.DAO.GameDAO;
@@ -25,21 +24,19 @@ public class ConnectionManager {
         // find gameID
         // if game doesn't exist, create a new vector of connection
         var connection = new Connection(username, session);
-        if (!isNull(gameID)) {
-            if (connections.contains(gameID)) {
-                // game already documented
-                Vector<Connection> individualGame = connections.get(gameID);
-                individualGame.add(connection);
-                connections.put(gameID, individualGame);
-            } else {
-                Vector<Connection> individualGame = new Vector<>();
-                individualGame.add(connection);
-                connections.put(gameID, individualGame);
-            }
+        if (connections.contains(gameID)) {
+            // game already documented
+            Vector<Connection> individualGame = connections.get(gameID);
+            individualGame.add(connection);
+            connections.put(gameID, individualGame);
+        } else {
+            Vector<Connection> individualGame = new Vector<>();
+            individualGame.add(connection);
+            connections.put(gameID, individualGame);
         }
     }
 
-    public void serverMessage(int gameID, Session session, String rootUser, String message) throws IOException {
+    public void serverMessage(int gameID, String rootUser, String message) throws IOException {
         Vector<Connection> individualGame = connections.get(gameID);
         // broadcasting to everyone else
         for (Connection user : individualGame) {

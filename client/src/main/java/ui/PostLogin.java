@@ -65,7 +65,7 @@ public class PostLogin {
             System.out.println("New game Name: ");
             String gameName = scanner.nextLine();
             serverFacade.createGame(gameName);
-            System.out.println("successfully create game" + gameName);
+            System.out.println("successfully create game " + gameName);
         } catch (ResponseException e) {
             System.out.println(e.getMessage());
             help();
@@ -95,7 +95,7 @@ public class PostLogin {
             help();
         }
     }
-    public void joinGame() throws ResponseException{
+    public void joinGame() throws ResponseException {
 //        try{
 //        WebSocketFacade webSocketFacade = new WebSocketFacade("http://localhost:8080");
 //        webSocketFacade.sendMessage("this is the client");}
@@ -117,7 +117,7 @@ public class PostLogin {
                 System.out.println("successfully joined");
                 //websocket connection
                 if (playerColor.equalsIgnoreCase("White")){
-                WebSocketFacade.joinPlayer(serverFacade.getAuthToken(),gameID, ChessGame.TeamColor.WHITE);}
+                    WebSocketFacade.joinPlayer(serverFacade.getAuthToken(),gameID, ChessGame.TeamColor.WHITE);}
                 else{
                     WebSocketFacade.joinPlayer(serverFacade.getAuthToken(),gameID, ChessGame.TeamColor.BLACK);
                 }

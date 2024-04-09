@@ -42,11 +42,11 @@ public class GamePlay implements ServerMessageHandler {
             String command = scanner.nextLine();
             switch (command) {
                 case "help" -> help();
-                case "Redraw Chess Board" -> redrawBoard();
-                case "Leave" -> leave();
-                case "Make Move" -> makeMoves();
-                case "Resign"-> resign(); // forfeits the game
-                case "HighLight Legal Moves" -> highLightMoves();
+                case "redraw chess board" -> redrawBoard();
+                case "leave" -> leave();
+                case "make move" -> makeMoves();
+                case "resign"-> resign(); // forfeits the game
+                case "highLight legal moves" -> highLightMoves();
                 default -> run();
             }
         }
@@ -62,8 +62,9 @@ public class GamePlay implements ServerMessageHandler {
         CreateBoard.drawColorBoard(playerColor);
     }
     public void leave(){
-
-
+        System.out.println("You are leaving the game");
+        PreLogin preLogin = new PreLogin(scanner,serverFacade);
+        preLogin.help();
     }
     public void makeMoves(){
 
@@ -74,7 +75,6 @@ public class GamePlay implements ServerMessageHandler {
     public void highLightMoves(){
 
     }
-
 
     @Override
     public void notify(ServerMessage serverMessage) {

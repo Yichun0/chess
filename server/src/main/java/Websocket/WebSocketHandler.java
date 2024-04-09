@@ -23,7 +23,9 @@ public class WebSocketHandler {
 
 //    Map<Integer, List<Connection>> individualGameMap = new HashMap<>();
     private Session session;
-//    public final ConcurrentHashMap<String, Connection> userMap = new ConcurrentHashMap<>();
+    private ConnectionManager connectionManager = new ConnectionManager();
+
+    //    public final ConcurrentHashMap<String, Connection> userMap = new ConcurrentHashMap<>();
     @OnWebSocketMessage
     public void onMessage(Session session, String message) throws DataAccessException, SQLException, IOException {
 //        String resp = "hi, this is the server";
@@ -46,12 +48,12 @@ public class WebSocketHandler {
         String authToken = joinPlayer.getAuthString();
         AuthDAO authDAO = new SQLAuthDao();
         String username = authDAO.getUsername(new AuthData(null,authToken));
-        GameDAO gameDAO = new SQLGameDAO();
         ChessGame.TeamColor playerColor =  joinPlayer.getPlayerColor();
-        ConnectionManager connectionManager = new ConnectionManager();
-        connectionManager.loadGame(playerColor.toString(),gameID,session);
+        connectionManager.add(gameID,session,username);
         String serMessage = "\n\033[0mNotification:  " + username + " has joined game " + gameID + " as " + playerColor.toString();
-        connectionManager.serverMessage(gameID,session,username,serMessage);
+        connectionManager.serverMessage(gameID,username,serMessage);
+        connectionManager.loadGame(playerColor.toString(),gameID,session);
+
 
 //        userMap.put(authToken,connection);
 //        // find and verify the game
