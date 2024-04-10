@@ -6,8 +6,10 @@ import dataAccess.DAO.GameDAO;
 import dataAccess.DAO.SQLGameDAO;
 import exception.DataAccessException;
 import org.eclipse.jetty.websocket.api.Session;
+import webSocketMessages.serverMessages.ErrorMessage;
 import webSocketMessages.serverMessages.LoadGame;
 import webSocketMessages.serverMessages.Notification;
+import webSocketMessages.serverMessages.ServerMessage;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -24,7 +26,7 @@ public class ConnectionManager {
         // find gameID
         // if game doesn't exist, create a new vector of connection
         var connection = new Connection(username, session);
-        if (connections.contains(gameID)) {
+        if (connections.containsKey(gameID)) {
             // game already documented
             Vector<Connection> individualGame = connections.get(gameID);
             individualGame.add(connection);
@@ -35,8 +37,22 @@ public class ConnectionManager {
             connections.put(gameID, individualGame);
         }
     }
-
-    public void serverMessage(int gameID, String rootUser, String message) throws IOException {
+    public void sentErrorMessage(String message, Session session,String username) throws IOException {
+        ErrorMessage errorMessage = new ErrorMessage(message);
+//        Vector<Connection> individualGame = connections.get(gameID);
+        for (int gameID : connections.keySet()){
+            for (var connection : connections.get(gameID)){
+                if(connection.session.isOpen()){
+                    if(connection.getUsername().equalsIgnoreCase(username)){
+                        String errorMsg = new Gson().toJson(message);
+                        connection.sendMessage(errorMsg);
+                    }
+                }
+            }
+        }
+        session.getRemote().sendString(new Gson().toJson(errorMessage, ServerMessage.class));
+    }
+    public void notify(int gameID, String rootUser, String message) throws IOException {
         Vector<Connection> individualGame = connections.get(gameID);
         // broadcasting to everyone else
         for (Connection user : individualGame) {

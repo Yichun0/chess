@@ -1,5 +1,6 @@
 package dataAccess.DAO;
 
+import chess.ChessGame;
 import exception.DataAccessException;
 import Model.GameData;
 import Requests.JoinGameRequest;
@@ -21,6 +22,11 @@ public class MemoryGameDAO implements GameDAO{
     }
 
     @Override
+    public boolean playerTaken(int gameID, String playerColor, String username) {
+        return false;
+    }
+
+    @Override
     public int getGameID(String gameName) throws DataAccessException, SQLException {
         return 0;
     }
@@ -37,8 +43,7 @@ public class MemoryGameDAO implements GameDAO{
        return gameID;
     }
 
-    public boolean findGame(String gameName, int gameID){
-        GameData game = new GameData(gameID,null, null, gameName, null);
+    public boolean findGame(int gameID){
         return gameDatas.containsKey(gameID);
     }
 

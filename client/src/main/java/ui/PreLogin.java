@@ -52,7 +52,7 @@ public class PreLogin {
         try{
             serverFacade.login(username,password);
             System.out.println(username + " is successfully logged in" + "\n");
-            PostLogin postLogin = new PostLogin(scanner,serverFacade,username);
+            PostLogin postLogin = new PostLogin(scanner,serverFacade);
             postLogin.run();
         } catch (ResponseException e) {
             System.out.println(e.getMessage());
@@ -70,7 +70,7 @@ public class PreLogin {
         try{
             serverFacade.register(username, password, email);
             System.out.println(username + " is successfully registered in" + "\n");
-            PostLogin postLogin = new PostLogin(scanner, serverFacade,username);
+            PostLogin postLogin = new PostLogin(scanner, serverFacade);
             postLogin.run();
         } catch (ResponseException e) {
             System.out.println("Registration Error");

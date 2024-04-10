@@ -17,11 +17,10 @@ public class CreateBoard {
 //        drawColorBoard("black");
 //    }
 
-    public static void drawColorBoard(String teamColor) {
-        ChessBoard board = new ChessBoard();
-        drawGeneralBoard(board, teamColor);
-    }
-
+//    public static void drawColorBoard(String teamColor) {
+//        ChessBoard board = new ChessBoard();
+//        drawGeneralBoard(board, teamColor);
+//    }
     public static void drawGeneralBoard(ChessBoard chessBoard, String teamColor) {
         for (int row = 0; row < 10; row++) {
             if (row == 0 || row == 9) {

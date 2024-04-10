@@ -5,6 +5,7 @@ import chess.ChessMove;
 import com.google.gson.Gson;
 import exception.ResponseException;
 import ui.CreateBoard;
+import ui.GamePlay;
 import webSocketMessages.serverMessages.LoadGame;
 import webSocketMessages.serverMessages.ServerMessage;
 import webSocketMessages.userCommands.*;
@@ -36,6 +37,8 @@ public class WebSocketFacade extends Endpoint {
                             ChessGame currentGame = gameObj.getGame();
                             String color = gameObj.getPalyerColor();
                             CreateBoard.drawGeneralBoard(currentGame.getBoard(),color);
+                            GamePlay.board = currentGame.getBoard();
+
                         }
 
                     }
@@ -64,14 +67,14 @@ public class WebSocketFacade extends Endpoint {
         }
     }
 
-    public void joinObserver(int gameID, String authToken){
-        try{
-            var command = new JoinObserver(gameID, authToken);
-            this.sendMessage(new Gson().toJson(command));
-        } catch (IOException e){
+    public static void joinObserver(int gameID, String authToken){
+        try {
+            WebSocketFacade wsf =  new WebSocketFacade();
+            var command = new JoinObserver(gameID,authToken);
+            wsf.sendMessage(new Gson().toJson(command));
+        } catch (IOException | ResponseException e) {
             System.out.println(e.getMessage());
         }
-
     }
 
     public void makeMove(String authToken, int gameID, ChessMove move){

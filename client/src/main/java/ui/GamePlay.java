@@ -21,7 +21,8 @@ public class GamePlay implements ServerMessageHandler {
     private ServerFacade serverFacade;
     private String playerColor;
     private WebSocketFacade webSocketFacade;
-    private ChessBoard board;
+    public static ChessBoard board;
+
     public GamePlay(Scanner scanner, ServerFacade server, String playerColor){
         this.scanner = new Scanner(System.in);
         this.serverFacade = server;
@@ -58,13 +59,14 @@ public class GamePlay implements ServerMessageHandler {
     }
 
     public void redrawBoard(){
-        // draw a new board? or redraw the existing board?
-        CreateBoard.drawColorBoard(playerColor);
+       CreateBoard.drawGeneralBoard(board,playerColor);
+
     }
-    public void leave(){
+    public void leave() throws ResponseException {
         System.out.println("You are leaving the game");
-        PreLogin preLogin = new PreLogin(scanner,serverFacade);
-        preLogin.help();
+        PostLogin postLogin = new PostLogin(scanner,serverFacade);
+        postLogin.help();
+
     }
     public void makeMoves(){
 

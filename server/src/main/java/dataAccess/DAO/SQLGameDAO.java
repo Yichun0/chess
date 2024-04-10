@@ -13,7 +13,6 @@ import java.util.*;
 
 public class SQLGameDAO implements GameDAO {
     public int newGameID;
-    public String gameName;
     public static Map<Integer, GameData> gameDatas = new HashMap<>();
 
     public void clearGameDAO() throws DataAccessException {
@@ -65,13 +64,31 @@ public class SQLGameDAO implements GameDAO {
         newGameID++;
         return newGameID;
     }
-    public boolean playerTaken(String username, String playerColor) throws DataAccessException {
+    public boolean playerTaken(int gameID, String playerColor, String username){
         try (Connection connection = DatabaseManager.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement("SELECT gameName FROM gameTable WHERE gameID = ?")) {
-        } catch (SQLException e) {
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT whiteUsername, blackUsername FROM gameTable WHERE gameID = ?")) {
+            preparedStatement.setInt(1, gameID);
+            try (ResultSet result = preparedStatement.executeQuery()) {
+                if (result.next()) {
+                    if (playerColor.equalsIgnoreCase("white")) {
+                        // whiteUser
+                        String whiteUser = result.getString("whiteUsername");
+                        if (!Objects.equals(whiteUser, username)) {
+                            return true;
+                        }
+                    } else {
+                        String blackUser = result.getString("blackUsername");
+                        if (!Objects.equals(blackUser, username)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        catch (SQLException | DataAccessException e) {
             throw new RuntimeException(e);
         }
-        return true;
+        return false;
     }
 
     public String getGame(int gameID) throws DataAccessException {
@@ -92,12 +109,13 @@ public class SQLGameDAO implements GameDAO {
     }
 
         public String getGameName (int gameID) throws DataAccessException {
+        String gameName = null;
         try (Connection connection = DatabaseManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("SELECT gameName FROM gameTable WHERE gameID = ?")) {
             preparedStatement.setInt(1, gameID);
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 if (rs.next()) {
-                    String gameName = rs.getString("gameName");
+                    gameName = rs.getString("gameName");
                 }
             }
         } catch (SQLException e) {
@@ -105,12 +123,11 @@ public class SQLGameDAO implements GameDAO {
         }
         return gameName;
     }
-    public boolean findGame(String gameName, int gameID) throws DataAccessException {
+    public boolean findGame(int gameID) throws DataAccessException {
         // check whether the game exit in the database or not
-        GameData game = new GameData(gameID, null, null, gameName, null);
         try (Connection connection = DatabaseManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM gameTable WHERE gameID = ?")) {
-            preparedStatement.setInt(1, game.getGameID());
+            preparedStatement.setInt(1, gameID);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 return resultSet.next();
             } catch (SQLException se) {

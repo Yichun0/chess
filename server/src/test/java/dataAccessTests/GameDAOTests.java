@@ -28,7 +28,7 @@ public class GameDAOTests {
         GameData newgame = new GameData(1, null,null, "gameName",null);
         game.createGame(newgame);
         game.clearGameDAO();;
-        assertFalse(game.findGame("gameName",1));
+        assertFalse(game.findGame(1));
 
     }
 
@@ -36,7 +36,7 @@ public class GameDAOTests {
     public void createPositive() throws DataAccessException{
         GameData newgame = new GameData(1, null,null, "gameName",null);
         game.createGame(newgame);
-        assertTrue(game.findGame("gameName",1));
+        assertTrue(game.findGame(1));
     }
 
     @Test
@@ -54,13 +54,13 @@ public class GameDAOTests {
     public void findPositive() throws DataAccessException{
         GameData newgame = new GameData(1, null,null, "gameName",null);
         game.createGame(newgame);
-        assertTrue(game.findGame("gameName",1));
+        assertTrue(game.findGame(1));
     }
     @Test
     public void findNegative() throws DataAccessException{
         GameData newgame = new GameData(1, null,null, "gameName",null);
         game.createGame(newgame);
-        assertFalse(game.findGame("wrongID",2));
+        assertFalse(game.findGame(2));
     }
     @Test
     public void joinPositive() throws DataAccessException, SQLException {

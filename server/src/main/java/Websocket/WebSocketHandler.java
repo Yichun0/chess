@@ -11,6 +11,7 @@ import exception.DataAccessException;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
+import webSocketMessages.userCommands.JoinObserver;
 import webSocketMessages.userCommands.JoinPlayer;
 import webSocketMessages.serverMessages.ServerMessage;
 import webSocketMessages.userCommands.UserGameCommand;
@@ -28,20 +29,17 @@ public class WebSocketHandler {
     //    public final ConcurrentHashMap<String, Connection> userMap = new ConcurrentHashMap<>();
     @OnWebSocketMessage
     public void onMessage(Session session, String message) throws DataAccessException, SQLException, IOException {
-//        String resp = "hi, this is the server";
-//        System.out.println(resp);
-//        session.getRemote().sendString("hello");
         UserGameCommand userCommand = new Gson().fromJson(message, UserGameCommand.class);
         switch (userCommand.getCommandType()){
             case JOIN_PLAYER -> joinPlayer(session, message);
-            case JOIN_OBSERVER -> joinObserver();
+            case JOIN_OBSERVER -> joinObserver(session, message);
             case MAKE_MOVE -> makeMove();
             case LEAVE -> leave();
             case RESIGN -> resign();
         }
 
     }
-    public void joinPlayer(Session session, String message) throws DataAccessException, SQLException, IOException {
+    public void joinPlayer(Session session, String message) throws DataAccessException, IOException {
         // message is information for joinplayer
         JoinPlayer joinPlayer = new Gson().fromJson(message, JoinPlayer.class);
         int gameID = joinPlayer.getGameID();
@@ -49,25 +47,47 @@ public class WebSocketHandler {
         AuthDAO authDAO = new SQLAuthDao();
         String username = authDAO.getUsername(new AuthData(null,authToken));
         ChessGame.TeamColor playerColor =  joinPlayer.getPlayerColor();
-        connectionManager.add(gameID,session,username);
-        String serMessage = "\n\033[0mNotification:  " + username + " has joined game " + gameID + " as " + playerColor.toString();
-        connectionManager.serverMessage(gameID,username,serMessage);
-        connectionManager.loadGame(playerColor.toString(),gameID,session);
-
-
-//        userMap.put(authToken,connection);
-//        // find and verify the game
-//        if (gameID != gameDAO.getGameID(gameName)){
-//            badGameID(session);
-//        } // verify authtoken, username
-//        else if (authDAO.findAuthToken(new AuthData(username,authToken))) {
-//            badAuthToken(session);
-//        }
-        // verify player color not taken
+        GameDAO gameDAO = new SQLGameDAO();
+//      username match the white username
+        if (gameDAO.playerTaken(gameID,playerColor.toString(),username)){
+            String errorMessage = playerColor.toString() + " user is already taken";
+            connectionManager.sentErrorMessage(errorMessage,session,username);
+        } else if (!gameDAO.findGame(gameID)) {
+           // check bad gameID
+            String error = "Bad gameID";
+            connectionManager.sentErrorMessage(error, session,username);
+        } else if (!authDAO.findAuthToken(new AuthData(null,authToken))) {
+            String error = "Bad authToken";
+            connectionManager.sentErrorMessage(error,session,username);
+        }
+        else{
+            connectionManager.add(gameID,session,username);
+            String serMessage = "\n\033[0mNotification:  " + username + " has joined game " + gameID + " as " + playerColor.toString();
+            connectionManager.notify(gameID,username,serMessage);
+            connectionManager.loadGame(playerColor.toString(),gameID,session);
+        }
     }
 
-    public void joinObserver(){
-
+    public void joinObserver(Session session, String message) throws DataAccessException, IOException {
+        JoinObserver joinObserver = new Gson().fromJson(message, JoinObserver.class);
+        int gameID = joinObserver.getGameID();
+        String authToken = joinObserver.getAuthString();
+        AuthDAO authDAO = new SQLAuthDao();
+        String username = authDAO.getUsername(new AuthData(null, authToken));
+        GameDAO gameDAO = new SQLGameDAO();
+        if (!gameDAO.findGame(gameID)) {
+            // check bad gameID
+            String error = "Bad gameID";
+            connectionManager.sentErrorMessage(error, session, username);
+        } else if (!authDAO.findAuthToken(new AuthData(null, authToken))) {
+            String error = "Bad authToken";
+            connectionManager.sentErrorMessage(error, session, username);
+        } else {
+            connectionManager.add(gameID, session, username);
+            connectionManager.loadGame("white", gameID, session);
+            String serMessage = "\n\033[0mNotification:  " + username + " has joined game " + gameID + " as observer";
+            connectionManager.notify(gameID, username, serMessage);
+        }
     }
 
     public void makeMove(){

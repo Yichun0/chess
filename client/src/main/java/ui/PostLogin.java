@@ -14,7 +14,7 @@ public class PostLogin {
 
     private String Username;
 //    private WebSocketFacade webSocketFacade = new WebSocketFacade("http://localhost:8080");
-    public PostLogin(Scanner scanner, ServerFacade server, String username) throws ResponseException {
+    public PostLogin(Scanner scanner, ServerFacade server) throws ResponseException {
         this.scanner = new Scanner(System.in);
         this.serverFacade = server;
     }
@@ -139,6 +139,7 @@ public class PostLogin {
         try {
             serverFacade.observeGame(gameID);
             System.out.println("successfully joined as observer for " + gameID);
+            WebSocketFacade.joinObserver(gameID, serverFacade.getAuthToken());
         } catch (ResponseException e) {
             System.out.println(e.getMessage());
             help();

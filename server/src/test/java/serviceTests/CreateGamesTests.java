@@ -25,7 +25,7 @@ public class CreateGamesTests {
         authDAO.createAuthToken(authData);
         CreateGameRequest request = new CreateGameRequest("gameName");
         CreateGameRespond respond = createGameService.createGame(request,authData);
-        assertEquals(true, gameDAO.findGame("gameName",respond.getGameID()));
+        assertEquals(true, gameDAO.findGame(respond.getGameID()));
     }
     @Test
     public void NegativeTest() throws DataAccessException{
