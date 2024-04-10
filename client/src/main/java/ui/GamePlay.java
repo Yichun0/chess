@@ -22,11 +22,13 @@ public class GamePlay implements ServerMessageHandler {
     private String playerColor;
     private WebSocketFacade webSocketFacade;
     public static ChessBoard board;
+    private int gameID;
 
-    public GamePlay(Scanner scanner, ServerFacade server, String playerColor){
+    public GamePlay(Scanner scanner, ServerFacade server, String playerColor, int gameID){
         this.scanner = new Scanner(System.in);
         this.serverFacade = server;
         this.playerColor = playerColor;
+        this.gameID = gameID;
     }
     public void run() throws ResponseException {
         System.out.println("Welcome to the chess game.");
@@ -64,6 +66,7 @@ public class GamePlay implements ServerMessageHandler {
     }
     public void leave() throws ResponseException {
         System.out.println("You are leaving the game");
+        WebSocketFacade.leave(serverFacade.authToken,gameID);
         PostLogin postLogin = new PostLogin(scanner,serverFacade);
         postLogin.help();
 
@@ -72,6 +75,19 @@ public class GamePlay implements ServerMessageHandler {
 
     }
     public void resign(){
+        System.out.println("Are you sure you want to resign this game: T/F");
+        String answer = scanner.nextLine();
+        if(answer.equalsIgnoreCase("T")){
+            System.out.println("Game ended");
+        }
+        else{
+            try{
+                run();
+            } catch (ResponseException e){
+                System.out.println(e.getMessage());
+            }
+        }
+
 
     }
     public void highLightMoves(){

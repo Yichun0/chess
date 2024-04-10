@@ -17,7 +17,7 @@ import java.net.URISyntaxException;
 
 public class WebSocketFacade extends Endpoint {
     private final Session session;
-
+    static WebSocketFacade wsf = new WebSocketFacade();
     public WebSocketFacade() throws ResponseException {
         try {
             URI uri = new URI("ws://localhost:8080/connect");
@@ -59,20 +59,18 @@ public class WebSocketFacade extends Endpoint {
     // methods for each userGameCommands to send message to server
     public static void joinPlayer(String authToken, int gameID, ChessGame.TeamColor playerColor){
         try {
-            WebSocketFacade wsf =  new WebSocketFacade();
             var command = new JoinPlayer(gameID,playerColor,authToken);
             wsf.sendMessage(new Gson().toJson(command));
-        } catch (IOException | ResponseException e) {
+        } catch (IOException e) {
             System.out.println(e.getMessage());
         }
     }
 
     public static void joinObserver(int gameID, String authToken){
         try {
-            WebSocketFacade wsf =  new WebSocketFacade();
             var command = new JoinObserver(gameID,authToken);
             wsf.sendMessage(new Gson().toJson(command));
-        } catch (IOException | ResponseException e) {
+        } catch (IOException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -86,10 +84,10 @@ public class WebSocketFacade extends Endpoint {
         }
 
     }
-    public void leave(String authToken, int gameID){
+    public static void leave(String authToken, int gameID){
         try{
             var command = new LeaveGame(authToken,gameID);
-            this.sendMessage(new Gson().toJson(command));
+            wsf.sendMessage(new Gson().toJson(command));
         } catch (IOException e){
             System.out.println(e.getMessage());
         }

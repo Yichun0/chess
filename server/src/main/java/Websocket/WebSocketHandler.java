@@ -94,23 +94,12 @@ public class WebSocketHandler {
 
     }
     public void leave(){
+        // delete vector of the session
+
 
     }
     public void resign(){
 
     }
-//
-//    public void badGameID(Session session) throws IOException {
-//        String error = String.format("Invalid game ID");
-//        ServerMessage serverMessage = new ServerMessage();
-//        String errorMessage = serverMessage.serverErrorMessage(ServerMessage.ServerMessageType.ERROR,error);
-//        session.getRemote().sendString(new Gson().toJson(errorMessage));
-//    }
-//    public void badAuthToken(Session session) throws IOException{
-//        String error = String.format("Invalid authToken");
-//        ServerMessage serverMessage = new ServerMessage();
-//        String errorMessage = serverMessage.serverErrorMessage(ServerMessage.ServerMessageType.ERROR,error);
-//        session.getRemote().sendString(new Gson().toJson(errorMessage));
-//    }
 
 }

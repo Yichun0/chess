@@ -37,6 +37,17 @@ public class ConnectionManager {
             connections.put(gameID, individualGame);
         }
     }
+    public void deleteUser(String gameID, String username){
+        Vector<Connection> individualGame = connections.get(gameID);
+        // getting the game that the user is in
+        for (Connection user: individualGame){
+            if(Objects.equals(user.getUsername(), username)){
+                connections.remove(username);
+            }
+        }
+    }
+
+    public void game
     public void sentErrorMessage(String message, Session session,String username) throws IOException {
         ErrorMessage errorMessage = new ErrorMessage(message);
 //        Vector<Connection> individualGame = connections.get(gameID);

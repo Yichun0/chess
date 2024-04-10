@@ -121,7 +121,7 @@ public class PostLogin {
                 else{
                     WebSocketFacade.joinPlayer(serverFacade.getAuthToken(),gameID, ChessGame.TeamColor.BLACK);
                 }
-                GamePlay gamePlay = new GamePlay(scanner,serverFacade,playerColor);
+                GamePlay gamePlay = new GamePlay(scanner,serverFacade,playerColor,gameID);
                 gamePlay.help();
 
             } catch (ResponseException e) {
