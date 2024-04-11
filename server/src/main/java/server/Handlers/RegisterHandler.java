@@ -17,9 +17,9 @@ public class RegisterHandler implements Route {
         try{
             Gson gson = new Gson();
             RegisterRequest registerRequest = gson.fromJson(request.body(),RegisterRequest.class);
-            RegisterServices RegServ = new RegisterServices();
+            RegisterServices regServ = new RegisterServices();
             response.status(200);
-            RegisterResult successRep = RegServ.registerUser(registerRequest);
+            RegisterResult successRep = regServ.registerUser(registerRequest);
             return gson.toJson(successRep);
         }
         catch (DataAccessException e){

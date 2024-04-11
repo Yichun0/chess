@@ -12,15 +12,6 @@ import static ui.EscapeSequences.*;
 import static ui.EscapeSequences.SET_BG_COLOR_DARK_GREY;
 
 public class CreateBoard {
-//    public static void main(String[] arg) {
-//        drawColorBoard("white");
-//        drawColorBoard("black");
-//    }
-
-//    public static void drawColorBoard(String teamColor) {
-//        ChessBoard board = new ChessBoard();
-//        drawGeneralBoard(board, teamColor);
-//    }
     public static void drawGeneralBoard(ChessBoard chessBoard, String teamColor) {
         for (int row = 0; row < 10; row++) {
             if (row == 0 || row == 9) {

@@ -17,9 +17,9 @@ public class LoginHandler implements Route {
         try{
             Gson gson = new Gson();
             LoginRequest loginRequest = gson.fromJson(request.body(),LoginRequest.class);
-            LoginServices LoginServ = new LoginServices();
+            LoginServices loginServ = new LoginServices();
             response.status(200);
-            LoginRespond successRep = LoginServ.loginUser(loginRequest);
+            LoginRespond successRep = loginServ.loginUser(loginRequest);
             return gson.toJson(successRep);
         }
         catch (DataAccessException e){

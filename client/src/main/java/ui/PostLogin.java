@@ -12,8 +12,6 @@ public class PostLogin {
     private Scanner scanner;
     private ServerFacade serverFacade;
 
-    private String Username;
-//    private WebSocketFacade webSocketFacade = new WebSocketFacade("http://localhost:8080");
     public PostLogin(Scanner scanner, ServerFacade server) throws ResponseException {
         this.scanner = new Scanner(System.in);
         this.serverFacade = server;

@@ -12,7 +12,4 @@ public class ErrorMessage extends ServerMessage{
         return errorMessage;
     }
 
-    public void setMessage(String message) {
-        this.errorMessage = message;
-    }
 }

@@ -147,21 +147,6 @@ public class SQLGameDAO implements GameDAO {
         return gamedata;
     }
 
-//        public String getGameName (int gameID) throws DataAccessException {
-//        String gameName = null;
-//        try (Connection connection = DatabaseManager.getConnection();
-//             PreparedStatement preparedStatement = connection.prepareStatement("SELECT gameName FROM gameTable WHERE gameID = ?")) {
-//            preparedStatement.setInt(1, gameID);
-//            try (ResultSet rs = preparedStatement.executeQuery()) {
-//                if (rs.next()) {
-//                    gameName = rs.getString("gameName");
-//                }
-//            }
-//        } catch (SQLException e) {
-//            throw new DataAccessException(e.getMessage());
-//        }
-//        return gameName;
-//    }
     public boolean findGame(int gameID) throws DataAccessException {
         // check whether the game exit in the database or not
         try (Connection connection = DatabaseManager.getConnection();

@@ -24,9 +24,6 @@ public class RegisterServices {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String hashedPassword = encoder.encode(password);
         UserData userData = new UserData(username, hashedPassword, email);
-//        else if(userDao.findUser(userData)){
-//            throw new DataAccessException("Error: already taken");
-//        }
         try {
             String authToken = UUID.randomUUID().toString();
             AuthData authData = new AuthData(username, authToken);

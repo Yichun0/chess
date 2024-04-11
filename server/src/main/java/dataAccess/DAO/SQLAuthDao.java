@@ -4,14 +4,13 @@ import Model.AuthData;
 import exception.DataAccessException;
 import dataAccess.DatabaseManager;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.sql.*;
 
 public class SQLAuthDao implements AuthDAO{
-    public static Map<String, AuthData> AuthTokens = new HashMap<>();
+    public static Map<String, AuthData> authTokens = new HashMap<>();
     // the String actual authToken is the key --> map to the authData object
 
 

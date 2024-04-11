@@ -8,15 +8,9 @@ public class LoadGame extends ServerMessage{
     public ChessGame getGame() {
         return game;
     }
-
-    public void setGame(ChessGame game) {
-        this.game = game;
-    }
-
     public String getPalyerColor() {
         return palyerColor;
     }
-
 
     public LoadGame(ChessGame game, String playerColor) {
         super(ServerMessageType.LOAD_GAME);

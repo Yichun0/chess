@@ -14,7 +14,7 @@ public class DatabaseManager {
     /*
      * Load the database information for the db.properties file.
      */
-    static public String[] Tables = {
+    static public String[] tables = {
             """
             CREATE TABLE IF NOT EXISTS userTable (
                           `username` varchar(255) NOT NULL,
@@ -65,7 +65,7 @@ public class DatabaseManager {
     static private void createTables() throws exception.DataAccessException {
         DatabaseManager.createDatabase();
         try (var conn = DatabaseManager.getConnection()) {
-            for (var statement : Tables) {
+            for (var statement : tables) {
                 try (var preparedStatement = conn.prepareStatement(statement)) {
                     preparedStatement.executeUpdate();
                 }

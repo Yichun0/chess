@@ -41,11 +41,6 @@ public class MemoryGameDAO implements GameDAO{
         return 0;
     }
 
-//    @Override
-//    public String getGameName(int gameID) throws DataAccessException {
-//        return null;
-//    }
-
     @Override
     public int createGame(GameData gameData) throws DataAccessException {
         int gameID = gameDatas.size();
