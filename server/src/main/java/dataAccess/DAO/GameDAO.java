@@ -12,6 +12,7 @@ public interface GameDAO {
     void clearGameDAO() throws DataAccessException;
     public void deleteUser(String playerColor, int gameID);
     public void updateGame(ChessGame newGame, int gameID) throws DataAccessException;
+    void deleteGameID(Integer gameID) throws DataAccessException;
     public GameData getGame(int gameID) throws DataAccessException ;
     boolean playerTaken(int gameID, String playerColor, String username);
     int getGameID(String gameName) throws DataAccessException, SQLException;

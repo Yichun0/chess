@@ -104,7 +104,7 @@ public class WebSocketFacade extends Endpoint {
     }
     public void leave(String authToken, int gameID){
         try{
-            var command = new LeaveGame(authToken,gameID);
+            var command = new Leave(authToken,gameID);
             this.sendMessage(new Gson().toJson(command));
         } catch (IOException e){
             System.out.println(e.getMessage());
@@ -112,7 +112,7 @@ public class WebSocketFacade extends Endpoint {
     }
     public void resign(String authToken, int gameID){
         try{
-            var command = new ResignGame(authToken,gameID);
+            var command = new Resign(authToken,gameID);
             this.sendMessage(new Gson().toJson(command));
         } catch (IOException e){
             System.out.println(e.getMessage());

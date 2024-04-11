@@ -45,28 +45,15 @@ public class ConnectionManager {
         }
     }
 
-    public void deleteGame(int gameID,String authToken) {
-        Vector<Connection> individualGame = connections.get(gameID);
-        for (Connection user : individualGame){
-            if (!Objects.equals(user.getAuthToken(), authToken)){
-                individualGame.remove(user);
-            }
+    public void deleteGame(int gameID) {
+        connections.remove(gameID);
+    }
+    public void sentErrorMessage(String message,Session session) throws IOException {
+        if (session.isOpen()) {
+            session.getRemote().sendString(new Gson().toJson(message));
         }
     }
-    public void sentErrorMessage(String message,String authToken) throws IOException {
-        ErrorMessage errorMessage = new ErrorMessage(message);
-//        Vector<Connection> individualGame = connections.get(gameID);
-        for (int gameID : connections.keySet()){
-            for (var connection : connections.get(gameID)){
-                if(connection.session.isOpen()){
-                    if(connection.getAuthToken().equalsIgnoreCase(authToken)){
-                        String errorMsg = new Gson().toJson(errorMessage);
-                        connection.sendMessage(errorMsg);
-                    }
-                }
-            }
-        }
-    }
+
     public void notifyEveryUser(int gameID, String message) throws IOException {
         Vector<Connection> individualGame = connections.get(gameID);
         // getting the game that the user is in

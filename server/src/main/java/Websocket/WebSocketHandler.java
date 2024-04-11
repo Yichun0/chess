@@ -7,10 +7,8 @@ import com.google.gson.Gson;
 import dataAccess.DAO.*;
 import exception.DataAccessException;
 import org.eclipse.jetty.websocket.api.Session;
-import org.eclipse.jetty.websocket.api.annotations.OnWebSocketError;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
-import webSocketMessages.serverMessages.Notification;
 import webSocketMessages.userCommands.*;
 
 import java.io.IOException;
@@ -18,13 +16,13 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Objects;
 
+import static java.util.Objects.isNull;
 import static spark.utils.Assert.notNull;
 
 @WebSocket
 public class WebSocketHandler {
 
 //    Map<Integer, List<Connection>> individualGameMap = new HashMap<>();
-    private Session session;
     private ConnectionManager connectionManager = new ConnectionManager();
     private String username;
     private AuthDAO authDAO = new SQLAuthDao();
@@ -37,9 +35,9 @@ public class WebSocketHandler {
         switch (userCommand.getCommandType()){
             case JOIN_PLAYER -> joinPlayer(session, message);
             case JOIN_OBSERVER -> joinObserver(session, message);
-            case MAKE_MOVE -> makeMove(message);
-            case LEAVE -> leave(message);
-            case RESIGN -> resign(message);
+            case MAKE_MOVE -> makeMove(session,message);
+            case LEAVE -> leave(session,message);
+            case RESIGN -> resign(session,message);
         }
 
     }
@@ -52,19 +50,19 @@ public class WebSocketHandler {
         if(!authDAO.findAuthToken(authToken)){
             String error = "Bad authToken";
             username = authDAO.getUsername(new AuthData(null,authToken));
-            connectionManager.sentErrorMessage(error,username);
+            connectionManager.sentErrorMessage(error,session);
         }
         username = authDAO.getUsername(new AuthData(null,authToken));
         ChessGame.TeamColor playerColor =  joinPlayer.getPlayerColor();
 //      username match the white username
         if (gameDAO.playerTaken(gameID,playerColor.toString(),username)){
             String errorMessage = playerColor.toString() + " user is already taken";
-            connectionManager.sentErrorMessage(errorMessage,authToken);
+            connectionManager.sentErrorMessage(errorMessage,session);
             return;
         } else if (!gameDAO.findGame(gameID)) {
            // check bad gameID
             String error = "Bad gameID";
-            connectionManager.sentErrorMessage(error,authToken);
+            connectionManager.sentErrorMessage(error,session);
             return;
         }
         else{
@@ -81,14 +79,14 @@ public class WebSocketHandler {
         connectionManager.add(gameID,session,authToken);
         if(!authDAO.findAuthToken(authToken)){
             String error = "Bad authToken";
-            connectionManager.sentErrorMessage(error,authToken);
+            connectionManager.sentErrorMessage(error,session);
             return;
         }
         username = authDAO.getUsername(new AuthData(null,authToken));
         if (!gameDAO.findGame(gameID)) {
             // check bad gameID
             String error = "Bad gameID";
-            connectionManager.sentErrorMessage(error,authToken);
+            connectionManager.sentErrorMessage(error,session);
             return;
         } else {
             connectionManager.selfLoadGame("white", gameID, session);
@@ -97,7 +95,7 @@ public class WebSocketHandler {
         }
     }
 
-    public void makeMove(String message) throws DataAccessException, IOException, SQLException {
+    public void makeMove(Session session, String message) throws DataAccessException, IOException, SQLException {
         MakeMoves makeMoves = new Gson().fromJson(message,MakeMoves.class);
         String authToken = makeMoves.getAuthString();
         ChessMove move = makeMoves.getMove();
@@ -107,7 +105,7 @@ public class WebSocketHandler {
         if (!gameDAO.findGame(gameID)) {
             // check bad gameID
             String error = "Bad gameID";
-            connectionManager.sentErrorMessage(error,authToken);
+            connectionManager.sentErrorMessage(error,session);
             return;
         }
         ChessPosition startPosition = move.getStartPosition();
@@ -115,7 +113,7 @@ public class WebSocketHandler {
         Collection<ChessMove> validMoves = chessGame.validMoves(startPosition);
         if (!validMoves.contains(move)) {
             String errorMessage = "That's not a valid move";
-            connectionManager.sentErrorMessage(errorMessage,authToken);
+            connectionManager.sentErrorMessage(errorMessage,session);
             return;
         }
         ChessGame.TeamColor playerColor = null;
@@ -128,21 +126,21 @@ public class WebSocketHandler {
         }
         if (currentGame.isResigned()){
             String error = "The game is resigned.";
-            connectionManager.sentErrorMessage(error,authToken);
+            connectionManager.sentErrorMessage(error,session);
             return;
         }
         // verify if we are moving the right piece
         ChessPiece piecemoved = currentGame.getBoard().getPiece(startPosition);
         if(playerColor != piecemoved.getTeamColor()){
             String errorMsg = "That's not your piece!";
-            connectionManager.sentErrorMessage(errorMsg,authToken);
+            connectionManager.sentErrorMessage(errorMsg,session);
             return;
         }
         try {
             currentGame.makeMove(move);
         } catch (Exception e) {
             String error = e.getMessage();
-            connectionManager.sentErrorMessage(error,authToken);
+            connectionManager.sentErrorMessage(error,session);
             return;
         }
         gameDAO.updateGame(currentGame,gameID);
@@ -151,24 +149,25 @@ public class WebSocketHandler {
         connectionManager.notify(gameID,authToken,notification);
 
     }
-    public void leave(String message) throws DataAccessException, IOException, SQLException {
+    public void leave(Session session, String message) throws DataAccessException, IOException, SQLException {
         // delete vector of the session
-        LeaveGame leaveGame = new Gson().fromJson(message, LeaveGame.class);
+        Leave leaveGame = new Gson().fromJson(message, Leave.class);
         String authToken = leaveGame.getAuthString();
         int gameID = leaveGame.getGameID();
         String username = authDAO.getUsername(new AuthData(null,authToken));
         if (!gameDAO.findGame(gameID)) {
             // check bad gameID
             String error = "Bad gameID";
-            connectionManager.sentErrorMessage(error,authToken);
+            connectionManager.sentErrorMessage(error,session);
         }
         else{
             connectionManager.deleteUser(gameID,authToken);
             GameData gameData = gameDAO.getGame(gameID);
             if (Objects.equals(gameData.getBlackUsername(), username)){
-                gameDAO.deleteUser(gameData.getBlackUsername(), gameID);
+                gameDAO.deleteUser("black", gameID);
+
             } else {
-                gameDAO.deleteUser(gameData.getWhiteUsername(),gameID);
+                gameDAO.deleteUser("white",gameID);
             }
             String notification = username + " leaves the game.";
             connectionManager.notify(gameID,authToken,notification);
@@ -178,19 +177,19 @@ public class WebSocketHandler {
 
 
     }
-    public void resign(String message) throws DataAccessException, IOException, SQLException {
-        ResignGame resignGameObj = new Gson().fromJson(message, ResignGame.class);
+    public void resign(Session session, String message) throws DataAccessException, IOException, SQLException {
+        Resign resignGameObj = new Gson().fromJson(message, Resign.class);
         int gameID = resignGameObj.getGameID();
         String authToken = resignGameObj.getAuthString();
-        GameData game = gameDAO.getGame(gameID);
-        ChessGame currentGame = game.getGame();
         username = authDAO.getUsername(new AuthData(null,authToken));
-        boolean x = currentGame.isResigned();
-        if (currentGame.isResigned()){
+        if (isNull(gameDAO.getGame(gameID))){
             String error = "The game is already resigned";
-            connectionManager.sentErrorMessage(error,authToken);
+            connectionManager.sentErrorMessage(error,session);
             return;
         }
+        GameData game = gameDAO.getGame(gameID);
+        ChessGame currentGame = game.getGame();
+        boolean x = currentGame.isResigned();
         ChessGame.TeamColor playerColor = null;;
         if(game.getBlackUsername().equalsIgnoreCase(username)){
             playerColor = ChessGame.TeamColor.BLACK;
@@ -200,19 +199,19 @@ public class WebSocketHandler {
         if (!Objects.equals(game.getWhiteUsername(), username) && !Objects.equals(game.getBlackUsername(), username)){
             // user is observer, can't resign game
             String error = "You can't resign as observer";
-            connectionManager.sentErrorMessage(error,authToken);
+            connectionManager.sentErrorMessage(error,session);
             return;
         }
         // no one can make move
         currentGame.setTeamTurn(null);
         currentGame.resignGame();
         gameDAO.updateGame(currentGame,gameID);
-        String notification = username + " resigned.";
+        gameDAO.deleteGameID(gameID);
+        String notification = username + " resigned, the game is over.";
         connectionManager.notifyEveryUser(gameID, notification);
         //notification other users
-        connectionManager.deleteGame(gameID,authToken);
+        connectionManager.deleteGame(gameID);
         // remove the entire game from the hashmap
-        authDAO.deleteAuthtoken(new AuthData(username,authToken));
     }
 
 }

@@ -9,6 +9,7 @@ import webSocketMessages.serverMessages.ServerMessage;
 
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Scanner;
 
 import static ui.EscapeSequences.*;
@@ -21,7 +22,7 @@ public class GamePlay{
     public static ChessBoard board;
     private int gameID;
 
-    public GamePlay(Scanner scanner, ServerFacade server, String playerColor, int gameID) throws ResponseException {
+    public GamePlay(ServerFacade server, String playerColor, int gameID) throws ResponseException {
         this.scanner = new Scanner(System.in);
         this.serverFacade = server;
         this.playerColor = playerColor;
@@ -64,33 +65,43 @@ public class GamePlay{
     }
     public void leave() throws ResponseException {
         System.out.println("You are leaving the game\n");
-        webSocketFacade.leave(serverFacade.authToken,gameID);
+        webSocketFacade.leave(serverFacade.getAuthToken(),gameID);
         PostLogin postLogin = new PostLogin(scanner,serverFacade);
         postLogin.help();
 
     }
     public void makeMoves(){
-        System.out.println("What is the start position of your move: ");
-        int startPosition = scanner.nextInt();
-        System.out.println("What is the end position of your move: ");
-        int endPosition = scanner.nextInt();
-        System.out.println("Do you want to promote any piece? If so, enter the piece: ");
+        System.out.println("Enter the row of your start position:  ");
+        var startRow = scanner.nextInt();
+        System.out.println("Enter the column of your start position:  ");
+        var startCol = scanner.nextInt();
+        ChessPosition startPosition = new ChessPosition(startRow,startCol);
+        System.out.println("Enter the row of your end position:  ");
+        var endRow = scanner.nextInt();
+        System.out.println("Enter the column of your end position:  ");
+        var endCol = scanner.nextInt();
+        ChessPosition endPosition = new ChessPosition(endRow,endCol);
+        ChessMove move = new ChessMove(startPosition,endPosition,null);
+        webSocketFacade.makeMove(serverFacade.getAuthToken(), gameID,move);
 //        ChessMove move = new ChessMove();
 
 
     }
-    public void resign(){
-        System.out.println("Are you sure you want to resign this game: T/F");
+    public void resign() throws ResponseException {
+        System.out.println("Are you sure you want to resign this game: True/False");
         String answer = scanner.nextLine();
-        if(answer.equalsIgnoreCase("T")){
-            System.out.println("Game ended");
-        }
-        else{
+        if (answer.equalsIgnoreCase("true")){
             try{
-                run();
-            } catch (ResponseException e){
+            webSocketFacade.resign(serverFacade.getAuthToken(),gameID);}
+            catch (Exception e){
                 System.out.println(e.getMessage());
             }
+            System.out.println("You have successfully resigned");
+            PostLogin postLogin = new PostLogin(scanner,serverFacade);
+            postLogin.help();
+        }
+        else{
+            System.out.println("");
         }
 
 

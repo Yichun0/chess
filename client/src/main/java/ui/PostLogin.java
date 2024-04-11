@@ -116,7 +116,7 @@ public class PostLogin {
                 else{
                     webSocketFacade.joinPlayer(serverFacade.getAuthToken(),gameID, ChessGame.TeamColor.BLACK);
                 }
-                GamePlay gamePlay = new GamePlay(scanner,serverFacade,playerColor,gameID);
+                GamePlay gamePlay = new GamePlay(serverFacade,playerColor,gameID);
                 gamePlay.help();
 
             } catch (ResponseException e) {
@@ -132,6 +132,8 @@ public class PostLogin {
         int gameIndex = scanner.nextInt();
         int gameID = games.get(gameIndex - 1).getGameID();
         webSocketFacade.joinObserver(gameID, serverFacade.getAuthToken());
+        GamePlay gamePlay = new GamePlay(serverFacade,null,gameID);
+        gamePlay.help();
     }
     public void quit(){
         // exit the program

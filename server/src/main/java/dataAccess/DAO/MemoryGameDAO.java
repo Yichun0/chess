@@ -27,6 +27,11 @@ public class MemoryGameDAO implements GameDAO{
     }
 
     @Override
+    public void deleteGameID(Integer gameID) throws DataAccessException {
+
+    }
+
+    @Override
     public GameData getGame(int gameID) throws DataAccessException {
         return null;
     }

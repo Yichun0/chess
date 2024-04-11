@@ -1,17 +1,15 @@
 package webSocketMessages.userCommands;
 
-import Model.GameData;
-import webSocketMessages.userCommands.UserGameCommand;
-
-public class ResignGame extends UserGameCommand {
+public class Resign extends UserGameCommand {
     int gameID;
 
     public int getGameID() {
         return this.gameID;
     }
 
-    public ResignGame(String authToken, int gameID) {
+    public Resign(String authToken, int gameID) {
         super(authToken);
+        this.commandType = CommandType.RESIGN;
         this.gameID = gameID;
     }
 }
