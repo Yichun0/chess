@@ -6,7 +6,9 @@ import com.google.gson.Gson;
 import exception.ResponseException;
 import ui.CreateBoard;
 import ui.GamePlay;
+import webSocketMessages.serverMessages.ErrorMessage;
 import webSocketMessages.serverMessages.LoadGame;
+import webSocketMessages.serverMessages.Notification;
 import webSocketMessages.serverMessages.ServerMessage;
 import webSocketMessages.userCommands.*;
 
@@ -40,7 +42,14 @@ public class WebSocketFacade extends Endpoint {
                 public void onMessage(String message) {
                     ServerMessage serverMessage = new Gson().fromJson(message, ServerMessage.class);
                     switch (serverMessage.getServerMessageType()){
-                        case ERROR, NOTIFICATION -> System.out.println(serverMessage);
+                        case ERROR -> {
+                            ErrorMessage errorMessage = new Gson().fromJson(message, ErrorMessage.class);
+                            System.out.println(errorMessage.getMessage());
+                        }
+                        case NOTIFICATION -> {
+                            Notification notification = new Gson().fromJson(message, Notification.class);
+                            System.out.println(notification.getMessage());
+                        }
                         case LOAD_GAME -> {
                             LoadGame gameObj = new Gson().fromJson(message, LoadGame.class);
                             ChessGame currentGame = gameObj.getGame();
@@ -66,19 +75,19 @@ public class WebSocketFacade extends Endpoint {
 
     }
     // methods for each userGameCommands to send message to server
-    public static void joinPlayer(String authToken, int gameID, ChessGame.TeamColor playerColor){
+    public void joinPlayer(String authToken, int gameID, ChessGame.TeamColor playerColor){
         try {
             var command = new JoinPlayer(gameID,playerColor,authToken);
-            wsf.sendMessage(new Gson().toJson(command));
+            this.sendMessage(new Gson().toJson(command));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public static void joinObserver(int gameID, String authToken){
+    public void joinObserver(int gameID, String authToken){
         try {
             var command = new JoinObserver(gameID,authToken);
-            wsf.sendMessage(new Gson().toJson(command));
+            this.sendMessage(new Gson().toJson(command));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -93,10 +102,10 @@ public class WebSocketFacade extends Endpoint {
         }
 
     }
-    public static void leave(String authToken, int gameID){
+    public void leave(String authToken, int gameID){
         try{
             var command = new LeaveGame(authToken,gameID);
-            wsf.sendMessage(new Gson().toJson(command));
+            this.sendMessage(new Gson().toJson(command));
         } catch (IOException e){
             System.out.println(e.getMessage());
         }

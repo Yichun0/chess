@@ -170,7 +170,7 @@ public class WebSocketHandler {
             } else {
                 gameDAO.deleteUser(gameData.getWhiteUsername(),gameID);
             }
-            String notification = username + "leaves the game.";
+            String notification = username + " leaves the game.";
             connectionManager.notify(gameID,authToken,notification);
         }
 

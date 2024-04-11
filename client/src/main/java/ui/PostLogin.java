@@ -11,6 +11,7 @@ import java.util.*;
 public class PostLogin {
     private Scanner scanner;
     private ServerFacade serverFacade;
+    private WebSocketFacade webSocketFacade = new WebSocketFacade();
 
     public PostLogin(Scanner scanner, ServerFacade server) throws ResponseException {
         this.scanner = new Scanner(System.in);
@@ -89,6 +90,7 @@ public class PostLogin {
                 }
                 System.out.println("\n");
             }
+            help();
         } catch(ResponseException e){
             System.out.println(e.getMessage());
             help();
@@ -110,9 +112,9 @@ public class PostLogin {
                 System.out.println("successfully joined");
                 //websocket connection
                 if (playerColor.equalsIgnoreCase("White")){
-                    WebSocketFacade.joinPlayer(serverFacade.getAuthToken(),gameID, ChessGame.TeamColor.WHITE);}
+                    webSocketFacade.joinPlayer(serverFacade.getAuthToken(),gameID, ChessGame.TeamColor.WHITE);}
                 else{
-                    WebSocketFacade.joinPlayer(serverFacade.getAuthToken(),gameID, ChessGame.TeamColor.BLACK);
+                    webSocketFacade.joinPlayer(serverFacade.getAuthToken(),gameID, ChessGame.TeamColor.BLACK);
                 }
                 GamePlay gamePlay = new GamePlay(scanner,serverFacade,playerColor,gameID);
                 gamePlay.help();
@@ -129,7 +131,7 @@ public class PostLogin {
         System.out.println("enter the number of the game you want to observe: ");
         int gameIndex = scanner.nextInt();
         int gameID = games.get(gameIndex - 1).getGameID();
-        WebSocketFacade.joinObserver(gameID, serverFacade.getAuthToken());
+        webSocketFacade.joinObserver(gameID, serverFacade.getAuthToken());
     }
     public void quit(){
         // exit the program

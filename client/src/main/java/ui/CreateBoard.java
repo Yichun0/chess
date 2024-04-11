@@ -12,6 +12,9 @@ import static ui.EscapeSequences.*;
 import static ui.EscapeSequences.SET_BG_COLOR_DARK_GREY;
 
 public class CreateBoard {
+    public static void main(String[] args) {
+        drawGeneralBoard(new ChessBoard(),"White");
+    }
     public static void drawGeneralBoard(ChessBoard chessBoard, String teamColor) {
         for (int row = 0; row < 10; row++) {
             if (row == 0 || row == 9) {
@@ -62,6 +65,7 @@ public class CreateBoard {
                         }
                         if (currentPiece != null) {
                             if (currentPiece.getTeamColor() == ChessGame.TeamColor.BLACK){
+                                System.out.print(SET_TEXT_BOLD);
                             switch (currentPiece.getPieceType()) {
                                 case KING -> piece = BLACK_KING;
                                 case QUEEN -> piece = BLACK_QUEEN;

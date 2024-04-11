@@ -17,11 +17,11 @@ public class GamePlay{
     private Scanner scanner;
     private ServerFacade serverFacade;
     private String playerColor;
-    private WebSocketFacade webSocketFacade;
+    private WebSocketFacade webSocketFacade = new WebSocketFacade();
     public static ChessBoard board;
     private int gameID;
 
-    public GamePlay(Scanner scanner, ServerFacade server, String playerColor, int gameID){
+    public GamePlay(Scanner scanner, ServerFacade server, String playerColor, int gameID) throws ResponseException {
         this.scanner = new Scanner(System.in);
         this.serverFacade = server;
         this.playerColor = playerColor;
@@ -63,8 +63,8 @@ public class GamePlay{
 
     }
     public void leave() throws ResponseException {
-        System.out.println("You are leaving the game");
-        WebSocketFacade.leave(serverFacade.authToken,gameID);
+        System.out.println("You are leaving the game\n");
+        webSocketFacade.leave(serverFacade.authToken,gameID);
         PostLogin postLogin = new PostLogin(scanner,serverFacade);
         postLogin.help();
 
