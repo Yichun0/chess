@@ -12,10 +12,6 @@ public class JoinGameRequest {
         return gameID;
     }
 
-    public void setGameID(int gameID) {
-        this.gameID = gameID;
-    }
-
     public JoinGameRequest(String playerColor, int gameID){
         this.playerColor = playerColor;
         this.gameID = gameID;
