@@ -1,37 +1,26 @@
 package Model;
 
 public class UserData {
-    public String Username;
-    public String Password;
-    public String Email;
+    public String username;
+    public String password;
+    public String email;
 
-    public UserData(String Username, String Password, String Email){
-        this.Username = Username;
-        this.Password = Password;
-        this.Email = Email;
+    public UserData(String username, String password, String email){
+        this.username = username;
+        this.password = password;
+        this.email = email;
     }
 
     public String getUsername() {
-        return Username;
+        return username;
     }
 
     public String getPassword() {
-        return Password;
+        return password;
     }
 
     public String getEmail() {
-        return Email;
+        return email;
     }
 
-    public void setUsername(String username) {
-        Username = username;
-    }
-
-    public void setPassword(String password) {
-        Password = password;
-    }
-
-    public void setEmail(String email) {
-        Email = email;
-    }
 }

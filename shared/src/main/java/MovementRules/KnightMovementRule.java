@@ -9,7 +9,7 @@ import java.util.HashSet;
 
 public class KnightMovementRule {
     public HashSet<ChessMove> knightClass(ChessBoard board, ChessPosition startPosition) {
-        HashSet<ChessMove> KnightMoves = new HashSet<>();
+        HashSet<ChessMove> knightMoves = new HashSet<>();
         int[] rowPossibleMoves = {-1, -1, +1, +1, -2, -2, +2, +2};
         int[] colPossibleMoves = {+2, -2, +2, -2, +1, -1, +1, -1};
         int row = startPosition.getRow();
@@ -23,14 +23,14 @@ public class KnightMovementRule {
                 ChessPiece currentPiece = board.getPiece(currentPosition);
                 ChessPiece nextPiece = board.getPiece(nextPosition);
                 if (nextPiece == null) {
-                    KnightMoves.add(new ChessMove(startPosition, nextPosition, null));
+                    knightMoves.add(new ChessMove(startPosition, nextPosition, null));
                 } else if (currentPiece.getTeamColor() != nextPiece.getTeamColor()) {
-                    KnightMoves.add(new ChessMove(startPosition, nextPosition, null));
+                    knightMoves.add(new ChessMove(startPosition, nextPosition, null));
                 } else {
                     continue;
                 }
             }
         }
-        return KnightMoves;
+        return knightMoves;
     }
 }

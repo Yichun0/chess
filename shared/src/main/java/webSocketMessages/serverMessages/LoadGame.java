@@ -17,9 +17,6 @@ public class LoadGame extends ServerMessage{
         return palyerColor;
     }
 
-    public void setPalyerColor(String palyerColor) {
-        this.palyerColor = palyerColor;
-    }
 
     public LoadGame(ChessGame game, String playerColor) {
         super(ServerMessageType.LOAD_GAME);

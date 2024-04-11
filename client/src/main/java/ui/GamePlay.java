@@ -1,9 +1,6 @@
 package ui;
 
-import chess.ChessBoard;
-import chess.ChessGame;
-import chess.ChessPiece;
-import chess.ChessPosition;
+import chess.*;
 import exception.ResponseException;
 import ui.EscapeSequences;
 import ui.WebSocket.ServerMessageHandler;
@@ -33,12 +30,12 @@ public class GamePlay implements ServerMessageHandler {
     public void run() throws ResponseException {
         System.out.println("Welcome to the chess game.");
         System.out.println("""
-                Help
-                Redraw Chess Board
-                Leave
-                Make Move
-                Resign
-                HighLight Legal Moves
+                    Help
+                    Redraw Chess Board
+                    Leave
+                    Make Move
+                    Resign
+                    HighLight Legal Moves
                 """);
         while(true) {
             System.out.print("play a game >>> " +"\n");
@@ -60,8 +57,9 @@ public class GamePlay implements ServerMessageHandler {
         run();
     }
 
-    public void redrawBoard(){
+    public void redrawBoard() throws ResponseException {
        CreateBoard.drawGeneralBoard(board,playerColor);
+       this.run();
 
     }
     public void leave() throws ResponseException {
@@ -72,6 +70,13 @@ public class GamePlay implements ServerMessageHandler {
 
     }
     public void makeMoves(){
+        System.out.println("What is the start position of your move: ");
+        int startPosition = scanner.nextInt();
+        System.out.println("What is the end position of your move: ");
+        int endPosition = scanner.nextInt();
+        System.out.println("Do you want to promote any piece? If so, enter the piece: ");
+        ChessMove move = new ChessMove()
+
 
     }
     public void resign(){
@@ -91,11 +96,6 @@ public class GamePlay implements ServerMessageHandler {
 
     }
     public void highLightMoves(){
-
-    }
-
-    @Override
-    public void notify(ServerMessage serverMessage) {
 
     }
 }

@@ -126,7 +126,6 @@ public class WebSocketHandler {
         } else if (game.getWhiteUsername().equalsIgnoreCase(username)) {
             playerColor = ChessGame.TeamColor.WHITE;
         }
-        // if someone resign
         if (currentGame.isResigned()){
             String error = "The game is resigned.";
             connectionManager.sentErrorMessage(error,authToken);
@@ -211,7 +210,7 @@ public class WebSocketHandler {
         String notification = username + " resigned.";
         connectionManager.notifyEveryUser(gameID, notification);
         //notification other users
-//        connectionManager.deleteGame(gameID,authToken);
+        connectionManager.deleteGame(gameID,authToken);
         // remove the entire game from the hashmap
         authDAO.deleteAuthtoken(new AuthData(username,authToken));
     }

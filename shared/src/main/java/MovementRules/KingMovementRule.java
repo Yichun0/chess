@@ -11,7 +11,7 @@ import java.util.Set;
 public class KingMovementRule {
     public HashSet<ChessMove> kingChess(ChessBoard board, ChessPosition startPosition) {
 
-        HashSet<ChessMove> KingMoves = new HashSet<>();
+        HashSet<ChessMove> kingMoves = new HashSet<>();
         int row = startPosition.getRow();
         int column = startPosition.getColumn();
         int[] rowPossibleMoves = {-1, -1, -1, +1, +1, +1, 0, 0};
@@ -24,18 +24,18 @@ public class KingMovementRule {
                 ChessPiece currentPiece = board.getPiece(startPosition);
                 ChessPiece nextPiece = board.getPiece(newPosition);
                 if (nextPiece == null) {
-                    KingMoves.add(new ChessMove(startPosition, newPosition, null));
+                    kingMoves.add(new ChessMove(startPosition, newPosition, null));
                 } else if (currentPiece.getTeamColor().equals(nextPiece.getTeamColor())) {
                     continue;
                 } else {
-                    KingMoves.add(new ChessMove(startPosition, newPosition, null));
+                    kingMoves.add(new ChessMove(startPosition, newPosition, null));
                 }
             } else {
                 continue;
             }
 
         }
-        return KingMoves;
+        return kingMoves;
     }
 }
 

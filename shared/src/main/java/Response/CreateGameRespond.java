@@ -7,10 +7,6 @@ public class CreateGameRespond {
         return gameID;
     }
 
-    public void setGameID(int gameID) {
-        this.gameID = gameID;
-    }
-
     public CreateGameRespond(int gameID){
         this.gameID = gameID;
     }

@@ -131,14 +131,7 @@ public class PostLogin {
         System.out.println("enter the number of the game you want to observe: ");
         int gameIndex = scanner.nextInt();
         int gameID = games.get(gameIndex - 1).getGameID();
-        try {
-            serverFacade.observeGame(gameID);
-            System.out.println("successfully joined as observer for " + gameID);
-            WebSocketFacade.joinObserver(gameID, serverFacade.getAuthToken());
-        } catch (ResponseException e) {
-            System.out.println(e.getMessage());
-            help();
-        }
+        WebSocketFacade.joinObserver(gameID, serverFacade.getAuthToken());
     }
     public void quit(){
         // exit the program

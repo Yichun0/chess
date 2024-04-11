@@ -8,10 +8,6 @@ public class JoinGameRequest {
         return playerColor;
     }
 
-    public void setPlayerColor(String playerColor) {
-        this.playerColor = playerColor;
-    }
-
     public Integer getGameID() {
         return gameID;
     }

@@ -69,12 +69,6 @@ public class ServerFacade {
         return authToken;
     }
 
-    public void observeGame(int gameID) throws ResponseException{
-        String path = "/game";
-        JoinGameRequest request = new JoinGameRequest(null, gameID);
-        this.makeRequest("PUT", path, request,null,authToken);
-
-    }
 
     public void clear() throws ResponseException {
         String path = "/db";

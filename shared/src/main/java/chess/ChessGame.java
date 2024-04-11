@@ -29,9 +29,6 @@ public class ChessGame {
     /**
      * @return Which team's turn it is
      */
-    public TeamColor getTeamTurn() {
-        return team;
-    }
 
     public void resignGame(){
         this.resigned = true;
@@ -109,6 +106,7 @@ public class ChessGame {
         if (currentPiece != null && !allValidMoves.contains(move)) {
             throw new InvalidMoveException("Illegal Moves");
         }
+        assert currentPiece != null;
         if (currentPiece.getTeamColor()!= team){
             throw new InvalidMoveException("Illegal Moves");
         }
@@ -124,20 +122,20 @@ public class ChessGame {
             if (move.getPromotionPiece() != null) {
                 ChessPiece.PieceType promotionPieceType = move.getPromotionPiece();
                 if (promotionPieceType == ChessPiece.PieceType.ROOK) {
-                    ChessPiece PromotionRook = new ChessPiece(currentPiece.getTeamColor(), ChessPiece.PieceType.ROOK);
-                    board.addPiece(endPosition, PromotionRook);
+                    ChessPiece promotionRook = new ChessPiece(currentPiece.getTeamColor(), ChessPiece.PieceType.ROOK);
+                    board.addPiece(endPosition, promotionRook);
                 }
                 if (promotionPieceType == ChessPiece.PieceType.QUEEN) {
-                    ChessPiece PromotionQueen = new ChessPiece(currentPiece.getTeamColor(), ChessPiece.PieceType.QUEEN);
-                    board.addPiece(endPosition, PromotionQueen);
+                    ChessPiece promotionQueen = new ChessPiece(currentPiece.getTeamColor(), ChessPiece.PieceType.QUEEN);
+                    board.addPiece(endPosition, promotionQueen);
                 }
                 if (promotionPieceType == ChessPiece.PieceType.BISHOP) {
-                    ChessPiece PromotionBishop = new ChessPiece(currentPiece.getTeamColor(), ChessPiece.PieceType.BISHOP);
-                    board.addPiece(endPosition, PromotionBishop);
+                    ChessPiece promotionBishop = new ChessPiece(currentPiece.getTeamColor(), ChessPiece.PieceType.BISHOP);
+                    board.addPiece(endPosition, promotionBishop);
                 }
                 if (promotionPieceType == ChessPiece.PieceType.KNIGHT) {
-                    ChessPiece PromotionKnight = new ChessPiece(currentPiece.getTeamColor(), ChessPiece.PieceType.KNIGHT);
-                    board.addPiece(endPosition, PromotionKnight);
+                    ChessPiece promotionKnight = new ChessPiece(currentPiece.getTeamColor(), ChessPiece.PieceType.KNIGHT);
+                    board.addPiece(endPosition, promotionKnight);
                 }
             }
             if (team == TeamColor.WHITE) {

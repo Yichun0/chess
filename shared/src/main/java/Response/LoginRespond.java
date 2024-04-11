@@ -16,10 +16,6 @@ public class LoginRespond{
         return authToken;
     }
 
-    public void setAuthToken(String authToken) {
-        this.authToken = authToken;
-    }
-
     public LoginRespond(String username, String authToken){
         this.authToken = authToken;
         this.username = username;

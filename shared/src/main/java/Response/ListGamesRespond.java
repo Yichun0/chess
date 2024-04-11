@@ -11,10 +11,6 @@ public class ListGamesRespond {
         return games;
     }
 
-    public void setGames(Collection<GameData> games) {
-        this.games = games;
-    }
-
     public ListGamesRespond(Collection<GameData> games){
         this.games = games;
     }
