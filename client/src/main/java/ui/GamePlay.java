@@ -75,7 +75,7 @@ public class GamePlay implements ServerMessageHandler {
         System.out.println("What is the end position of your move: ");
         int endPosition = scanner.nextInt();
         System.out.println("Do you want to promote any piece? If so, enter the piece: ");
-        ChessMove move = new ChessMove()
+//        ChessMove move = new ChessMove();
 
 
     }
