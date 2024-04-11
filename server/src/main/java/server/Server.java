@@ -38,6 +38,7 @@ public class Server {
         JoinGameHandler joinGameHandler = new JoinGameHandler();
         Spark.put("/game", joinGameHandler);
 
+
         Spark.awaitInitialization();
         return Spark.port();
     }

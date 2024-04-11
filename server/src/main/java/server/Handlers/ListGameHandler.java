@@ -9,6 +9,8 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
+import java.sql.SQLException;
+
 public class ListGameHandler implements Route {
     @Override
     public Object handle(Request request, Response response) throws DataAccessException {
@@ -27,6 +29,8 @@ public class ListGameHandler implements Route {
             }
             response.status(500);
             return gson.toJson(new ErrorResponse(e.getMessage()));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 }

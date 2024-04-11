@@ -17,6 +17,6 @@ public class ClearTest {
         authDAO.createAuthToken(authData);
         ClearServices services = new ClearServices();
         services.clearData();
-        assertEquals(false, authDAO.findAuthToken(authData));
+        assertEquals(false, authDAO.findAuthToken(authData.getAuthToken()));
     }
 }

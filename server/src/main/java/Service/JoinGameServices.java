@@ -16,7 +16,7 @@ public class JoinGameServices {
         if(joinRequest.getGameID() == null){
             throw new DataAccessException("Error: bad request");
         }
-        else if (!authDAO.findAuthToken(authData)) {
+        else if (!authDAO.findAuthToken(authData.getAuthToken())) {
             throw new DataAccessException("Error: Unauthorized");
         }
         else{

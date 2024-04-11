@@ -21,18 +21,18 @@ public class MemoryAuthDAO implements AuthDAO {
     }
 
     @Override
-    public boolean findAuthToken(AuthData authObjects) throws DataAccessException {
-        return AuthTokens.containsKey(authObjects.getAuthToken());
+    public boolean findAuthToken(String authToken) throws DataAccessException {
+        return AuthTokens.containsKey(authToken);
     }
 
     public void deleteAuthtoken(AuthData authObjects) throws DataAccessException{
-        if (!findAuthToken(authObjects)){
+        if (!findAuthToken(authObjects.getAuthToken())){
             throw new DataAccessException("Error: unauthorized");
         }
             AuthTokens.remove(authObjects.getAuthToken());
         }
     public String getUsername(AuthData authData) throws DataAccessException{
-        if (!findAuthToken(authData)){
+        if (!findAuthToken(authData.getAuthToken())){
             throw new DataAccessException("Error: unauthorized");
         }
             return AuthTokens.get(authData.getAuthToken()).getUsername();

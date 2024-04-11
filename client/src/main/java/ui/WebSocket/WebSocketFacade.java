@@ -17,7 +17,16 @@ import java.net.URISyntaxException;
 
 public class WebSocketFacade extends Endpoint {
     private final Session session;
-    static WebSocketFacade wsf = new WebSocketFacade();
+    static WebSocketFacade wsf;
+
+    static {
+        try {
+            wsf = new WebSocketFacade();
+        } catch (ResponseException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public WebSocketFacade() throws ResponseException {
         try {
             URI uri = new URI("ws://localhost:8080/connect");
@@ -31,7 +40,7 @@ public class WebSocketFacade extends Endpoint {
                 public void onMessage(String message) {
                     ServerMessage serverMessage = new Gson().fromJson(message, ServerMessage.class);
                     switch (serverMessage.getServerMessageType()){
-                        case ERROR, NOTIFICATION -> System.out.println(message);
+                        case ERROR, NOTIFICATION -> System.out.println(serverMessage);
                         case LOAD_GAME -> {
                             LoadGame gameObj = new Gson().fromJson(message, LoadGame.class);
                             ChessGame currentGame = gameObj.getGame();

@@ -11,21 +11,22 @@ import org.junit.jupiter.api.Test;
 import Requests.LogoutRequest;
 import Service.LogoutServices;
 
+import java.sql.SQLException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class LogoutTests {
     @Test
-    public void positiveTest() throws DataAccessException {
+    public void positiveTest() throws DataAccessException, SQLException {
         AuthDAO testAuthDAO = new MemoryAuthDAO();
         AuthData authToken = new AuthData("username", "testAuth");
         testAuthDAO.createAuthToken(authToken);
-        LogoutRequest logoutRequest = new LogoutRequest(authToken.getAuthToken());
         LogoutServices logoutTest = new LogoutServices();
         logoutTest.logoutServices(authToken);
-        assertEquals(false,testAuthDAO.findAuthToken(authToken),"success");
+        assertEquals(false,testAuthDAO.findAuthToken("testAuth"),"success");
     }
     @Test
-    public void negativeTest() throws DataAccessException {
+    public void negativeTest() throws DataAccessException, SQLException {
         UserDAO userDAO = new MemoryUserDAO();
         AuthDAO authDAO = new MemoryAuthDAO();
         AuthData authToken = new AuthData("username", "testAuth");

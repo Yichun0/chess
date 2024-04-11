@@ -14,16 +14,27 @@ import java.util.Objects;
 public class ChessGame {
     ChessGame.TeamColor team;
     private ChessBoard board = new ChessBoard();
+    public boolean resigned;
     private ChessPiece[][] borad = new ChessPiece[8][8];
-    public ChessGame() {
 
+    public ChessGame() {
+        this.team = TeamColor.WHITE;
+        this.resigned = false;
     }
+    public boolean isResigned() {
+        return this.resigned;
+    }
+
 
     /**
      * @return Which team's turn it is
      */
     public TeamColor getTeamTurn() {
         return team;
+    }
+
+    public void resignGame(){
+        this.resigned = true;
     }
 
     /**

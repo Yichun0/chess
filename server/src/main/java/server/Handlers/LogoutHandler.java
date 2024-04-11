@@ -9,6 +9,8 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
+import java.sql.SQLException;
+
 public class LogoutHandler implements Route {
     @Override
     public Object handle(Request request, Response response) throws DataAccessException {
@@ -25,6 +27,8 @@ public class LogoutHandler implements Route {
             ErrorResponse errorResponse = new  ErrorResponse(e.getMessage());
             response.body(gson.toJson(errorResponse));
             return gson.toJson(errorResponse);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 }

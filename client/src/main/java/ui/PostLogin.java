@@ -85,7 +85,8 @@ public class PostLogin {
                 String whiteUsername = games.get(i).getWhiteUsername();
                 if (blackUsername != null) {
                     System.out.println("black player: " + blackUsername);
-                } else if (whiteUsername != null) {
+                }
+                if (whiteUsername != null) {
                     System.out.println("white player: " + whiteUsername);
                 }
                 System.out.println("\n");
@@ -96,12 +97,6 @@ public class PostLogin {
         }
     }
     public void joinGame() throws ResponseException {
-//        try{
-//        WebSocketFacade webSocketFacade = new WebSocketFacade("http://localhost:8080");
-//        webSocketFacade.sendMessage("this is the client");}
-//        catch (IOException e){
-//            System.out.println(e.getMessage());
-//        }
         Collection<GameData> gamelist = serverFacade.listGames();
         List<GameData> games = new ArrayList<>(gamelist);
         System.out.println("enter the number of the game you want to play: ");

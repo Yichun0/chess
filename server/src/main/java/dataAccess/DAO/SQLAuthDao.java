@@ -4,6 +4,7 @@ import Model.AuthData;
 import exception.DataAccessException;
 import dataAccess.DatabaseManager;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,18 +41,15 @@ public class SQLAuthDao implements AuthDAO{
     }
 
     @Override
-    public boolean findAuthToken(AuthData authObjects) throws DataAccessException {
-        String sql = "SELECT * FROM authTable WHERE authToken = ?";
+    public boolean findAuthToken(String authToken) throws DataAccessException, SQLException {
+        String sql = "SELECT username FROM authTable WHERE authToken = ?";
         try (Connection connection = DatabaseManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setString(1, authObjects.getAuthToken());
+            preparedStatement.setString(1, authToken);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 return resultSet.next();
             }
-        } catch (SQLException e) {
-            throw new DataAccessException(e.getMessage());
-//            return false;
-        } catch (DataAccessException e) {
+        } catch (DataAccessException e ) {
             throw new DataAccessException(e.getMessage());
         }
     }
@@ -70,10 +68,7 @@ public class SQLAuthDao implements AuthDAO{
         }
 
     }
-    public String getUsername(AuthData authData) throws DataAccessException{
-        if (!findAuthToken(authData)){
-            throw new DataAccessException("Error: unauthorized");
-        }
+    public String getUsername(AuthData authData) throws DataAccessException, SQLException {
         try (Connection conn = DatabaseManager.getConnection();
              PreparedStatement preparedStatement = conn.prepareStatement("SELECT username FROM authTable WHERE authToken = ?")) {
             preparedStatement.setString(1, authData.getAuthToken());

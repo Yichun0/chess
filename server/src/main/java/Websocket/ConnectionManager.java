@@ -9,23 +9,20 @@ import org.eclipse.jetty.websocket.api.Session;
 import webSocketMessages.serverMessages.ErrorMessage;
 import webSocketMessages.serverMessages.LoadGame;
 import webSocketMessages.serverMessages.Notification;
-import webSocketMessages.serverMessages.ServerMessage;
 
 import java.io.IOException;
 import java.util.Objects;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static java.util.Objects.isNull;
-
 public class ConnectionManager {
     public final ConcurrentHashMap<Integer, Vector<Connection>> connections = new ConcurrentHashMap<>();
 
-    public void add(int gameID, Session session, String username) {
+    public void add(int gameID, Session session, String authToken) {
         // record a connection when user joined a game
         // find gameID
         // if game doesn't exist, create a new vector of connection
-        var connection = new Connection(username, session);
+        var connection = new Connection(authToken, session);
         if (connections.containsKey(gameID)) {
             // game already documented
             Vector<Connection> individualGame = connections.get(gameID);
@@ -37,49 +34,79 @@ public class ConnectionManager {
             connections.put(gameID, individualGame);
         }
     }
-    public void deleteUser(String gameID, String username){
+    public void deleteUser(int gameID, String authToken){
         Vector<Connection> individualGame = connections.get(gameID);
         // getting the game that the user is in
         for (Connection user: individualGame){
-            if(Objects.equals(user.getUsername(), username)){
-                connections.remove(username);
+            if(Objects.equals(user.getAuthToken(), authToken)){
+                individualGame.remove(user);
+                return;
             }
         }
     }
 
-    public void game
-    public void sentErrorMessage(String message, Session session,String username) throws IOException {
+    public void deleteGame(int gameID,String authToken) {
+        Vector<Connection> individualGame = connections.get(gameID);
+        for (Connection user : individualGame){
+            if (!Objects.equals(user.getAuthToken(), authToken)){
+                individualGame.remove(user);
+            }
+        }
+    }
+    public void sentErrorMessage(String message,String authToken) throws IOException {
         ErrorMessage errorMessage = new ErrorMessage(message);
 //        Vector<Connection> individualGame = connections.get(gameID);
         for (int gameID : connections.keySet()){
             for (var connection : connections.get(gameID)){
                 if(connection.session.isOpen()){
-                    if(connection.getUsername().equalsIgnoreCase(username)){
-                        String errorMsg = new Gson().toJson(message);
+                    if(connection.getAuthToken().equalsIgnoreCase(authToken)){
+                        String errorMsg = new Gson().toJson(errorMessage);
                         connection.sendMessage(errorMsg);
                     }
                 }
             }
         }
-        session.getRemote().sendString(new Gson().toJson(errorMessage, ServerMessage.class));
     }
-    public void notify(int gameID, String rootUser, String message) throws IOException {
+    public void notifyEveryUser(int gameID, String message) throws IOException {
+        Vector<Connection> individualGame = connections.get(gameID);
+        // getting the game that the user is in
+        for (Connection user: individualGame) {
+            if (user.session.isOpen()) {
+                Notification notification = new Notification(message);
+                user.sendMessage(new Gson().toJson(notification));
+            }
+        }
+    }
+
+
+    public void notify(int gameID, String authToken,String message) throws IOException {
         Vector<Connection> individualGame = connections.get(gameID);
         // broadcasting to everyone else
         for (Connection user : individualGame) {
             if (user.session.isOpen()) {
-                if (!Objects.equals(user.getUsername(), rootUser)) {
+                if (!Objects.equals(user.getAuthToken(), authToken)) {
                     Notification notification = new Notification(message);
-                    user.sendMessage(new Gson().toJson(notification, Notification.class));
+                    user.sendMessage(new Gson().toJson(notification));
                 }
             }
         }
     }
-    public void loadGame(String playerColor, int gameID, Session session) throws DataAccessException, IOException {
+
+    public void selfLoadGame(String playerColor, int gameID, Session session) throws DataAccessException, IOException {
         GameDAO gameDAO = new SQLGameDAO();
-        String currentGame = gameDAO.getGame(gameID);
-        ChessGame game = new Gson().fromJson(currentGame, ChessGame.class);
-        LoadGame loadGame = new LoadGame(game,playerColor);
+        ChessGame currentGame = gameDAO.getGame(gameID).getGame();
+        LoadGame loadGame = new LoadGame(currentGame,playerColor);
         session.getRemote().sendString(new Gson().toJson(loadGame, LoadGame.class));
+    }
+
+    public void allLoadGame(String playColor,int gameID, ChessGame updatedGame) throws IOException {
+        Vector<Connection> individualGame = connections.get(gameID);
+        // getting the game that the user is in
+        for (Connection user: individualGame) {
+            if (user.session.isOpen()) {
+                LoadGame loadGame = new LoadGame(updatedGame, playColor);
+                user.sendMessage(new Gson().toJson(loadGame));
+            }
+        }
     }
 }

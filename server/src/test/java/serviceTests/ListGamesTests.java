@@ -43,6 +43,8 @@ public class ListGamesTests {
         }
         catch (DataAccessException exception){
             assertEquals(new ErrorResponse("Error: bad request"), new ErrorResponse(exception.getMessage()),"Error: bad request");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 }

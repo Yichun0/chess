@@ -25,6 +25,44 @@ public class SQLGameDAO implements GameDAO {
         }
     }
 
+    public void deleteUser(String playerColor, int gameID) {
+        if (playerColor.equalsIgnoreCase("white")) {
+            try (Connection connection = DatabaseManager.getConnection();
+                 PreparedStatement preparedStatement = connection.prepareStatement("UPDATE gameTable SET whiteUsername= ?WHERE gameID = ?")) {
+                preparedStatement.setString(1, null);
+                preparedStatement.setInt(2, gameID);
+                preparedStatement.executeUpdate();
+            }
+            catch (DataAccessException | SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        } else if (playerColor.equalsIgnoreCase("black")) {
+            try (Connection connection = DatabaseManager.getConnection();
+                 PreparedStatement preparedStatement = connection.prepareStatement("UPDATE gameTable SET blackUsername= ?WHERE gameID = ?")) {
+                preparedStatement.setString(1, null);
+                preparedStatement.setInt(2, gameID);
+                preparedStatement.executeUpdate();
+            }
+            catch (DataAccessException | SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    public void updateGame(ChessGame newGame, int gameID) throws DataAccessException {
+        try (Connection connection = DatabaseManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("UPDATE gameTable SET chessGame=? WHERE gameID=?")) {
+            var newGameObj = new Gson().toJson(newGame);
+            preparedStatement.setString(1, newGameObj);
+            preparedStatement.setInt(2, gameID);
+            preparedStatement.executeUpdate();
+
+        }
+        catch (DataAccessException | SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     @Override
     public int createGame(GameData gameData) throws DataAccessException {
         Gson gson = new Gson();
@@ -91,38 +129,39 @@ public class SQLGameDAO implements GameDAO {
         return false;
     }
 
-    public String getGame(int gameID) throws DataAccessException {
-        String chessGame = null;
+    public GameData getGame(int gameID) throws DataAccessException {
+        GameData gamedata = null;
         try (Connection connection = DatabaseManager.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement("SELECT chessGame FROM gameTable WHERE gameID = ?")) {
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM gameTable WHERE gameID = ?")) {
             preparedStatement.setInt(1, gameID);
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 if (rs.next()) {
-                    chessGame = rs.getString("chessGame");
+                    ChessGame chessGame = new Gson().fromJson(rs.getString(5),ChessGame.class);
+                    gamedata = new GameData(rs.getInt(1), rs.getString(3), rs.getString(2), rs.getString(4),chessGame);
 
                 }
             }
         } catch (SQLException e) {
             throw new DataAccessException(e.getMessage());
         }
-        return chessGame;
+        return gamedata;
     }
 
-        public String getGameName (int gameID) throws DataAccessException {
-        String gameName = null;
-        try (Connection connection = DatabaseManager.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement("SELECT gameName FROM gameTable WHERE gameID = ?")) {
-            preparedStatement.setInt(1, gameID);
-            try (ResultSet rs = preparedStatement.executeQuery()) {
-                if (rs.next()) {
-                    gameName = rs.getString("gameName");
-                }
-            }
-        } catch (SQLException e) {
-            throw new DataAccessException(e.getMessage());
-        }
-        return gameName;
-    }
+//        public String getGameName (int gameID) throws DataAccessException {
+//        String gameName = null;
+//        try (Connection connection = DatabaseManager.getConnection();
+//             PreparedStatement preparedStatement = connection.prepareStatement("SELECT gameName FROM gameTable WHERE gameID = ?")) {
+//            preparedStatement.setInt(1, gameID);
+//            try (ResultSet rs = preparedStatement.executeQuery()) {
+//                if (rs.next()) {
+//                    gameName = rs.getString("gameName");
+//                }
+//            }
+//        } catch (SQLException e) {
+//            throw new DataAccessException(e.getMessage());
+//        }
+//        return gameName;
+//    }
     public boolean findGame(int gameID) throws DataAccessException {
         // check whether the game exit in the database or not
         try (Connection connection = DatabaseManager.getConnection();

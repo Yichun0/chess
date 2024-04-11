@@ -12,12 +12,14 @@ import Response.CreateGameRespond;
 import Response.ErrorResponse;
 import Service.CreateGameServices;
 
+import java.sql.SQLException;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CreateGamesTests {
     @Test
-    public void positiveTest() throws DataAccessException {
+    public void positiveTest() throws DataAccessException, SQLException {
         GameDAO gameDAO = new MemoryGameDAO();
         AuthDAO authDAO = new MemoryAuthDAO();
         CreateGameServices createGameService = new CreateGameServices();
@@ -37,7 +39,7 @@ public class CreateGamesTests {
         CreateGameRequest request = new CreateGameRequest("gameName");
         try{
             createGameService.createGame(request,authData);
-        } catch (DataAccessException exception){
+        } catch (DataAccessException | SQLException exception){
             assertEquals(new ErrorResponse("Error: unauthorized"), new ErrorResponse(exception.getMessage()), "Error: unauthorized");
         }
     }

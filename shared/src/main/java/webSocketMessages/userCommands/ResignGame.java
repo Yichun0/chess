@@ -4,14 +4,14 @@ import Model.GameData;
 import webSocketMessages.userCommands.UserGameCommand;
 
 public class ResignGame extends UserGameCommand {
-    int GameID;
+    int gameID;
 
     public int getGameID() {
-        return GameID;
+        return this.gameID;
     }
 
     public ResignGame(String authToken, int gameID) {
         super(authToken);
-        this.GameID = gameID;
+        this.gameID = gameID;
     }
 }

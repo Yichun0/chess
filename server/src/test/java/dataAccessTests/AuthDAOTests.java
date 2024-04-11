@@ -28,7 +28,7 @@ public class AuthDAOTests {
     public void positiveClearTest() throws DataAccessException, SQLException {
         authDAO.clearAuthToken();
         AuthData authData = new AuthData("username", "authToken");
-        assertFalse(authDAO.findAuthToken(authData));
+        assertFalse(authDAO.findAuthToken(authData.getAuthToken()));
 
     }
 
@@ -59,25 +59,25 @@ public class AuthDAOTests {
         }
     }
     @Test
-    public void findPositive() throws DataAccessException{
+    public void findPositive() throws DataAccessException, SQLException {
         AuthData authData = new AuthData("username", "authToken");
         authDAO.createAuthToken(authData);
-        assertEquals(true, authDAO.findAuthToken(authData));
+        assertEquals(true, authDAO.findAuthToken(authData.getAuthToken()));
 
     }
     @Test
-    public void findNegative() throws DataAccessException {
+    public void findNegative() throws DataAccessException, SQLException {
         AuthData authData = new AuthData("username", "authToken");
         authDAO.createAuthToken(authData);
         AuthData wrongData = new AuthData("wrongName", "wrongAuthToken");
-        assertEquals(false, authDAO.findAuthToken(wrongData));
+        assertEquals(false, authDAO.findAuthToken(wrongData.getAuthToken()));
     }
     @Test
-    public void deletePositive() throws DataAccessException{
+    public void deletePositive() throws DataAccessException, SQLException {
         AuthData authData = new AuthData("username", "authToken");
         authDAO.createAuthToken(authData);
         authDAO.deleteAuthtoken(authData);
-        assertEquals(false, authDAO.findAuthToken(authData));
+        assertEquals(false, authDAO.findAuthToken(authData.getAuthToken()));
     }
 
     @Test
@@ -92,7 +92,7 @@ public class AuthDAOTests {
         }
     }
     @Test
-    public void getPositive() throws DataAccessException{
+    public void getPositive() throws DataAccessException, SQLException {
         AuthData authData = new AuthData("username", "authToken");
         authDAO.createAuthToken(authData);
         String username = authDAO.getUsername(authData);
@@ -106,7 +106,7 @@ public class AuthDAOTests {
         AuthData wrongAuthdata = new AuthData("username", "wrongAutoken");
         try {
             authDAO.getUsername(wrongAuthdata);
-        } catch (DataAccessException exception) {
+        } catch (DataAccessException | SQLException exception) {
             assertEquals(new ErrorResponse("Error: unauthorized"), new ErrorResponse(exception.getMessage()), "Error: unauthorized");
         }
     }

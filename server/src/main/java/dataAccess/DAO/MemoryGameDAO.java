@@ -17,7 +17,17 @@ public class MemoryGameDAO implements GameDAO{
     }
 
     @Override
-    public String getGame(int gameID) throws DataAccessException {
+    public void deleteUser(String playerColor, int gameID) {
+
+    }
+
+    @Override
+    public void updateGame(ChessGame newGame, int gameID) throws DataAccessException {
+
+    }
+
+    @Override
+    public GameData getGame(int gameID) throws DataAccessException {
         return null;
     }
 
@@ -31,10 +41,10 @@ public class MemoryGameDAO implements GameDAO{
         return 0;
     }
 
-    @Override
-    public String getGameName(int gameID) throws DataAccessException {
-        return null;
-    }
+//    @Override
+//    public String getGameName(int gameID) throws DataAccessException {
+//        return null;
+//    }
 
     @Override
     public int createGame(GameData gameData) throws DataAccessException {
