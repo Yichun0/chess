@@ -13,7 +13,7 @@ import java.util.Scanner;
 
 import static ui.EscapeSequences.*;
 
-public class GamePlay implements ServerMessageHandler {
+public class GamePlay{
     private Scanner scanner;
     private ServerFacade serverFacade;
     private String playerColor;
