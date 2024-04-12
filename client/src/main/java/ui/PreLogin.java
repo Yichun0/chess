@@ -1,6 +1,7 @@
 package ui;
 
 import Model.AuthData;
+import exception.DataAccessException;
 import exception.ResponseException;
 
 import java.security.Provider;
@@ -56,6 +57,8 @@ public class PreLogin {
             postLogin.run();
         } catch (ResponseException e) {
             System.out.println(e.getMessage());
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
         }
         // successful log in --> transition to PostLogin UI
 
@@ -74,6 +77,8 @@ public class PreLogin {
             postLogin.run();
         } catch (ResponseException e) {
             System.out.println("Registration Error");
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
         }
     }
 }

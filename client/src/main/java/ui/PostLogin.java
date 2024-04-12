@@ -2,6 +2,7 @@ package ui;
 
 import Model.GameData;
 import chess.ChessGame;
+import exception.DataAccessException;
 import exception.ResponseException;
 import ui.WebSocket.WebSocketFacade;
 
@@ -17,7 +18,7 @@ public class PostLogin {
         this.scanner = new Scanner(System.in);
         this.serverFacade = server;
     }
-    public void run() throws ResponseException {
+    public void run() throws ResponseException, DataAccessException {
         System.out.println("Welcome to the chess game.");
         System.out.println("""
                 create game
@@ -43,7 +44,7 @@ public class PostLogin {
             }
         }
     }
-    public void help() throws ResponseException {
+    public void help() throws ResponseException, DataAccessException {
         // display text informing user actions
         System.out.println("Choose on of the options to start:");
         run();
@@ -59,7 +60,7 @@ public class PostLogin {
         System.out.println(e.getMessage());
     }
     }
-    public void createGame() throws ResponseException{
+    public void createGame() throws ResponseException, DataAccessException {
         try {
             System.out.println("New game Name: ");
             String gameName = scanner.nextLine();
@@ -70,7 +71,7 @@ public class PostLogin {
             help();
         }
     }
-    public void listGames() throws ResponseException {
+    public void listGames() throws ResponseException, DataAccessException {
         int gameIndex = 1;
         try {
             System.out.println("Games: ");
@@ -91,12 +92,12 @@ public class PostLogin {
                 System.out.println("\n");
             }
             help();
-        } catch(ResponseException e){
+        } catch(ResponseException | DataAccessException e){
             System.out.println(e.getMessage());
             help();
         }
     }
-    public void joinGame() throws ResponseException {
+    public void joinGame() throws ResponseException, DataAccessException {
         Collection<GameData> gamelist = serverFacade.listGames();
         List<GameData> games = new ArrayList<>(gamelist);
         System.out.println("enter the number of the game you want to play: ");
@@ -122,10 +123,12 @@ public class PostLogin {
             } catch (ResponseException e) {
                 System.out.println(e.getMessage());
                 help();
+            } catch (DataAccessException e) {
+                throw new RuntimeException(e);
             }
         }
     }
-    public void observeGame() throws ResponseException {
+    public void observeGame() throws ResponseException, DataAccessException {
         Collection<GameData> gamelist = serverFacade.listGames();
         List<GameData> games = new ArrayList<>(gamelist);
         System.out.println("enter the number of the game you want to observe: ");

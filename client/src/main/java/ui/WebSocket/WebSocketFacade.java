@@ -95,7 +95,7 @@ public class WebSocketFacade extends Endpoint {
 
     public void makeMove(String authToken, int gameID, ChessMove move){
         try{
-            var command = new MakeMoves(authToken,gameID,move);
+            var command = new MakeMove(authToken,gameID,move);
             this.sendMessage(new Gson().toJson(command));
         } catch (IOException e){
             System.out.println(e.getMessage());
